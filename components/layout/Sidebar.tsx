@@ -8,20 +8,20 @@ import {
   Users,
   Building2,
   Briefcase,
-  Cpu,
+  Sliders,
   FileSpreadsheet,
-  BookOpen,
+  Settings,
+  LineChart,
+  User,
+  ListOrdered,
+  CheckCircle2,
   LogOut,
-  Sparkles,
+  GraduationCap,
   Menu,
   X,
-  ListOrdered,
-  Search,
-  CheckCircle2,
-  ChevronRight,
+  UserCheck,
 } from 'lucide-react';
 import { Role } from '../../lib/types';
-import { Badge } from '../ui/badge';
 
 interface SidebarProps {
   userRole: Role;
@@ -51,48 +51,55 @@ export function Sidebar({ userRole, userName, userEmail }: SidebarProps) {
     }
   };
 
+  // ADMIN Navigation: Dashboard, Students, Companies, Internships, Allocation, Analytics, Algorithm, Settings
   const adminNav: NavItem[] = [
     { name: 'Dashboard', href: '/admin/dashboard', icon: LayoutDashboard },
     { name: 'Students', href: '/admin/students', icon: Users },
     { name: 'Companies', href: '/admin/companies', icon: Building2 },
     { name: 'Internships', href: '/admin/internships', icon: Briefcase },
-    { name: 'Run Algorithm', href: '/admin/algorithm', icon: Cpu, badge: 'AOA Engine' },
-    { name: 'Allocations & CSV', href: '/admin/allocations', icon: FileSpreadsheet },
-    { name: 'Algorithm Docs', href: '/algorithm-explanation', icon: BookOpen },
+    { name: 'Allocation', href: '/admin/allocations', icon: FileSpreadsheet },
+    { name: 'Analytics', href: '/admin/dashboard#analytics', icon: LineChart },
+    { name: 'Algorithm', href: '/admin/algorithm', icon: Sliders },
+    { name: 'Settings', href: '/admin/settings', icon: Settings },
   ];
 
+  // STUDENT Navigation: Dashboard, My Profile, Internships, My Preferences, My Allocation
   const studentNav: NavItem[] = [
-    { name: 'My Dashboard', href: '/student/dashboard', icon: LayoutDashboard },
-    { name: 'Browse Internships', href: '/student/internships', icon: Search },
-    { name: 'Rank Preferences', href: '/student/preferences', icon: ListOrdered, badge: 'Priority 1-5' },
-    { name: 'Algorithm Details', href: '/algorithm-explanation', icon: BookOpen },
+    { name: 'Dashboard', href: '/student/dashboard', icon: LayoutDashboard },
+    { name: 'My Profile', href: '/student/dashboard#profile', icon: User },
+    { name: 'Internships', href: '/student/internships', icon: Briefcase },
+    { name: 'My Preferences', href: '/student/preferences', icon: ListOrdered },
+    { name: 'My Allocation', href: '/student/dashboard#allocation', icon: CheckCircle2 },
   ];
 
+  // COMPANY Navigation: Dashboard, Company Profile, Internships, Candidates, Allocations
   const companyNav: NavItem[] = [
-    { name: 'Recruiter Dashboard', href: '/company/dashboard', icon: LayoutDashboard },
-    { name: 'Algorithm Details', href: '/algorithm-explanation', icon: BookOpen },
+    { name: 'Dashboard', href: '/company/dashboard', icon: LayoutDashboard },
+    { name: 'Company Profile', href: '/company/dashboard#profile', icon: Building2 },
+    { name: 'Internships', href: '/company/dashboard#internships', icon: Briefcase },
+    { name: 'Candidates', href: '/company/dashboard#candidates', icon: UserCheck },
+    { name: 'Allocations', href: '/company/dashboard#allocations', icon: CheckCircle2 },
   ];
 
-  const navItems: NavItem[] = userRole === 'ADMIN' ? adminNav : userRole === 'STUDENT' ? studentNav : companyNav;
+  const navItems: NavItem[] =
+    userRole === 'ADMIN' ? adminNav : userRole === 'STUDENT' ? studentNav : companyNav;
 
   const roleLabel =
-    userRole === 'ADMIN' ? 'Administrator' : userRole === 'STUDENT' ? 'Student Portal' : 'Recruiter Portal';
-  const roleBadgeVariant =
-    userRole === 'ADMIN' ? 'purple' : userRole === 'STUDENT' ? 'primary' : 'success';
+    userRole === 'ADMIN' ? 'Placement Admin' : userRole === 'STUDENT' ? 'Student Portal' : 'Recruiter Portal';
 
   return (
     <>
       {/* Mobile Top Bar */}
-      <div className="lg:hidden flex items-center justify-between p-4 bg-white border-b border-slate-200 sticky top-0 z-30">
+      <div className="lg:hidden flex items-center justify-between p-3.5 bg-[#0F172A] border-b border-[#1E293B] sticky top-0 z-30">
         <div className="flex items-center gap-2">
-          <div className="h-8 w-8 rounded-lg bg-indigo-600 flex items-center justify-center text-white">
-            <Sparkles className="h-4 w-4" />
+          <div className="h-7 w-7 rounded bg-[#0284C7] flex items-center justify-center text-white">
+            <GraduationCap className="h-4 w-4" />
           </div>
-          <span className="font-bold text-slate-900 text-sm">Smart Allocation</span>
+          <span className="font-bold text-[#F8FAFC] text-sm">InternMatch Portal</span>
         </div>
         <button
           onClick={() => setMobileOpen(!mobileOpen)}
-          className="p-2 rounded-lg text-slate-600 hover:bg-slate-100"
+          className="p-1.5 rounded text-[#94A3B8] hover:bg-[#1E293B]"
         >
           {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
         </button>
@@ -101,75 +108,69 @@ export function Sidebar({ userRole, userName, userEmail }: SidebarProps) {
       {/* Mobile Overlay */}
       {mobileOpen && (
         <div
-          className="fixed inset-0 bg-slate-900/50 z-40 lg:hidden"
+          className="fixed inset-0 bg-black/70 z-40 lg:hidden"
           onClick={() => setMobileOpen(false)}
         />
       )}
 
       {/* Main Sidebar */}
       <aside
-        className={`fixed top-0 bottom-0 left-0 z-40 w-64 bg-slate-900 text-slate-300 flex flex-col justify-between transition-transform duration-200 ease-in-out border-r border-slate-800 ${
+        className={`fixed top-0 bottom-0 left-0 z-40 w-60 bg-[#0F172A] text-[#F8FAFC] flex flex-col justify-between transition-transform duration-200 ease-in-out border-r border-[#1E293B] ${
           mobileOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
         }`}
       >
         {/* Header */}
-        <div className="p-5 border-b border-slate-800">
-          <Link href="/" className="flex items-center gap-3">
-            <div className="h-9 w-9 rounded-xl bg-gradient-to-tr from-indigo-500 to-blue-500 flex items-center justify-center text-white shadow-md shadow-indigo-950">
-              <Sparkles className="h-5 w-5" />
+        <div className="p-4 border-b border-[#1E293B]">
+          <Link href="/" className="flex items-center gap-2.5">
+            <div className="h-8 w-8 rounded bg-[#0284C7] flex items-center justify-center text-white shrink-0 shadow-sm">
+              <GraduationCap className="h-5 w-5" />
             </div>
             <div>
-              <div className="font-bold text-white text-sm tracking-tight leading-tight">
-                Smart Allocation
+              <div className="font-bold text-[#F8FAFC] text-sm tracking-tight leading-tight">
+                InternMatch Portal
               </div>
-              <div className="text-[10px] text-indigo-400 font-mono">AOA Platform v1.0</div>
+              <div className="text-[10px] text-[#94A3B8]">Placement Management</div>
             </div>
           </Link>
 
-          <div className="mt-4 pt-3 border-t border-slate-800/80 flex items-center justify-between">
-            <span className="text-xs font-semibold text-slate-400">{roleLabel}</span>
-            <span
-              className={`text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded ${
-                userRole === 'ADMIN'
-                  ? 'bg-purple-900/60 text-purple-300 border border-purple-700/50'
-                  : userRole === 'STUDENT'
-                  ? 'bg-indigo-900/60 text-indigo-300 border border-indigo-700/50'
-                  : 'bg-emerald-900/60 text-emerald-300 border border-emerald-700/50'
-              }`}
-            >
+          <div className="mt-3 pt-2.5 border-t border-[#1E293B] flex items-center justify-between">
+            <span className="text-[11px] font-semibold text-[#94A3B8]">{roleLabel}</span>
+            <span className="text-[10px] font-mono uppercase tracking-wider px-1.5 py-0.5 rounded bg-[#0284C7]/20 text-[#38BDF8] border border-[#0284C7]/30 font-semibold">
               {userRole}
             </span>
           </div>
         </div>
 
         {/* Navigation Items */}
-        <div className="flex-1 px-3 py-4 space-y-1 overflow-y-auto">
+        <div className="flex-1 px-3 py-3 space-y-1 overflow-y-auto">
           {navItems.map((item) => {
             const isActive = pathname === item.href;
             const Icon = item.icon;
             return (
               <Link
-                key={item.href}
+                key={item.name}
                 href={item.href}
                 onClick={() => setMobileOpen(false)}
-                className={`flex items-center justify-between px-3.5 py-2.5 rounded-lg text-xs font-medium transition-all group ${
+                className={`flex items-center justify-between px-3 py-2 rounded-md text-xs font-medium transition-colors ${
                   isActive
-                    ? 'bg-indigo-600 text-white font-semibold shadow-sm shadow-indigo-900'
-                    : 'text-slate-400 hover:text-white hover:bg-slate-800/80'
+                    ? 'bg-[#1E293B] text-[#38BDF8] border-l-2 border-[#38BDF8] font-semibold'
+                    : 'text-[#94A3B8] hover:text-[#F8FAFC] hover:bg-[#1E293B]/60'
                 }`}
               >
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-2.5">
                   <Icon
-                    className={`h-4 w-4 transition-colors ${
-                      isActive ? 'text-white' : 'text-slate-400 group-hover:text-indigo-400'
+                    className={`h-4 w-4 ${
+                      isActive ? 'text-[#38BDF8]' : 'text-[#64748B]'
                     }`}
                   />
                   <span>{item.name}</span>
                 </div>
                 {item.badge && (
                   <span
-                    className={`text-[10px] px-1.5 py-0.5 rounded ${
-                      isActive ? 'bg-indigo-700 text-white' : 'bg-slate-800 text-slate-300 border border-slate-700'
+                    className={`text-[10px] px-1.5 py-0.2 rounded ${
+                      isActive
+                        ? 'bg-[#0284C7]/30 text-[#38BDF8]'
+                        : 'bg-[#1E293B] text-[#94A3B8]'
                     }`}
                   >
                     {item.badge}
@@ -181,20 +182,20 @@ export function Sidebar({ userRole, userName, userEmail }: SidebarProps) {
         </div>
 
         {/* User Profile & Logout */}
-        <div className="p-4 border-t border-slate-800 bg-slate-950/40">
-          <div className="flex items-center gap-3 mb-3">
-            <div className="h-8 w-8 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center font-bold text-xs text-indigo-400">
+        <div className="p-3 border-t border-[#1E293B] bg-[#0B1120]">
+          <div className="flex items-center gap-2.5 mb-2.5">
+            <div className="h-7 w-7 rounded-full bg-[#0284C7]/20 text-[#38BDF8] border border-[#0284C7]/40 flex items-center justify-center font-bold text-xs shrink-0">
               {userName.charAt(0)}
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-xs font-semibold text-white truncate">{userName}</p>
-              <p className="text-[11px] text-slate-400 truncate">{userEmail}</p>
+              <p className="text-xs font-semibold text-[#F8FAFC] truncate">{userName}</p>
+              <p className="text-[10px] text-[#94A3B8] truncate">{userEmail}</p>
             </div>
           </div>
 
           <button
             onClick={handleLogout}
-            className="w-full flex items-center justify-center gap-2 px-3 py-2 text-xs font-medium text-rose-300 bg-rose-950/30 hover:bg-rose-900/40 border border-rose-900/40 rounded-lg transition-colors"
+            className="w-full flex items-center justify-center gap-1.5 px-2.5 py-1.5 text-xs font-medium text-[#F87171] bg-[#1E293B] hover:bg-[#EF4444]/20 border border-[#EF4444]/30 rounded transition-colors"
           >
             <LogOut className="h-3.5 w-3.5" />
             <span>Sign Out</span>

@@ -136,26 +136,26 @@ export default function AdminAlgorithmSimulationPage() {
   return (
     <div className="space-y-8 animate-fade-in">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-[#1E293B] p-6 rounded-xl border border-[#334155] shadow-lg">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900 tracking-tight flex items-center gap-2">
-            <Cpu className="h-6 w-6 text-indigo-600" />
+          <h1 className="text-2xl font-bold text-white tracking-tight flex items-center gap-2">
+            <Cpu className="h-6 w-6 text-[#38BDF8]" />
             AOA Algorithm Simulation Engine
           </h1>
-          <p className="text-xs sm:text-sm text-slate-500 mt-1">
+          <p className="text-xs sm:text-sm text-[#94A3B8] mt-1">
             Configure multi-objective weight parameters, execute live allocation, and inspect candidate pair decision trees.
           </p>
         </div>
 
         <div className="flex items-center gap-2">
           <Link href="/algorithm-explanation">
-            <Button variant="outline" size="sm">
+            <Button variant="outline" size="sm" className="border-[#334155] bg-[#0F172A] text-[#38BDF8] hover:bg-[#1E293B]">
               Algorithm Math Proof
             </Button>
           </Link>
           <Link href="/admin/allocations">
-            <Button variant="outline" size="sm">
-              <FileSpreadsheet className="h-4 w-4 mr-1 text-emerald-600" />
+            <Button variant="outline" size="sm" className="border-[#334155] bg-[#0F172A] text-[#34D399] hover:bg-[#1E293B]">
+              <FileSpreadsheet className="h-4 w-4 mr-1 text-[#34D399]" />
               View Allocations
             </Button>
           </Link>
@@ -165,19 +165,19 @@ export default function AdminAlgorithmSimulationPage() {
       {/* Weights Tuning & Execution Control */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Left 2 Cols: Sliders */}
-        <Card className="lg:col-span-2">
+        <Card className="lg:col-span-2 border-[#334155] bg-[#1E293B]">
           <CardHeader>
             <div className="flex items-center justify-between">
               <div>
-                <CardTitle className="text-base font-bold flex items-center gap-2">
-                  <Sliders className="h-4 w-4 text-indigo-600" />
+                <CardTitle className="text-base font-bold text-white flex items-center gap-2">
+                  <Sliders className="h-4 w-4 text-[#38BDF8]" />
                   Multi-Objective Scoring Weights
                 </CardTitle>
-                <CardDescription className="text-xs">
+                <CardDescription className="text-xs text-[#94A3B8]">
                   Weights dictate the proportional influence of preference, academic CGPA, and technical skills.
                 </CardDescription>
               </div>
-              <Button variant="ghost" size="sm" onClick={handleResetWeights} className="text-xs text-slate-500">
+              <Button variant="ghost" size="sm" onClick={handleResetWeights} className="text-xs text-[#94A3B8] hover:text-white hover:bg-[#0F172A]">
                 <RotateCcw className="h-3 w-3 mr-1" />
                 Reset Defaults
               </Button>
@@ -187,8 +187,8 @@ export default function AdminAlgorithmSimulationPage() {
             {/* Preference Weight */}
             <div className="space-y-2">
               <div className="flex justify-between items-center text-xs">
-                <span className="font-semibold text-slate-700">1. Student Preference Weight (w_pref)</span>
-                <span className="font-mono font-bold text-indigo-600">{(prefWeight * 100).toFixed(0)}%</span>
+                <span className="font-semibold text-white">1. Student Preference Weight (w_pref)</span>
+                <span className="font-mono font-bold text-[#38BDF8]">{(prefWeight * 100).toFixed(0)}%</span>
               </div>
               <input
                 type="range"
@@ -197,9 +197,9 @@ export default function AdminAlgorithmSimulationPage() {
                 step="0.05"
                 value={prefWeight}
                 onChange={(e) => setPrefWeight(parseFloat(e.target.value))}
-                className="w-full accent-indigo-600 cursor-pointer h-2 bg-slate-200 rounded-lg"
+                className="w-full accent-[#0284C7] cursor-pointer h-2 bg-[#0F172A] rounded-lg border border-[#334155]"
               />
-              <p className="text-[11px] text-slate-400">
+              <p className="text-[11px] text-[#94A3B8]">
                 Awards up to 100 points for student 1st choice, 90 for 2nd choice, 80 for 3rd choice.
               </p>
             </div>
@@ -207,8 +207,8 @@ export default function AdminAlgorithmSimulationPage() {
             {/* CGPA Weight */}
             <div className="space-y-2">
               <div className="flex justify-between items-center text-xs">
-                <span className="font-semibold text-slate-700">2. Academic CGPA Weight (w_cgpa)</span>
-                <span className="font-mono font-bold text-blue-600">{(cgpaWeight * 100).toFixed(0)}%</span>
+                <span className="font-semibold text-white">2. Academic CGPA Weight (w_cgpa)</span>
+                <span className="font-mono font-bold text-[#38BDF8]">{(cgpaWeight * 100).toFixed(0)}%</span>
               </div>
               <input
                 type="range"
@@ -217,9 +217,9 @@ export default function AdminAlgorithmSimulationPage() {
                 step="0.05"
                 value={cgpaWeight}
                 onChange={(e) => setCgpaWeight(parseFloat(e.target.value))}
-                className="w-full accent-blue-600 cursor-pointer h-2 bg-slate-200 rounded-lg"
+                className="w-full accent-[#0284C7] cursor-pointer h-2 bg-[#0F172A] rounded-lg border border-[#334155]"
               />
-              <p className="text-[11px] text-slate-400">
+              <p className="text-[11px] text-[#94A3B8]">
                 Normalizes student GPA on a 10.0 scale into a 0–100 academic merit factor.
               </p>
             </div>
@@ -227,8 +227,8 @@ export default function AdminAlgorithmSimulationPage() {
             {/* Skill Match Weight */}
             <div className="space-y-2">
               <div className="flex justify-between items-center text-xs">
-                <span className="font-semibold text-slate-700">3. Technical Skill Match Weight (w_skill)</span>
-                <span className="font-mono font-bold text-amber-600">{(skillWeight * 100).toFixed(0)}%</span>
+                <span className="font-semibold text-white">3. Technical Skill Match Weight (w_skill)</span>
+                <span className="font-mono font-bold text-amber-400">{(skillWeight * 100).toFixed(0)}%</span>
               </div>
               <input
                 type="range"
@@ -237,21 +237,21 @@ export default function AdminAlgorithmSimulationPage() {
                 step="0.05"
                 value={skillWeight}
                 onChange={(e) => setSkillWeight(parseFloat(e.target.value))}
-                className="w-full accent-amber-600 cursor-pointer h-2 bg-slate-200 rounded-lg"
+                className="w-full accent-amber-500 cursor-pointer h-2 bg-[#0F172A] rounded-lg border border-[#334155]"
               />
-              <p className="text-[11px] text-slate-400">
+              <p className="text-[11px] text-[#94A3B8]">
                 Measures the percentage of required tools &amp; frameworks matched by the student profile.
               </p>
             </div>
 
             {/* Total Weight Status */}
-            <div className="flex items-center justify-between p-3 rounded-lg bg-slate-50 border border-slate-200 text-xs">
-              <span className="text-slate-600 font-medium">Sum of Configured Weights:</span>
+            <div className="flex items-center justify-between p-3 rounded-lg bg-[#0F172A] border border-[#334155] text-xs">
+              <span className="text-[#94A3B8] font-medium">Sum of Configured Weights:</span>
               <span
                 className={`font-mono font-bold px-2 py-0.5 rounded ${
                   totalWeight === 100
-                    ? 'bg-emerald-100 text-emerald-800'
-                    : 'bg-amber-100 text-amber-800'
+                    ? 'bg-emerald-950/60 text-[#34D399] border border-emerald-700/50'
+                    : 'bg-amber-950/60 text-amber-400 border border-amber-700/50'
                 }`}
               >
                 {totalWeight}% (Normalized dynamically)
@@ -261,33 +261,33 @@ export default function AdminAlgorithmSimulationPage() {
         </Card>
 
         {/* Right 1 Col: Trigger Action & Metrics */}
-        <Card className="flex flex-col justify-between">
+        <Card className="flex flex-col justify-between border-[#334155] bg-[#1E293B]">
           <CardHeader>
-            <CardTitle className="text-base font-bold flex items-center gap-2">
-              <Zap className="h-4 w-4 text-amber-500" />
+            <CardTitle className="text-base font-bold text-white flex items-center gap-2">
+              <Zap className="h-4 w-4 text-amber-400" />
               Execute Live Allocation
             </CardTitle>
-            <CardDescription className="text-xs">
+            <CardDescription className="text-xs text-[#94A3B8]">
               Runs the deterministic optimization algorithm and persists allocation decisions.
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
-            <div className="p-4 rounded-xl bg-slate-900 text-white space-y-2 text-xs">
-              <div className="flex justify-between text-slate-400">
+            <div className="p-4 rounded-xl bg-[#0F172A] border border-[#334155] text-white space-y-2 text-xs">
+              <div className="flex justify-between text-[#94A3B8]">
                 <span>Algorithm:</span>
                 <span className="text-white font-mono">Constrained Greedy</span>
               </div>
-              <div className="flex justify-between text-slate-400">
+              <div className="flex justify-between text-[#94A3B8]">
                 <span>Time Complexity:</span>
-                <span className="text-indigo-400 font-mono">O(SI log(SI))</span>
+                <span className="text-[#38BDF8] font-mono">O(SI log(SI))</span>
               </div>
-              <div className="flex justify-between text-slate-400">
+              <div className="flex justify-between text-[#94A3B8]">
                 <span>Last Execution Time:</span>
-                <span className="text-emerald-400 font-mono font-bold">
+                <span className="text-[#34D399] font-mono font-bold">
                   {result?.stats.executionTimeMs || 2.4} ms
                 </span>
               </div>
-              <div className="flex justify-between text-slate-400">
+              <div className="flex justify-between text-[#94A3B8]">
                 <span>Allocation Rate:</span>
                 <span className="text-amber-400 font-mono font-bold">
                   {result?.stats.allocationRate || 85}%
@@ -298,7 +298,7 @@ export default function AdminAlgorithmSimulationPage() {
             <Button
               onClick={handleRunSimulation}
               isLoading={isRunning}
-              className="w-full py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-bold shadow-lg shadow-indigo-100"
+              className="w-full py-3 bg-[#0284C7] hover:bg-[#0369A1] text-white font-bold shadow-lg shadow-sky-950"
             >
               <Play className="h-4 w-4 mr-2 fill-current" />
               Run Allocation Algorithm
@@ -308,13 +308,13 @@ export default function AdminAlgorithmSimulationPage() {
       </div>
 
       {/* Interactive Visualization of Pipeline Stages */}
-      <Card>
+      <Card className="border-[#334155] bg-[#1E293B]">
         <CardHeader>
-          <CardTitle className="text-base font-bold flex items-center gap-2">
-            <Layers className="h-4 w-4 text-indigo-600" />
+          <CardTitle className="text-base font-bold text-white flex items-center gap-2">
+            <Layers className="h-4 w-4 text-[#38BDF8]" />
             Interactive Execution Pipeline Stages
           </CardTitle>
-          <CardDescription className="text-xs">
+          <CardDescription className="text-xs text-[#94A3B8]">
             Visual progression of candidate generation, multi-tier ranking, and constraint resolution.
           </CardDescription>
         </CardHeader>
@@ -329,24 +329,24 @@ export default function AdminAlgorithmSimulationPage() {
                   key={stg.name}
                   className={`p-3.5 rounded-xl border text-left transition-all ${
                     isCurrent
-                      ? 'border-indigo-600 bg-indigo-50/80 ring-2 ring-indigo-500/20 shadow-md'
+                      ? 'border-[#38BDF8] bg-[#38BDF8]/10 ring-2 ring-[#38BDF8]/30 shadow-md'
                       : isPast
-                      ? 'border-slate-200 bg-white'
-                      : 'border-slate-100 bg-slate-50 opacity-60'
+                      ? 'border-[#334155] bg-[#0F172A]'
+                      : 'border-[#1E293B] bg-[#0B1120] opacity-50'
                   }`}
                 >
                   <div className="flex items-center justify-between mb-1.5">
-                    <span className="text-[10px] font-mono font-bold text-slate-400">
+                    <span className="text-[10px] font-mono font-bold text-[#64748B]">
                       PHASE 0{idx + 1}
                     </span>
                     {isCurrent ? (
-                      <span className="h-2 w-2 rounded-full bg-indigo-600 animate-ping" />
+                      <span className="h-2 w-2 rounded-full bg-[#38BDF8] animate-ping" />
                     ) : isPast ? (
-                      <CheckCircle2 className="h-3.5 w-3.5 text-emerald-600" />
+                      <CheckCircle2 className="h-3.5 w-3.5 text-[#34D399]" />
                     ) : null}
                   </div>
-                  <h4 className="text-xs font-bold text-slate-900 mb-1">{stg.name}</h4>
-                  <p className="text-[10px] text-slate-500 leading-tight">{stg.desc}</p>
+                  <h4 className="text-xs font-bold text-white mb-1">{stg.name}</h4>
+                  <p className="text-[10px] text-[#94A3B8] leading-tight">{stg.desc}</p>
                 </div>
               );
             })}
@@ -355,14 +355,14 @@ export default function AdminAlgorithmSimulationPage() {
       </Card>
 
       {/* Candidate Pairs Decision Inspector */}
-      <Card>
+      <Card className="border-[#334155] bg-[#1E293B]">
         <CardHeader>
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
-              <CardTitle className="text-base font-bold">
+              <CardTitle className="text-base font-bold text-white">
                 Candidate Pairs Decision Inspector ({filteredPairs.length} Pairs)
               </CardTitle>
-              <CardDescription className="text-xs">
+              <CardDescription className="text-xs text-[#94A3B8]">
                 Inspect every evaluated (student, internship) pair, its calculated component scores, and allocation verdict.
               </CardDescription>
             </div>
@@ -373,12 +373,12 @@ export default function AdminAlgorithmSimulationPage() {
                 placeholder="Search candidate or position..."
                 value={searchPair}
                 onChange={(e) => setSearchPair(e.target.value)}
-                className="px-3 py-1.5 text-xs bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="px-3 py-1.5 text-xs bg-[#0F172A] border border-[#334155] rounded-lg text-white placeholder-[#64748B] focus:outline-none focus:border-[#38BDF8]"
               />
               <select
                 value={filterPairStatus}
                 onChange={(e) => setFilterPairStatus(e.target.value as any)}
-                className="px-3 py-1.5 text-xs bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="px-3 py-1.5 text-xs bg-[#0F172A] border border-[#334155] rounded-lg text-white focus:outline-none focus:border-[#38BDF8]"
               >
                 <option value="ALL">All Outcomes</option>
                 <option value="ALLOCATED">Allocated Only</option>
@@ -390,7 +390,7 @@ export default function AdminAlgorithmSimulationPage() {
         <CardContent className="p-0 overflow-x-auto">
           <table className="w-full text-left text-xs border-collapse">
             <thead>
-              <tr className="border-b border-slate-200 bg-slate-50/70 text-slate-500 font-semibold uppercase tracking-wider text-[10px]">
+              <tr className="border-b border-[#334155] bg-[#0F172A] text-[#94A3B8] font-semibold uppercase tracking-wider text-[10px]">
                 <th className="py-3 px-4">Student</th>
                 <th className="py-3 px-4">Internship &amp; Company</th>
                 <th className="py-3 px-4">Preference</th>
@@ -401,32 +401,32 @@ export default function AdminAlgorithmSimulationPage() {
                 <th className="py-3 px-4">Decision Reason</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-100">
+            <tbody className="divide-y divide-[#334155]">
               {filteredPairs.map((pair, idx) => (
                 <tr
                   key={`${pair.studentId}_${pair.internshipId}_${idx}`}
-                  className={`hover:bg-slate-50/80 transition-colors ${
-                    pair.allocated ? 'bg-emerald-50/20' : ''
+                  className={`hover:bg-[#0F172A]/50 transition-colors ${
+                    pair.allocated ? 'bg-emerald-950/20' : ''
                   }`}
                 >
                   <td className="py-2.5 px-4">
-                    <span className="font-semibold text-slate-900 block">{pair.studentName}</span>
-                    <span className="font-mono text-[10px] text-slate-400">{pair.studentRollNumber}</span>
+                    <span className="font-semibold text-white block">{pair.studentName}</span>
+                    <span className="font-mono text-[10px] text-[#94A3B8]">{pair.studentRollNumber}</span>
                   </td>
                   <td className="py-2.5 px-4">
-                    <span className="font-medium text-slate-800 block">{pair.internshipTitle}</span>
-                    <span className="text-[10px] text-indigo-600">{pair.companyName}</span>
+                    <span className="font-medium text-white block">{pair.internshipTitle}</span>
+                    <span className="text-[10px] text-[#38BDF8]">{pair.companyName}</span>
                   </td>
-                  <td className="py-2.5 px-4 font-semibold text-slate-700">
+                  <td className="py-2.5 px-4 font-semibold text-[#94A3B8]">
                     Choice #{pair.preferenceRank} ({pair.preferenceScore} pts)
                   </td>
-                  <td className="py-2.5 px-4 font-mono">
+                  <td className="py-2.5 px-4 font-mono text-white">
                     {pair.studentCgpa.toFixed(2)} ({pair.cgpaScore} pts)
                   </td>
-                  <td className="py-2.5 px-4 font-mono text-slate-700">
+                  <td className="py-2.5 px-4 font-mono text-[#34D399]">
                     {pair.skillMatchScore}%
                   </td>
-                  <td className="py-2.5 px-4 font-mono font-bold text-indigo-600 text-sm">
+                  <td className="py-2.5 px-4 font-mono font-bold text-[#38BDF8] text-sm">
                     {pair.totalScore}
                   </td>
                   <td className="py-2.5 px-4">
@@ -440,11 +440,11 @@ export default function AdminAlgorithmSimulationPage() {
                       </Badge>
                     )}
                   </td>
-                  <td className="py-2.5 px-4 text-[11px] text-slate-500">
+                  <td className="py-2.5 px-4 text-[11px] text-[#94A3B8]">
                     {pair.allocated ? (
-                      <span className="text-emerald-700 font-medium">Allocated (Highest Available Score)</span>
+                      <span className="text-[#34D399] font-medium">Allocated (Highest Available Score)</span>
                     ) : (
-                      <span className="text-slate-400">{pair.rejectionReason || 'Capacity filled / Already allocated'}</span>
+                      <span className="text-[#94A3B8]">{pair.rejectionReason || 'Capacity filled / Already allocated'}</span>
                     )}
                   </td>
                 </tr>

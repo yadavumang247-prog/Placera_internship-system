@@ -1,18 +1,18 @@
+'use client';
+
 import React from 'react';
 import Link from 'next/link';
 import {
-  Sparkles,
   ArrowLeft,
   Cpu,
   Clock,
   Database,
-  Layers,
   CheckCircle2,
-  Sliders,
-  Scale,
-  Code2,
-  FileCode,
-  Lightbulb,
+  Layers,
+  Sparkles,
+  Award,
+  GitBranch,
+  Filter,
 } from 'lucide-react';
 import { Navbar } from '../../components/layout/Navbar';
 import { Footer } from '../../components/layout/Footer';
@@ -21,66 +21,66 @@ import { Badge } from '../../components/ui/badge';
 
 export default function AlgorithmExplanationPage() {
   return (
-    <div className="min-h-screen flex flex-col bg-slate-50 text-slate-900">
+    <div className="min-h-screen flex flex-col bg-[#0B1120] text-[#F8FAFC]">
       <Navbar />
 
-      <main className="flex-1 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <main className="flex-1 max-w-5xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-10">
         {/* Back Link */}
         <div className="mb-6">
           <Link
             href="/"
-            className="inline-flex items-center text-xs font-semibold text-slate-500 hover:text-indigo-600 transition-colors"
+            className="inline-flex items-center text-xs font-semibold text-[#94A3B8] hover:text-[#38BDF8] transition-colors"
           >
             <ArrowLeft className="h-4 w-4 mr-1" />
-            Back to Home
+            Back to Portal Home
           </Link>
         </div>
 
         {/* Page Header */}
-        <div className="space-y-3 mb-12">
+        <div className="space-y-3 mb-10 pb-6 border-b border-[#334155]">
           <div className="flex items-center gap-2">
-            <Badge variant="purple">AOA Technical Specification</Badge>
-            <span className="text-xs text-slate-400">Analysis and Optimization of Algorithms</span>
+            <Badge variant="primary">AOA Technical Documentation</Badge>
+            <span className="text-xs text-[#94A3B8]">Analysis and Optimization of Algorithms</span>
           </div>
-          <h1 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
+          <h1 className="text-3xl sm:text-4xl font-bold text-white tracking-tight">
             Algorithm Formulation &amp; Complexity Analysis
           </h1>
-          <p className="text-base text-slate-600 leading-relaxed max-w-3xl">
-            A comprehensive academic explanation of the Multi-Objective Constrained Greedy Optimization algorithm implemented in the Smart Internship Allocation System.
+          <p className="text-base text-[#94A3B8] leading-relaxed max-w-3xl">
+            A comprehensive academic explanation of the Multi-Objective Constrained Greedy Optimization algorithm implemented in the InternMatch Portal.
           </p>
         </div>
 
         {/* Core Sections Container */}
-        <div className="space-y-12">
+        <div className="space-y-10">
           {/* 1. Problem Formulation */}
-          <section className="bg-white p-8 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+          <section className="bg-[#1E293B] p-8 rounded-xl border border-[#334155] shadow-lg space-y-4">
             <div className="flex items-center gap-3">
-              <div className="h-9 w-9 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center font-bold">
+              <div className="h-8 w-8 rounded-lg bg-[#0F172A] text-[#38BDF8] border border-[#334155] flex items-center justify-center font-bold text-sm">
                 1
               </div>
-              <h2 className="text-xl font-bold text-slate-900">Problem Formulation &amp; Input Definition</h2>
+              <h2 className="text-xl font-bold text-white">Problem Formulation &amp; Input Definition</h2>
             </div>
-            <p className="text-sm text-slate-600 leading-relaxed">
-              Given a finite set of participating students <code className="font-mono text-indigo-600">S = &#123;s₁, s₂, ..., sₙ&#125;</code> and available internships <code className="font-mono text-indigo-600">I = &#123;i₁, i₂, ..., iₘ&#125;</code>, the system must assign each student <code className="font-mono text-indigo-600">s ∈ S</code> to at most one internship <code className="font-mono text-indigo-600">i ∈ I</code> such that capacity constraints are strictly obeyed, eligibility criteria are enforced, and overall student-company matching satisfaction is maximized.
+            <p className="text-sm text-[#94A3B8] leading-relaxed">
+              Given a finite set of participating students <code className="font-mono text-[#38BDF8]">S = &#123;s₁, s₂, ..., sₙ&#125;</code> and available internships <code className="font-mono text-[#38BDF8]">I = &#123;i₁, i₂, ..., iₘ&#125;</code>, the system must assign each student <code className="font-mono text-[#38BDF8]">s ∈ S</code> to at most one internship <code className="font-mono text-[#38BDF8]">i ∈ I</code> such that capacity constraints are strictly obeyed, eligibility criteria are enforced, and overall student-company matching satisfaction is maximized.
             </p>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2 text-xs">
-              <div className="p-4 rounded-xl bg-slate-50 border border-slate-100 space-y-1.5">
-                <span className="font-bold text-slate-800">Student Attributes s:</span>
-                <ul className="list-disc pl-4 text-slate-600 space-y-1">
-                  <li>Academic CGPA (<code className="font-mono">cgpa ∈ [0.0, 10.0]</code>)</li>
-                  <li>Technical Skill Vector (<code className="font-mono">skills ⊆ Σ*</code>)</li>
-                  <li>Ranked Preference List (<code className="font-mono">P(s) = [i₍₁₎, i₍₂₎, ..., i₍₅₎]</code>)</li>
+              <div className="p-4 rounded-lg bg-[#0F172A] border border-[#334155] space-y-1.5">
+                <span className="font-bold text-white">Student Attributes (s):</span>
+                <ul className="list-disc pl-4 text-[#94A3B8] space-y-1">
+                  <li>Academic CGPA (<code className="font-mono text-[#38BDF8]">cgpa ∈ [0.0, 10.0]</code>)</li>
+                  <li>Technical Skill Vector (<code className="font-mono text-[#38BDF8]">skills ⊆ Σ*</code>)</li>
+                  <li>Ranked Preference List (<code className="font-mono text-[#38BDF8]">P(s) = [i₍₁₎, i₍₂₎, ..., i₍₅₎]</code>)</li>
                   <li>Unique Roll Number for deterministic tie-breaking</li>
                 </ul>
               </div>
 
-              <div className="p-4 rounded-xl bg-slate-50 border border-slate-100 space-y-1.5">
-                <span className="font-bold text-slate-800">Internship Attributes i:</span>
-                <ul className="list-disc pl-4 text-slate-600 space-y-1">
-                  <li>Total Seat Quota (<code className="font-mono">totalSeats(i) ≥ 1</code>)</li>
-                  <li>Minimum CGPA Cutoff (<code className="font-mono">minCGPA(i)</code>)</li>
-                  <li>Prerequisite Skill Set (<code className="font-mono">requiredSkills(i)</code>)</li>
+              <div className="p-4 rounded-lg bg-[#0F172A] border border-[#334155] space-y-1.5">
+                <span className="font-bold text-white">Internship Attributes (i):</span>
+                <ul className="list-disc pl-4 text-[#94A3B8] space-y-1">
+                  <li>Total Seat Quota (<code className="font-mono text-[#38BDF8]">totalSeats(i) ≥ 1</code>)</li>
+                  <li>Minimum CGPA Cutoff (<code className="font-mono text-[#38BDF8]">minCGPA(i)</code>)</li>
+                  <li>Prerequisite Skill Set (<code className="font-mono text-[#38BDF8]">requiredSkills(i)</code>)</li>
                   <li>Application Deadline timestamp</li>
                 </ul>
               </div>
@@ -88,50 +88,50 @@ export default function AlgorithmExplanationPage() {
           </section>
 
           {/* 2. Step-by-Step Pipeline */}
-          <section className="bg-white p-8 rounded-2xl border border-slate-200 shadow-sm space-y-6">
+          <section className="bg-[#1E293B] p-8 rounded-xl border border-[#334155] shadow-lg space-y-6">
             <div className="flex items-center gap-3">
-              <div className="h-9 w-9 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center font-bold">
+              <div className="h-8 w-8 rounded-lg bg-[#0F172A] text-[#38BDF8] border border-[#334155] flex items-center justify-center font-bold text-sm">
                 2
               </div>
-              <h2 className="text-xl font-bold text-slate-900">Step-by-Step Algorithmic Pipeline</h2>
+              <h2 className="text-xl font-bold text-white">Step-by-Step Algorithmic Pipeline</h2>
             </div>
 
             <div className="space-y-4">
-              <div className="border-l-2 border-indigo-500 pl-4 py-1">
-                <h3 className="text-sm font-bold text-slate-900">Phase 1: Eligibility Filtering</h3>
-                <p className="text-xs text-slate-600 mt-1 leading-relaxed">
-                  For each student-internship pair <code className="font-mono">(s, i)</code> present in <code className="font-mono">P(s)</code>:
-                  validate that <code className="font-mono">s.cgpa ≥ i.minimumCGPA</code> and deadline has not elapsed. Pairs failing eligibility are pruned immediately, preventing invalid allocations.
+              <div className="border-l-2 border-[#38BDF8] pl-4 py-1">
+                <h3 className="text-sm font-bold text-white">Phase 1: Eligibility Filtering</h3>
+                <p className="text-xs text-[#94A3B8] mt-1 leading-relaxed">
+                  For each student-internship pair <code className="font-mono text-[#38BDF8]">(s, i)</code> present in <code className="font-mono text-[#38BDF8]">P(s)</code>:
+                  validate that <code className="font-mono text-[#38BDF8]">s.cgpa ≥ i.minimumCGPA</code> and deadline has not elapsed. Pairs failing eligibility are pruned immediately, preventing invalid allocations.
                 </p>
               </div>
 
-              <div className="border-l-2 border-indigo-500 pl-4 py-1">
-                <h3 className="text-sm font-bold text-slate-900">Phase 2: Multi-Objective Scoring</h3>
-                <p className="text-xs text-slate-600 mt-1 leading-relaxed">
-                  Three orthogonal dimensions are evaluated and normalized onto a uniform 0–100 scale:
+              <div className="border-l-2 border-[#38BDF8] pl-4 py-1">
+                <h3 className="text-sm font-bold text-white">Phase 2: Multi-Objective Scoring</h3>
+                <p className="text-xs text-[#94A3B8] mt-1 leading-relaxed">
+                  Component dimensions are evaluated and normalized onto a uniform 0–100 scale:
                 </p>
-                <div className="my-2 p-3 bg-slate-900 text-slate-100 rounded-lg text-xs font-mono space-y-1">
+                <div className="my-2 p-3 bg-[#0F172A] text-slate-100 rounded-lg border border-[#334155] text-xs font-mono space-y-1">
                   <p>1. Preference Score: S_pref(r) = max(0, 100 - (r - 1) * 10)</p>
                   <p>2. CGPA Score: S_cgpa(cgpa) = (cgpa / 10.0) * 100</p>
                   <p>3. Skill Match Score: S_skill = (|skills(s) ∩ required(i)| / |required(i)|) * 100</p>
-                  <p className="text-indigo-400 font-bold pt-1">
+                  <p className="text-[#38BDF8] font-bold pt-1">
                     OverallScore = w_pref · S_pref + w_cgpa · S_cgpa + w_skill · S_skill
                   </p>
                 </div>
               </div>
 
-              <div className="border-l-2 border-indigo-500 pl-4 py-1">
-                <h3 className="text-sm font-bold text-slate-900">Phase 3: Multi-Criteria Deterministic Sorting</h3>
-                <p className="text-xs text-slate-600 mt-1 leading-relaxed">
+              <div className="border-l-2 border-[#38BDF8] pl-4 py-1">
+                <h3 className="text-sm font-bold text-white">Phase 3: Multi-Criteria Deterministic Sorting</h3>
+                <p className="text-xs text-[#94A3B8] mt-1 leading-relaxed">
                   All eligible candidate pairs are sorted in descending order of priority using a lexicographical tuple:
-                  <code className="font-mono font-bold text-slate-800"> (totalScore DESC, preferenceRank ASC, studentCGPA DESC, rollNumber ASC)</code>.
+                  <code className="font-mono font-bold text-[#38BDF8]"> (totalScore DESC, preferenceRank ASC, studentCGPA DESC, rollNumber ASC)</code>.
                   This ensures 100% determinism: identical inputs produce identical allocations across runs.
                 </p>
               </div>
 
-              <div className="border-l-2 border-indigo-500 pl-4 py-1">
-                <h3 className="text-sm font-bold text-slate-900">Phase 4: Constrained Greedy Allocation</h3>
-                <p className="text-xs text-slate-600 mt-1 leading-relaxed">
+              <div className="border-l-2 border-[#38BDF8] pl-4 py-1">
+                <h3 className="text-sm font-bold text-white">Phase 4: Constrained Greedy Allocation</h3>
+                <p className="text-xs text-[#94A3B8] mt-1 leading-relaxed">
                   Iterate through sorted candidate pairs: if student has not yet received an allocation AND the internship has remaining available seats, allocate the seat immediately. Otherwise, skip to the next candidate pair.
                 </p>
               </div>
@@ -139,16 +139,16 @@ export default function AlgorithmExplanationPage() {
           </section>
 
           {/* 3. Pseudocode */}
-          <section className="bg-white p-8 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+          <section className="bg-[#1E293B] p-8 rounded-xl border border-[#334155] shadow-lg space-y-4">
             <div className="flex items-center gap-3">
-              <div className="h-9 w-9 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center font-bold">
+              <div className="h-8 w-8 rounded-lg bg-[#0F172A] text-[#38BDF8] border border-[#334155] flex items-center justify-center font-bold text-sm">
                 3
               </div>
-              <h2 className="text-xl font-bold text-slate-900">Algorithm Pseudocode</h2>
+              <h2 className="text-xl font-bold text-white">Algorithm Pseudocode</h2>
             </div>
 
-            <div className="p-5 rounded-xl bg-slate-900 text-slate-100 font-mono text-xs leading-relaxed overflow-x-auto border border-slate-800">
-              <pre>{`ALGORITHM: SmartInternshipAllocation(Students S, Internships I, Preferences P, Weights W)
+            <div className="p-5 rounded-lg bg-[#0F172A] text-[#38BDF8] font-mono text-xs leading-relaxed overflow-x-auto border border-[#334155]">
+              <pre>{`ALGORITHM: InternMatchAllocation(Students S, Internships I, Preferences P, Weights W)
 INPUT:
     S: List of students with {id, cgpa, skills, rollNumber}
     I: List of internships with {id, minimumCGPA, requiredSkills, totalSeats}
@@ -210,59 +210,59 @@ END`}</pre>
           </section>
 
           {/* 4. Complexity Analysis */}
-          <section className="bg-white p-8 rounded-2xl border border-slate-200 shadow-sm space-y-6">
+          <section className="bg-[#1E293B] p-8 rounded-xl border border-[#334155] shadow-lg space-y-6">
             <div className="flex items-center gap-3">
-              <div className="h-9 w-9 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center font-bold">
+              <div className="h-8 w-8 rounded-lg bg-[#0F172A] text-[#38BDF8] border border-[#334155] flex items-center justify-center font-bold text-sm">
                 4
               </div>
-              <h2 className="text-xl font-bold text-slate-900">Asymptotic Complexity Derivations</h2>
+              <h2 className="text-xl font-bold text-white">Asymptotic Complexity Derivations</h2>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-xs sm:text-sm">
-              <div className="p-5 rounded-xl bg-indigo-50/60 border border-indigo-100 space-y-3">
-                <h3 className="font-bold text-indigo-950 flex items-center gap-2">
-                  <Clock className="h-4 w-4 text-indigo-600" />
+              <div className="p-5 rounded-lg bg-[#0F172A] border border-[#334155] space-y-3">
+                <h3 className="font-bold text-white flex items-center gap-2">
+                  <Clock className="h-4 w-4 text-[#38BDF8]" />
                   Time Complexity Derivation
                 </h3>
-                <p className="text-slate-600 leading-relaxed text-xs">
-                  Let <strong className="text-slate-900">S</strong> = number of students, and <strong className="text-slate-900">I</strong> = number of internships.
+                <p className="text-[#94A3B8] leading-relaxed text-xs">
+                  Let <strong className="text-white">S</strong> = number of students, and <strong className="text-white">I</strong> = number of internships.
                 </p>
-                <ul className="space-y-1.5 text-xs text-slate-700">
+                <ul className="space-y-1.5 text-xs text-[#94A3B8]">
                   <li>
-                    <strong>Candidate Generation:</strong> Each student lists at most <code className="font-mono">k</code> preferences (where <code className="font-mono">k ≤ I</code>). Hence, candidate pair creation evaluates at most <code className="font-mono">O(S · I)</code> pairs.
+                    <strong>Candidate Generation:</strong> Each student lists at most <code className="font-mono text-[#38BDF8]">k</code> preferences (where <code className="font-mono text-[#38BDF8]">k ≤ I</code>). Hence, candidate pair creation evaluates at most <code className="font-mono text-[#38BDF8]">O(S · I)</code> pairs.
                   </li>
                   <li>
-                    <strong>Sorting:</strong> Sorting an array of <code className="font-mono">N = S · I</code> elements via comparison sort (Timsort) takes <code className="font-mono">O(N log N) = O(S·I log(S·I))</code> time.
+                    <strong>Sorting:</strong> Sorting an array of <code className="font-mono text-[#38BDF8]">N = S · I</code> elements via comparison sort takes <code className="font-mono text-[#38BDF8]">O(N log N) = O(S·I log(S·I))</code> time.
                   </li>
                   <li>
-                    <strong>Greedy Allocation:</strong> Single linear pass over sorted candidates with <code className="font-mono">O(1)</code> HashSet and HashMap checks takes <code className="font-mono">O(S · I)</code> time.
+                    <strong>Greedy Allocation:</strong> Single linear pass over sorted candidates with <code className="font-mono text-[#38BDF8]">O(1)</code> HashSet and HashMap checks takes <code className="font-mono text-[#38BDF8]">O(S · I)</code> time.
                   </li>
                 </ul>
-                <div className="p-2.5 rounded-lg bg-indigo-600 text-white font-mono font-bold text-xs text-center">
+                <div className="p-2.5 rounded-lg bg-[#0284C7] text-white font-mono font-bold text-xs text-center shadow-md shadow-sky-950">
                   Total Time: O(S · I · log(S · I))
                 </div>
               </div>
 
-              <div className="p-5 rounded-xl bg-purple-50/60 border border-purple-100 space-y-3">
-                <h3 className="font-bold text-purple-950 flex items-center gap-2">
-                  <Database className="h-4 w-4 text-purple-600" />
+              <div className="p-5 rounded-lg bg-[#0F172A] border border-[#334155] space-y-3">
+                <h3 className="font-bold text-white flex items-center gap-2">
+                  <Database className="h-4 w-4 text-[#38BDF8]" />
                   Space Complexity Derivation
                 </h3>
-                <p className="text-slate-600 leading-relaxed text-xs">
+                <p className="text-[#94A3B8] leading-relaxed text-xs">
                   Memory allocation is dominated by the candidate pair records and state lookup tables.
                 </p>
-                <ul className="space-y-1.5 text-xs text-slate-700">
+                <ul className="space-y-1.5 text-xs text-[#94A3B8]">
                   <li>
-                    <strong>Candidate Pairs List:</strong> Stores eligible student-internship tuples of size at most <code className="font-mono">O(S · I)</code>.
+                    <strong>Candidate Pairs List:</strong> Stores eligible student-internship tuples of size at most <code className="font-mono text-[#38BDF8]">O(S · I)</code>.
                   </li>
                   <li>
-                    <strong>State Maps:</strong> <code className="font-mono">allocatedStudents</code> set of size <code className="font-mono">O(S)</code>, and <code className="font-mono">internshipSeats</code> map of size <code className="font-mono">O(I)</code>.
+                    <strong>State Maps:</strong> <code className="font-mono text-[#38BDF8]">allocatedStudents</code> set of size <code className="font-mono text-[#38BDF8]">O(S)</code>, and <code className="font-mono text-[#38BDF8]">internshipSeats</code> map of size <code className="font-mono text-[#38BDF8]">O(I)</code>.
                   </li>
                   <li>
-                    <strong>Result Lists:</strong> Allocations array of size at most <code className="font-mono">min(S, totalSeats) ≤ O(S)</code>.
+                    <strong>Result Lists:</strong> Allocations array of size at most <code className="font-mono text-[#38BDF8]">min(S, totalSeats) ≤ O(S)</code>.
                   </li>
                 </ul>
-                <div className="p-2.5 rounded-lg bg-purple-600 text-white font-mono font-bold text-xs text-center">
+                <div className="p-2.5 rounded-lg bg-[#334155] text-[#38BDF8] font-mono font-bold text-xs text-center border border-[#475569]">
                   Total Auxiliary Space: O(S · I)
                 </div>
               </div>
@@ -270,36 +270,36 @@ END`}</pre>
           </section>
 
           {/* 5. Comparative Analysis */}
-          <section className="bg-white p-8 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+          <section className="bg-[#1E293B] p-8 rounded-xl border border-[#334155] shadow-lg space-y-4">
             <div className="flex items-center gap-3">
-              <div className="h-9 w-9 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center font-bold">
+              <div className="h-8 w-8 rounded-lg bg-[#0F172A] text-[#38BDF8] border border-[#334155] flex items-center justify-center font-bold text-sm">
                 5
               </div>
-              <h2 className="text-xl font-bold text-slate-900">Comparative Analysis: Why This Approach?</h2>
+              <h2 className="text-xl font-bold text-white">Comparative Analysis: Why This Approach?</h2>
             </div>
-            <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
-              When designing internship allocation systems for universities, standard algorithms have specific limitations:
+            <p className="text-xs sm:text-sm text-[#94A3B8] leading-relaxed">
+              When designing internship allocation systems for universities, standard algorithms have specific trade-offs:
             </p>
 
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs pt-2">
-              <div className="p-4 rounded-xl border border-slate-200 space-y-2">
-                <h4 className="font-bold text-slate-900">Gale-Shapley (Stable Marriage)</h4>
-                <p className="text-slate-500 leading-relaxed">
+              <div className="p-4 rounded-lg border border-[#334155] bg-[#0F172A] space-y-2">
+                <h4 className="font-bold text-white">Gale-Shapley (Stable Marriage)</h4>
+                <p className="text-[#94A3B8] leading-relaxed">
                   Requires <em>both</em> sides to provide complete preference rankings. Companies cannot exhaustively rank hundreds of uninterviewed applicants.
                 </p>
               </div>
 
-              <div className="p-4 rounded-xl border border-slate-200 space-y-2">
-                <h4 className="font-bold text-slate-900">Hungarian / Kuhn-Munkres</h4>
-                <p className="text-slate-500 leading-relaxed">
-                  Solves maximum weight bipartite matching in <code className="font-mono">O(V³)</code> time, but lacks explainable multi-tier tie-breaking and seat quotas natively.
+              <div className="p-4 rounded-lg border border-[#334155] bg-[#0F172A] space-y-2">
+                <h4 className="font-bold text-white">Hungarian / Kuhn-Munkres</h4>
+                <p className="text-[#94A3B8] leading-relaxed">
+                  Solves maximum weight bipartite matching in <code className="font-mono text-[#38BDF8]">O(V³)</code> time, but lacks explainable multi-tier tie-breaking and seat quotas natively.
                 </p>
               </div>
 
-              <div className="p-4 rounded-xl border border-indigo-200 bg-indigo-50/40 space-y-2">
-                <h4 className="font-bold text-indigo-950">Our Multi-Objective Greedy</h4>
-                <p className="text-indigo-900/80 leading-relaxed">
-                  Executes in <code className="font-mono">O(SI log(SI))</code>, enforces strict seat capacities, provides clear score transparency, and guarantees deterministic outcomes.
+              <div className="p-4 rounded-lg border border-[#38BDF8] bg-[#38BDF8]/10 space-y-2">
+                <h4 className="font-bold text-[#38BDF8]">Our Multi-Objective Greedy</h4>
+                <p className="text-white leading-relaxed">
+                  Executes in <code className="font-mono text-[#38BDF8]">O(SI log(SI))</code>, enforces strict seat capacities, provides clear score transparency, and guarantees deterministic outcomes.
                 </p>
               </div>
             </div>
@@ -309,9 +309,8 @@ END`}</pre>
         {/* Bottom CTA */}
         <div className="mt-12 text-center">
           <Link href="/login?demo=admin">
-            <Button size="lg" className="bg-indigo-600 hover:bg-indigo-700 text-white shadow-md">
-              <span>Test Algorithm in Admin Portal</span>
-              <Sparkles className="h-4 w-4 ml-2" />
+            <Button size="lg" className="bg-[#0284C7] hover:bg-[#0369A1] text-white shadow-md shadow-sky-950">
+              <span>Test Allocation Algorithm in Admin Portal</span>
             </Button>
           </Link>
         </div>

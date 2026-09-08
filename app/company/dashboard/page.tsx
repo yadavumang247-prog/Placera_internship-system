@@ -10,10 +10,9 @@ import {
   Plus,
   Edit2,
   Clock,
-  Sparkles,
   ExternalLink,
-  Eye,
   Award,
+  MapPin,
 } from 'lucide-react';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '../../../components/ui/card';
 import { Button } from '../../../components/ui/button';
@@ -61,7 +60,6 @@ export default function CompanyDashboardPage() {
       ]);
 
       if (compRes.companies && compRes.companies.length > 0) {
-        // Associate with Google India or first company
         setCompany(compRes.companies[0]);
       }
       if (internRes.internships) {
@@ -171,29 +169,34 @@ export default function CompanyDashboardPage() {
     : [];
 
   return (
-    <div className="space-y-8 animate-fade-in">
+    <div className="space-y-8">
       {/* Header Banner */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-[#1E293B] p-6 rounded-xl border border-[#334155] shadow-lg">
         <div className="flex items-center gap-4">
-          <div className="h-14 w-14 rounded-2xl bg-indigo-50 border border-indigo-200/80 flex items-center justify-center font-bold text-indigo-600 text-xl overflow-hidden shrink-0">
+          <div className="h-12 w-12 rounded-lg bg-[#0F172A] border border-[#334155] flex items-center justify-center font-bold text-[#38BDF8] text-lg overflow-hidden shrink-0">
             {company?.logoUrl ? (
               <img src={company.logoUrl} alt={company.name} className="h-full w-full object-cover" />
             ) : (
-              <Building2 className="h-8 w-8" />
+              <Building2 className="h-6 w-6 text-[#38BDF8]" />
             )}
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <h1 className="text-2xl font-bold text-slate-900 tracking-tight">
-                {company?.name || 'Google India'}
+              <h1 className="text-2xl font-bold text-white tracking-tight">
+                {company?.name || 'Corporate Partner'}
               </h1>
-              <Badge variant="success">Verified Partner</Badge>
+              <Badge variant="success">Verified Recruiter</Badge>
             </div>
-            <p className="text-xs text-slate-500 mt-0.5">Corporate Placement &amp; Internship Allocation Portal</p>
+            <p className="text-xs text-[#94A3B8] mt-0.5">
+              College Placement &amp; Corporate Internship Management Portal
+            </p>
           </div>
         </div>
 
-        <Button onClick={() => setIsAddModalOpen(true)} className="bg-indigo-600 hover:bg-indigo-700">
+        <Button
+          onClick={() => setIsAddModalOpen(true)}
+          className="bg-[#0284C7] hover:bg-[#0369A1] text-white shadow-md shadow-sky-950"
+        >
           <Plus className="h-4 w-4 mr-1.5" />
           Post Internship Opening
         </Button>
@@ -201,79 +204,101 @@ export default function CompanyDashboardPage() {
 
       {/* 4 Metrics Cards */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-        <Card>
-          <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider block">Active Roles</span>
-          <div className="text-2xl font-bold text-slate-900 mt-2">{companyInternships.length}</div>
-          <span className="text-[11px] text-slate-400">Position tracks</span>
+        <Card className="border-[#334155] bg-[#1E293B]">
+          <span className="text-xs font-semibold text-[#94A3B8] uppercase tracking-wider block">
+            Active Roles
+          </span>
+          <div className="text-2xl font-bold text-white mt-2">{companyInternships.length}</div>
+          <span className="text-[11px] text-[#94A3B8]">Position tracks</span>
         </Card>
 
-        <Card>
-          <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider block">Total Seats</span>
-          <div className="text-2xl font-bold text-indigo-600 mt-2">{totalSeats}</div>
-          <span className="text-[11px] text-slate-400">Allocated quota</span>
+        <Card className="border-[#334155] bg-[#1E293B]">
+          <span className="text-xs font-semibold text-[#94A3B8] uppercase tracking-wider block">
+            Total Seats
+          </span>
+          <div className="text-2xl font-bold text-[#38BDF8] mt-2">{totalSeats}</div>
+          <span className="text-[11px] text-[#94A3B8]">Allocated quota</span>
         </Card>
 
-        <Card className="bg-emerald-50/30 border-emerald-200">
-          <span className="text-xs font-semibold text-emerald-800 uppercase tracking-wider block">Filled Seats</span>
-          <div className="text-2xl font-bold text-emerald-900 mt-2">{filledSeats}</div>
-          <span className="text-[11px] text-emerald-700">Matched candidates</span>
+        <Card className="border-emerald-800/40 bg-emerald-950/20">
+          <span className="text-xs font-semibold text-[#34D399] uppercase tracking-wider block">
+            Filled Seats
+          </span>
+          <div className="text-2xl font-bold text-[#34D399] mt-2">{filledSeats}</div>
+          <span className="text-[11px] text-[#34D399]">Matched candidates</span>
         </Card>
 
-        <Card>
-          <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider block">Available Vacancies</span>
-          <div className="text-2xl font-bold text-slate-900 mt-2">{remainingSeats}</div>
-          <span className="text-[11px] text-slate-400">Unfilled positions</span>
+        <Card className="border-[#334155] bg-[#1E293B]">
+          <span className="text-xs font-semibold text-[#94A3B8] uppercase tracking-wider block">
+            Available Vacancies
+          </span>
+          <div className="text-2xl font-bold text-white mt-2">{remainingSeats}</div>
+          <span className="text-[11px] text-[#94A3B8]">Unfilled positions</span>
         </Card>
       </div>
 
       {/* Active Internships Table */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-base font-bold">Active Internship Openings</CardTitle>
-          <CardDescription className="text-xs">
+      <Card className="border-[#334155] bg-[#1E293B]">
+        <CardHeader className="pb-3 border-b border-[#334155]">
+          <CardTitle className="text-base font-bold text-white">
+            Active Internship Openings
+          </CardTitle>
+          <CardDescription className="text-xs text-[#94A3B8]">
             Review applicant pools, minimum eligibility requirements, and modify seat capacities.
           </CardDescription>
         </CardHeader>
         <CardContent className="p-0 overflow-x-auto">
           <table className="w-full text-left text-xs border-collapse">
             <thead>
-              <tr className="border-b border-slate-200 bg-slate-50/70 text-slate-500 font-semibold uppercase tracking-wider text-[10px]">
+              <tr className="border-b border-[#334155] bg-[#0F172A] text-[#94A3B8] font-semibold uppercase tracking-wider text-[10px]">
                 <th className="py-3 px-4">Title &amp; Location</th>
                 <th className="py-3 px-4">Mode</th>
                 <th className="py-3 px-4">Stipend &amp; Duration</th>
                 <th className="py-3 px-4">Min CGPA</th>
-                <th className="py-3 px-4">Skills</th>
+                <th className="py-3 px-4">Required Skills</th>
                 <th className="py-3 px-4">Seats</th>
                 <th className="py-3 px-4 text-right">Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-100">
+            <tbody className="divide-y divide-[#334155]">
               {companyInternships.map((intern) => (
-                <tr key={intern.id} className="hover:bg-slate-50/80 transition-colors">
+                <tr key={intern.id} className="hover:bg-[#0F172A]/50 transition-colors">
                   <td className="py-3 px-4">
-                    <div className="font-bold text-slate-900">{intern.title}</div>
-                    <div className="text-[11px] text-slate-400">{intern.location}</div>
+                    <div className="font-bold text-white">{intern.title}</div>
+                    <div className="text-[11px] text-[#94A3B8]">{intern.location}</div>
                   </td>
                   <td className="py-3 px-4">
-                    <Badge variant="primary" size="sm">
+                    <Badge
+                      variant={
+                        intern.mode === 'REMOTE' ? 'success' : intern.mode === 'HYBRID' ? 'warning' : 'secondary'
+                      }
+                      size="sm"
+                    >
                       {intern.mode}
                     </Badge>
                   </td>
                   <td className="py-3 px-4">
-                    <div className="font-semibold text-emerald-700">₹{intern.stipend.toLocaleString()}/mo</div>
-                    <span className="text-[10px] text-slate-400">{intern.duration}</span>
+                    <div className="font-semibold text-[#34D399]">
+                      ₹{intern.stipend.toLocaleString()}/mo
+                    </div>
+                    <span className="text-[10px] text-[#94A3B8]">{intern.duration}</span>
                   </td>
-                  <td className="py-3 px-4 font-mono font-bold text-indigo-700">≥ {intern.minimumCGPA.toFixed(1)}</td>
+                  <td className="py-3 px-4 font-mono font-bold text-[#38BDF8]">
+                    ≥ {intern.minimumCGPA.toFixed(1)}
+                  </td>
                   <td className="py-3 px-4 max-w-[200px]">
                     <div className="flex flex-wrap gap-1">
                       {intern.requiredSkills.map((sk) => (
-                        <span key={sk} className="text-[10px] bg-slate-100 px-1.5 py-0.5 rounded">
+                        <span
+                          key={sk}
+                          className="text-[10px] bg-[#0F172A] text-[#38BDF8] px-1.5 py-0.5 rounded border border-[#334155]"
+                        >
                           {sk}
                         </span>
                       ))}
                     </div>
                   </td>
-                  <td className="py-3 px-4 font-mono font-semibold text-slate-900">
+                  <td className="py-3 px-4 font-mono font-semibold text-white">
                     {intern.totalSeats} seats
                   </td>
                   <td className="py-3 px-4 text-right">
@@ -282,14 +307,14 @@ export default function CompanyDashboardPage() {
                         variant="outline"
                         size="sm"
                         onClick={() => openApplicantsModal(intern)}
-                        className="text-xs"
+                        className="text-xs border-[#334155] bg-[#0F172A] text-[#38BDF8] hover:bg-[#1E293B]"
                       >
                         <Users className="h-3 w-3 mr-1" />
                         Applicants
                       </Button>
                       <button
                         onClick={() => openEditModal(intern)}
-                        className="p-1 rounded hover:bg-slate-100 text-slate-400 hover:text-slate-700"
+                        className="p-1.5 rounded hover:bg-[#0F172A] text-[#94A3B8] hover:text-[#38BDF8]"
                         title="Edit"
                       >
                         <Edit2 className="h-3.5 w-3.5" />
@@ -304,16 +329,16 @@ export default function CompanyDashboardPage() {
       </Card>
 
       {/* Confirmed Placements Ledger */}
-      <Card>
-        <CardHeader>
+      <Card className="border-[#334155] bg-[#1E293B]">
+        <CardHeader className="pb-3 border-b border-[#334155]">
           <div className="flex items-center justify-between">
             <div>
-              <CardTitle className="text-base font-bold flex items-center gap-2">
-                <CheckCircle2 className="h-5 w-5 text-emerald-600" />
+              <CardTitle className="text-base font-bold text-white flex items-center gap-2">
+                <CheckCircle2 className="h-5 w-5 text-[#34D399]" />
                 Allocated Student Cohort
               </CardTitle>
-              <CardDescription className="text-xs">
-                Students officially matched to {company?.name || 'Google'} positions by the AOA algorithm
+              <CardDescription className="text-xs text-[#94A3B8]">
+                Students officially matched to {company?.name || 'Company'} positions by the placement algorithm
               </CardDescription>
             </div>
             <Badge variant="success">{companyAllocations.length} Assigned Candidates</Badge>
@@ -322,7 +347,7 @@ export default function CompanyDashboardPage() {
         <CardContent className="p-0 overflow-x-auto">
           <table className="w-full text-left text-xs border-collapse">
             <thead>
-              <tr className="border-b border-slate-200 bg-slate-50/70 text-slate-500 font-semibold uppercase tracking-wider text-[10px]">
+              <tr className="border-b border-[#334155] bg-[#0F172A] text-[#94A3B8] font-semibold uppercase tracking-wider text-[10px]">
                 <th className="py-3 px-4">Student Name</th>
                 <th className="py-3 px-4">Roll Number</th>
                 <th className="py-3 px-4">Branch</th>
@@ -332,16 +357,16 @@ export default function CompanyDashboardPage() {
                 <th className="py-3 px-4 font-bold">Merit Score</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-100">
+            <tbody className="divide-y divide-[#334155]">
               {companyAllocations.map((a) => (
-                <tr key={a.id} className="hover:bg-slate-50/80 transition-colors">
-                  <td className="py-3 px-4 font-bold text-slate-900">{a.studentName}</td>
-                  <td className="py-3 px-4 font-mono text-slate-500">{a.studentRollNumber}</td>
-                  <td className="py-3 px-4 text-slate-700">{a.studentBranch}</td>
-                  <td className="py-3 px-4 font-semibold text-indigo-700">{a.internshipTitle}</td>
-                  <td className="py-3 px-4 font-semibold">Rank #{a.preferenceRank}</td>
-                  <td className="py-3 px-4 font-mono text-slate-700">{a.skillMatchScore}%</td>
-                  <td className="py-3 px-4 font-mono font-bold text-indigo-600 text-sm">{a.score}</td>
+                <tr key={a.id} className="hover:bg-[#0F172A]/50 transition-colors">
+                  <td className="py-3 px-4 font-bold text-white">{a.studentName}</td>
+                  <td className="py-3 px-4 font-mono text-[#94A3B8]">{a.studentRollNumber}</td>
+                  <td className="py-3 px-4 text-[#94A3B8]">{a.studentBranch}</td>
+                  <td className="py-3 px-4 font-semibold text-[#38BDF8]">{a.internshipTitle}</td>
+                  <td className="py-3 px-4 font-semibold text-white">Rank #{a.preferenceRank}</td>
+                  <td className="py-3 px-4 font-mono text-[#34D399]">{a.skillMatchScore}%</td>
+                  <td className="py-3 px-4 font-mono font-bold text-[#38BDF8] text-sm">{a.score}</td>
                 </tr>
               ))}
             </tbody>
@@ -360,7 +385,7 @@ export default function CompanyDashboardPage() {
             placeholder="AI Platform Systems Intern"
           />
           <div>
-            <label className="block text-xs font-semibold uppercase tracking-wider text-slate-700 mb-1.5">
+            <label className="block text-xs font-semibold uppercase tracking-wider text-[#94A3B8] mb-1.5">
               Role Description
             </label>
             <textarea
@@ -368,7 +393,7 @@ export default function CompanyDashboardPage() {
               required
               value={formData.description}
               onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-              className="w-full px-3 py-2 text-sm bg-white border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500"
+              className="w-full px-3 py-2 text-sm bg-[#0F172A] border border-[#334155] rounded-lg text-white focus:outline-none focus:border-[#38BDF8]"
             />
           </div>
           <div className="grid grid-cols-3 gap-3">
@@ -406,15 +431,17 @@ export default function CompanyDashboardPage() {
             />
           </div>
           <Input
-            label="Required Skills"
+            label="Required Skills (comma separated)"
             value={formData.requiredSkills}
             onChange={(e) => setFormData({ ...formData, requiredSkills: e.target.value })}
           />
-          <div className="flex justify-end gap-2 pt-3">
-            <Button type="button" variant="outline" onClick={() => setIsAddModalOpen(false)}>
+          <div className="flex justify-end gap-2 pt-3 border-t border-[#334155]">
+            <Button type="button" variant="outline" className="border-[#334155] text-[#94A3B8]" onClick={() => setIsAddModalOpen(false)}>
               Cancel
             </Button>
-            <Button type="submit">Publish Opening</Button>
+            <Button type="submit" className="bg-[#0284C7] hover:bg-[#0369A1] text-white">
+              Publish Opening
+            </Button>
           </div>
         </form>
       </Modal>
@@ -429,7 +456,7 @@ export default function CompanyDashboardPage() {
             onChange={(e) => setFormData({ ...formData, title: e.target.value })}
           />
           <div>
-            <label className="block text-xs font-semibold uppercase tracking-wider text-slate-700 mb-1.5">
+            <label className="block text-xs font-semibold uppercase tracking-wider text-[#94A3B8] mb-1.5">
               Description
             </label>
             <textarea
@@ -437,7 +464,7 @@ export default function CompanyDashboardPage() {
               required
               value={formData.description}
               onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-              className="w-full px-3 py-2 text-sm bg-white border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500"
+              className="w-full px-3 py-2 text-sm bg-[#0F172A] border border-[#334155] rounded-lg text-white focus:outline-none focus:border-[#38BDF8]"
             />
           </div>
           <div className="grid grid-cols-2 gap-3">
@@ -460,11 +487,13 @@ export default function CompanyDashboardPage() {
             value={formData.requiredSkills}
             onChange={(e) => setFormData({ ...formData, requiredSkills: e.target.value })}
           />
-          <div className="flex justify-end gap-2 pt-3">
-            <Button type="button" variant="outline" onClick={() => setIsEditModalOpen(false)}>
+          <div className="flex justify-end gap-2 pt-3 border-t border-[#334155]">
+            <Button type="button" variant="outline" className="border-[#334155] text-[#94A3B8]" onClick={() => setIsEditModalOpen(false)}>
               Cancel
             </Button>
-            <Button type="submit">Update Position</Button>
+            <Button type="submit" className="bg-[#0284C7] hover:bg-[#0369A1] text-white">
+              Update Position
+            </Button>
           </div>
         </form>
       </Modal>
@@ -478,33 +507,35 @@ export default function CompanyDashboardPage() {
       >
         {selectedInternship && (
           <div className="space-y-4 text-xs">
-            <div className="p-3 rounded-xl bg-slate-50 border border-slate-200 flex justify-between items-center">
+            <div className="p-3 rounded-lg bg-[#0F172A] border border-[#334155] flex justify-between items-center">
               <div>
-                <p className="font-semibold text-slate-800">Minimum Cutoff: ≥ {selectedInternship.minimumCGPA} CGPA</p>
-                <p className="text-[11px] text-slate-400">Total Seats Quota: {selectedInternship.totalSeats}</p>
+                <p className="font-semibold text-white">Minimum Cutoff: ≥ {selectedInternship.minimumCGPA.toFixed(1)} CGPA</p>
+                <p className="text-[11px] text-[#94A3B8]">Total Seats Quota: {selectedInternship.totalSeats}</p>
               </div>
               <Badge variant="primary">{eligibleApplicants.length} Eligible Students</Badge>
             </div>
 
-            <div className="max-h-80 overflow-y-auto divide-y divide-slate-100">
+            <div className="max-h-80 overflow-y-auto divide-y divide-[#334155]">
               {eligibleApplicants.map((stud) => (
                 <div key={stud.id} className="py-2.5 flex items-center justify-between">
                   <div>
-                    <span className="font-bold text-slate-900 block">{stud.name}</span>
-                    <span className="text-[11px] text-slate-400">
+                    <span className="font-bold text-white block">{stud.name}</span>
+                    <span className="text-[11px] text-[#94A3B8]">
                       {stud.rollNumber} • {stud.branch}
                     </span>
                   </div>
                   <div className="text-right">
-                    <span className="font-mono font-bold text-indigo-600 block">{stud.cgpa.toFixed(2)} CGPA</span>
-                    <span className="text-[10px] text-slate-400">{stud.skills.slice(0, 3).join(', ')}</span>
+                    <span className="font-mono font-bold text-[#38BDF8] block">{stud.cgpa.toFixed(2)} CGPA</span>
+                    <span className="text-[10px] text-[#94A3B8]">{stud.skills.slice(0, 3).join(', ')}</span>
                   </div>
                 </div>
               ))}
             </div>
 
-            <div className="flex justify-end pt-3">
-              <Button onClick={() => setIsApplicantsModalOpen(false)}>Close</Button>
+            <div className="flex justify-end pt-3 border-t border-[#334155]">
+              <Button variant="outline" className="border-[#334155] text-white" onClick={() => setIsApplicantsModalOpen(false)}>
+                Close
+              </Button>
             </div>
           </div>
         )}

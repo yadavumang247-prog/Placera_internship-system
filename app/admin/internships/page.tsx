@@ -183,45 +183,45 @@ export default function AdminInternshipsPage() {
   return (
     <div className="space-y-6 animate-fade-in">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-[#1E293B] p-6 rounded-xl border border-[#334155] shadow-lg">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900 tracking-tight flex items-center gap-2">
-            <Briefcase className="h-6 w-6 text-indigo-600" />
+          <h1 className="text-2xl font-bold text-white tracking-tight flex items-center gap-2">
+            <Briefcase className="h-6 w-6 text-[#38BDF8]" />
             Internship Positions Management
           </h1>
-          <p className="text-xs sm:text-sm text-slate-500 mt-1">
+          <p className="text-xs sm:text-sm text-[#94A3B8] mt-1">
             Configure seat capacities, minimum CGPA eligibility cutoffs, and required skill matrices.
           </p>
         </div>
-        <Button onClick={() => setIsAddModalOpen(true)} className="bg-indigo-600 hover:bg-indigo-700">
+        <Button onClick={() => setIsAddModalOpen(true)} className="bg-[#0284C7] hover:bg-[#0369A1] text-white">
           <Plus className="h-4 w-4 mr-1.5" />
           Add Internship
         </Button>
       </div>
 
       {/* Filter Bar */}
-      <Card>
+      <Card className="border-[#334155] bg-[#1E293B]">
         <CardContent className="p-4">
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             {/* Search */}
             <div className="relative">
-              <Search className="h-4 w-4 absolute left-3 top-3 text-slate-400" />
+              <Search className="h-4 w-4 absolute left-3 top-3 text-[#64748B]" />
               <input
                 type="text"
                 placeholder="Search position, company, or skills..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-9 pr-4 py-2 text-xs sm:text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="w-full pl-9 pr-4 py-2 text-xs sm:text-sm bg-[#0F172A] border border-[#334155] text-white placeholder:text-[#64748B] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0284C7]"
               />
             </div>
 
             {/* Company Filter */}
             <div className="flex items-center gap-2">
-              <Building2 className="h-4 w-4 text-slate-400 shrink-0" />
+              <Building2 className="h-4 w-4 text-[#64748B] shrink-0" />
               <select
                 value={companyFilter}
                 onChange={(e) => setCompanyFilter(e.target.value)}
-                className="w-full py-2 px-3 text-xs sm:text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="w-full py-2 px-3 text-xs sm:text-sm bg-[#0F172A] border border-[#334155] text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0284C7]"
               >
                 <option value="ALL">All Companies ({companies.length})</option>
                 {companies.map((c) => (
@@ -234,11 +234,11 @@ export default function AdminInternshipsPage() {
 
             {/* Mode Filter */}
             <div className="flex items-center gap-2">
-              <Filter className="h-4 w-4 text-slate-400 shrink-0" />
+              <Filter className="h-4 w-4 text-[#64748B] shrink-0" />
               <select
                 value={modeFilter}
                 onChange={(e) => setModeFilter(e.target.value)}
-                className="w-full py-2 px-3 text-xs sm:text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="w-full py-2 px-3 text-xs sm:text-sm bg-[#0F172A] border border-[#334155] text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0284C7]"
               >
                 <option value="ALL">All Modes (Remote/Hybrid/Onsite)</option>
                 <option value="REMOTE">Remote</option>
@@ -251,11 +251,11 @@ export default function AdminInternshipsPage() {
       </Card>
 
       {/* Internships Table */}
-      <Card>
+      <Card className="border-[#334155] bg-[#1E293B]">
         <CardContent className="p-0 overflow-x-auto">
           <table className="w-full text-left text-xs sm:text-sm border-collapse">
             <thead>
-              <tr className="border-b border-slate-200 bg-slate-50/70 text-slate-500 font-semibold uppercase tracking-wider text-[11px]">
+              <tr className="border-b border-[#334155] bg-[#0F172A] text-[#94A3B8] font-semibold uppercase tracking-wider text-[11px]">
                 <th className="py-3.5 px-4">Title &amp; Company</th>
                 <th className="py-3.5 px-4">Location &amp; Mode</th>
                 <th className="py-3.5 px-4">Stipend &amp; Duration</th>
@@ -265,36 +265,36 @@ export default function AdminInternshipsPage() {
                 <th className="py-3.5 px-4 text-right">Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-100">
+            <tbody className="divide-y divide-[#334155]">
               {filteredInternships.length === 0 ? (
                 <tr>
-                  <td colSpan={7} className="py-12 text-center text-slate-400 text-sm">
+                  <td colSpan={7} className="py-12 text-center text-[#94A3B8] text-sm">
                     No internships match the selected filter.
                   </td>
                 </tr>
               ) : (
                 filteredInternships.map((intern) => (
-                  <tr key={intern.id} className="hover:bg-slate-50/80 transition-colors">
+                  <tr key={intern.id} className="hover:bg-[#0F172A]/50 transition-colors">
                     <td className="py-3.5 px-4">
-                      <div className="font-bold text-slate-900">{intern.title}</div>
-                      <div className="text-[11px] text-indigo-600 font-medium">
+                      <div className="font-bold text-white">{intern.title}</div>
+                      <div className="text-[11px] text-[#38BDF8] font-medium">
                         {intern.companyName || 'Partner'}
                       </div>
                     </td>
                     <td className="py-3.5 px-4">
-                      <span className="text-slate-700 font-medium">{intern.location}</span>
-                      <span className="block text-[10px] text-slate-400 uppercase font-semibold">
+                      <span className="text-[#E2E8F0] font-medium">{intern.location}</span>
+                      <span className="block text-[10px] text-[#94A3B8] uppercase font-semibold">
                         {intern.mode}
                       </span>
                     </td>
                     <td className="py-3.5 px-4">
-                      <div className="font-semibold text-emerald-700">
+                      <div className="font-semibold text-[#34D399]">
                         ₹{intern.stipend.toLocaleString()}/mo
                       </div>
-                      <span className="text-[11px] text-slate-400">{intern.duration}</span>
+                      <span className="text-[11px] text-[#94A3B8]">{intern.duration}</span>
                     </td>
                     <td className="py-3.5 px-4">
-                      <span className="font-mono font-bold px-2 py-0.5 rounded bg-indigo-50 text-indigo-700 text-xs">
+                      <span className="font-mono font-bold px-2 py-0.5 rounded bg-[#0F172A] border border-[#334155] text-[#38BDF8] text-xs">
                         ≥ {intern.minimumCGPA.toFixed(1)}
                       </span>
                     </td>
@@ -303,15 +303,15 @@ export default function AdminInternshipsPage() {
                         {intern.requiredSkills.map((sk) => (
                           <span
                             key={sk}
-                            className="text-[10px] bg-slate-100 text-slate-700 px-1.5 py-0.5 rounded"
+                            className="text-[10px] bg-[#0F172A] border border-[#334155] text-[#94A3B8] px-1.5 py-0.5 rounded"
                           >
                             {sk}
                           </span>
                         ))}
                       </div>
                     </td>
-                    <td className="py-3.5 px-4 font-mono font-semibold text-slate-900">
-                      <span className="text-xs bg-slate-100 px-2 py-1 rounded">
+                    <td className="py-3.5 px-4 font-mono font-semibold text-white">
+                      <span className="text-xs bg-[#0F172A] border border-[#334155] px-2 py-1 rounded">
                         {intern.totalSeats} seats
                       </span>
                     </td>
@@ -319,14 +319,14 @@ export default function AdminInternshipsPage() {
                       <div className="flex items-center justify-end gap-1.5">
                         <button
                           onClick={() => openEditModal(intern)}
-                          className="p-1.5 rounded hover:bg-slate-100 text-slate-400 hover:text-slate-700"
+                          className="p-1.5 rounded hover:bg-[#0F172A] text-[#94A3B8] hover:text-[#38BDF8] transition-colors"
                           title="Edit Position"
                         >
                           <Edit2 className="h-4 w-4" />
                         </button>
                         <button
                           onClick={() => handleDeleteInternship(intern.id, intern.title)}
-                          className="p-1.5 rounded hover:bg-rose-50 text-slate-400 hover:text-rose-600"
+                          className="p-1.5 rounded hover:bg-rose-950/40 text-[#94A3B8] hover:text-rose-400 transition-colors"
                           title="Delete Position"
                         >
                           <Trash2 className="h-4 w-4" />
@@ -346,14 +346,14 @@ export default function AdminInternshipsPage() {
         <form onSubmit={handleAddInternship} className="space-y-4">
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="block text-xs font-semibold uppercase tracking-wider text-slate-700 mb-1.5">
+              <label className="block text-xs font-semibold uppercase tracking-wider text-[#94A3B8] mb-1.5">
                 Hosting Company
               </label>
               <select
                 required
                 value={formData.companyId}
                 onChange={(e) => setFormData({ ...formData, companyId: e.target.value })}
-                className="w-full px-3 py-2 text-sm bg-white border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500"
+                className="w-full px-3 py-2 text-sm bg-[#0F172A] border border-[#334155] text-white rounded-lg focus:ring-2 focus:ring-[#0284C7] focus:outline-none"
               >
                 {companies.map((c) => (
                   <option key={c.id} value={c.id}>
@@ -372,7 +372,7 @@ export default function AdminInternshipsPage() {
           </div>
 
           <div>
-            <label className="block text-xs font-semibold uppercase tracking-wider text-slate-700 mb-1.5">
+            <label className="block text-xs font-semibold uppercase tracking-wider text-[#94A3B8] mb-1.5">
               Role Description &amp; Responsibilities
             </label>
             <textarea
@@ -381,7 +381,7 @@ export default function AdminInternshipsPage() {
               value={formData.description}
               onChange={(e) => setFormData({ ...formData, description: e.target.value })}
               placeholder="Specify development tools, responsibilities, and team workflow..."
-              className="w-full px-3 py-2 text-sm bg-white border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500"
+              className="w-full px-3 py-2 text-sm bg-[#0F172A] border border-[#334155] text-white rounded-lg focus:ring-2 focus:ring-[#0284C7] focus:outline-none placeholder:text-[#64748B]"
             />
           </div>
 
@@ -394,13 +394,13 @@ export default function AdminInternshipsPage() {
               placeholder="Bangalore, Karnataka"
             />
             <div>
-              <label className="block text-xs font-semibold uppercase tracking-wider text-slate-700 mb-1.5">
+              <label className="block text-xs font-semibold uppercase tracking-wider text-[#94A3B8] mb-1.5">
                 Work Mode
               </label>
               <select
                 value={formData.mode}
                 onChange={(e) => setFormData({ ...formData, mode: e.target.value as any })}
-                className="w-full px-3 py-2 text-sm bg-white border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500"
+                className="w-full px-3 py-2 text-sm bg-[#0F172A] border border-[#334155] text-white rounded-lg focus:ring-2 focus:ring-[#0284C7] focus:outline-none"
               >
                 <option value="REMOTE">Remote</option>
                 <option value="HYBRID">Hybrid</option>
@@ -453,7 +453,9 @@ export default function AdminInternshipsPage() {
             <Button type="button" variant="outline" onClick={() => setIsAddModalOpen(false)}>
               Cancel
             </Button>
-            <Button type="submit">Create Role</Button>
+            <Button type="submit" className="bg-[#0284C7] hover:bg-[#0369A1] text-white">
+              Create Role
+            </Button>
           </div>
         </form>
       </Modal>
@@ -468,7 +470,7 @@ export default function AdminInternshipsPage() {
             onChange={(e) => setFormData({ ...formData, title: e.target.value })}
           />
           <div>
-            <label className="block text-xs font-semibold uppercase tracking-wider text-slate-700 mb-1.5">
+            <label className="block text-xs font-semibold uppercase tracking-wider text-[#94A3B8] mb-1.5">
               Description
             </label>
             <textarea
@@ -476,7 +478,7 @@ export default function AdminInternshipsPage() {
               required
               value={formData.description}
               onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-              className="w-full px-3 py-2 text-sm bg-white border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500"
+              className="w-full px-3 py-2 text-sm bg-[#0F172A] border border-[#334155] text-white rounded-lg focus:ring-2 focus:ring-[#0284C7] focus:outline-none placeholder:text-[#64748B]"
             />
           </div>
           <div className="grid grid-cols-3 gap-3">
@@ -522,7 +524,9 @@ export default function AdminInternshipsPage() {
             <Button type="button" variant="outline" onClick={() => setIsEditModalOpen(false)}>
               Cancel
             </Button>
-            <Button type="submit">Update Position</Button>
+            <Button type="submit" className="bg-[#0284C7] hover:bg-[#0369A1] text-white">
+              Update Position
+            </Button>
           </div>
         </form>
       </Modal>

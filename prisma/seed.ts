@@ -11,7 +11,7 @@ import { runInternshipAllocation, DEFAULT_WEIGHTS } from '../lib/algorithm/inter
 const prisma = new PrismaClient();
 
 async function main() {
-  console.log('🌱 Starting database seed for Smart Internship Allocation System...');
+  console.log('🌱 Starting database seed for InternMatch Portal...');
 
   // Clear existing records in reverse dependency order
   await prisma.allocation.deleteMany();

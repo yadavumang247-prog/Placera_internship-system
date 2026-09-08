@@ -9,33 +9,42 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        background: '#f8fafc',
-        foreground: '#0f172a',
-        brand: {
-          50: '#eef2ff',
-          100: '#e0e7ff',
-          200: '#c7d2fe',
-          300: '#a5b4fc',
-          400: '#818cf8',
-          500: '#6366f1',
-          600: '#4f46e5',
-          700: '#4338ca',
-          800: '#3730a3',
-          900: '#312e81',
-          950: '#1e1b4b',
+        primary: {
+          DEFAULT: '#38BDF8',
+          hover: '#0EA5E9',
+          dark: '#0284C7',
+          navy: '#1E3A5F',
         },
-        slate: {
-          850: '#151f32',
-          950: '#0b0f19',
+        secondary: {
+          DEFAULT: '#818CF8',
+          hover: '#6366F1',
+        },
+        accent: {
+          DEFAULT: '#34D399',
+          hover: '#10B981',
+        },
+        portal: {
+          bg: '#0B1120',
+          surface: '#0F172A',
+          card: '#1E293B',
+          cardHover: '#243248',
+          border: '#334155',
+          borderSubtle: '#1E293B',
+          text: '#F8FAFC',
+          textSecondary: '#CBD5E1',
+          muted: '#94A3B8',
+          success: '#34D399',
+          warning: '#FBBF24',
+          danger: '#F87171',
         },
       },
       fontFamily: {
-        sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+        sans: ['Inter', 'Source Sans 3', 'system-ui', '-apple-system', 'sans-serif'],
       },
       boxShadow: {
-        card: '0 1px 3px 0 rgb(0 0 0 / 0.05), 0 1px 2px -1px rgb(0 0 0 / 0.05)',
-        'card-hover': '0 10px 15px -3px rgb(0 0 0 / 0.08), 0 4px 6px -4px rgb(0 0 0 / 0.05)',
-        'glow-brand': '0 0 20px -5px rgba(79, 70, 229, 0.3)',
+        card: '0 1px 3px 0 rgba(0, 0, 0, 0.4), 0 1px 2px 0 rgba(0, 0, 0, 0.3)',
+        'card-hover': '0 4px 12px -2px rgba(0, 0, 0, 0.5), 0 2px 6px -1px rgba(0, 0, 0, 0.3)',
+        glow: '0 0 15px -3px rgba(56, 189, 248, 0.25)',
       },
     },
   },

@@ -109,20 +109,20 @@ export default function StudentPreferencesPage() {
   return (
     <div className="space-y-8 animate-fade-in">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-[#1E293B] p-6 rounded-xl border border-[#334155] shadow-lg">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900 tracking-tight flex items-center gap-2">
-            <ListOrdered className="h-6 w-6 text-indigo-600" />
+          <h1 className="text-2xl font-bold text-white tracking-tight flex items-center gap-2">
+            <ListOrdered className="h-6 w-6 text-[#38BDF8]" />
             Ranked Internship Preferences
           </h1>
-          <p className="text-xs sm:text-sm text-slate-500 mt-1">
+          <p className="text-xs sm:text-sm text-[#94A3B8] mt-1">
             Order your top 5 internship preferences. Higher ranked choices receive significantly higher algorithm weight (100 down to 60 pts).
           </p>
         </div>
 
         <div className="flex items-center gap-3">
           <Link href="/student/internships">
-            <Button variant="outline" size="sm">
+            <Button variant="outline" size="sm" className="border-[#334155] bg-[#0F172A] text-[#38BDF8] hover:bg-[#1E293B]">
               <Plus className="h-4 w-4 mr-1" />
               Browse More Roles
             </Button>
@@ -131,7 +131,7 @@ export default function StudentPreferencesPage() {
             onClick={handleSavePreferences}
             isLoading={isSaving}
             size="sm"
-            className="bg-indigo-600 hover:bg-indigo-700 text-white"
+            className="bg-[#0284C7] hover:bg-[#0369A1] text-white shadow-md shadow-sky-950"
           >
             <Save className="h-4 w-4 mr-1.5" />
             Save Ranked Order
@@ -140,7 +140,7 @@ export default function StudentPreferencesPage() {
       </div>
 
       {/* Priority Scoring Reference Cards */}
-      <div className="grid grid-cols-5 gap-3 text-center">
+      <div className="grid grid-cols-2 sm:grid-cols-5 gap-3 text-center">
         {[
           { rank: 1, pts: 100, label: 'Highest Priority' },
           { rank: 2, pts: 90, label: '2nd Choice' },
@@ -152,24 +152,24 @@ export default function StudentPreferencesPage() {
             key={item.rank}
             className={`p-3 rounded-xl border text-xs ${
               item.rank === 1
-                ? 'bg-indigo-50/70 border-indigo-200 text-indigo-900'
-                : 'bg-white border-slate-200 text-slate-700'
+                ? 'bg-sky-950/40 border-sky-700/60 text-sky-200'
+                : 'bg-[#1E293B] border-[#334155] text-[#94A3B8]'
             }`}
           >
-            <span className="text-[10px] uppercase font-bold text-slate-400 block">Rank #{item.rank}</span>
-            <span className="text-lg font-bold font-mono text-indigo-600 block my-0.5">{item.pts} pts</span>
-            <span className="text-[10px] text-slate-500">{item.label}</span>
+            <span className="text-[10px] uppercase font-bold text-[#64748B] block">Rank #{item.rank}</span>
+            <span className="text-lg font-bold font-mono text-[#38BDF8] block my-0.5">{item.pts} pts</span>
+            <span className="text-[10px] text-[#94A3B8]">{item.label}</span>
           </div>
         ))}
       </div>
 
       {/* Interactive Ranking List */}
-      <Card>
-        <CardHeader>
+      <Card className="border-[#334155] bg-[#1E293B]">
+        <CardHeader className="border-b border-[#334155]">
           <div className="flex items-center justify-between">
             <div>
-              <CardTitle className="text-base font-bold">Priority Ranking Order ({preferences.length}/5)</CardTitle>
-              <CardDescription className="text-xs">
+              <CardTitle className="text-base font-bold text-white">Priority Ranking Order ({preferences.length}/5)</CardTitle>
+              <CardDescription className="text-xs text-[#94A3B8]">
                 Use the up/down arrows to reorder your preferred companies and roles.
               </CardDescription>
             </div>
@@ -180,13 +180,13 @@ export default function StudentPreferencesPage() {
             )}
           </div>
         </CardHeader>
-        <CardContent>
+        <CardContent className="p-6">
           {preferences.length === 0 ? (
-            <div className="text-center py-12 text-slate-400 text-sm space-y-3">
-              <AlertCircle className="h-8 w-8 mx-auto text-slate-300" />
+            <div className="text-center py-12 text-[#94A3B8] text-sm space-y-3">
+              <AlertCircle className="h-8 w-8 mx-auto text-[#64748B]" />
               <p>You have not selected any internship preferences yet.</p>
               <Link href="/student/internships">
-                <Button className="bg-indigo-600 hover:bg-indigo-700 text-white">
+                <Button className="bg-[#0284C7] hover:bg-[#0369A1] text-white">
                   Browse Internships Directory
                   <ArrowRight className="h-4 w-4 ml-1.5" />
                 </Button>
@@ -199,18 +199,18 @@ export default function StudentPreferencesPage() {
                 return (
                   <div
                     key={pref.id || pref.internshipId}
-                    className="p-4 rounded-xl border border-slate-200 bg-white hover:border-indigo-200 shadow-sm flex items-center justify-between gap-4 transition-all"
+                    className="p-4 rounded-xl border border-[#334155] bg-[#0F172A] hover:border-[#38BDF8]/40 shadow-sm flex items-center justify-between gap-4 transition-all"
                   >
                     {/* Rank Badge & Details */}
                     <div className="flex items-center gap-4">
-                      <div className="h-10 w-10 rounded-xl bg-indigo-600 text-white flex items-center justify-center font-bold text-base shadow-sm">
+                      <div className="h-10 w-10 rounded-xl bg-[#0284C7] text-white flex items-center justify-center font-bold text-base shadow-sm">
                         #{index + 1}
                       </div>
                       <div>
-                        <h4 className="font-bold text-slate-900 text-base">
+                        <h4 className="font-bold text-white text-base">
                           {pref.internship?.title || 'Internship Position'}
                         </h4>
-                        <p className="text-xs text-slate-500">
+                        <p className="text-xs text-[#94A3B8]">
                           {pref.internship?.companyName || 'Company'} • {pref.internship?.location} • Min CGPA: {pref.internship?.minimumCGPA}
                         </p>
                       </div>
@@ -219,16 +219,16 @@ export default function StudentPreferencesPage() {
                     {/* Controls */}
                     <div className="flex items-center gap-3">
                       <div className="text-right hidden sm:block">
-                        <span className="text-[10px] text-slate-400 uppercase font-semibold block">Algorithm Merit</span>
-                        <span className="font-mono font-bold text-indigo-600 text-sm">{calculatedPoints} pts</span>
+                        <span className="text-[10px] text-[#64748B] uppercase font-semibold block">Algorithm Merit</span>
+                        <span className="font-mono font-bold text-[#38BDF8] text-sm">{calculatedPoints} pts</span>
                       </div>
 
-                      <div className="flex items-center gap-1 border-l border-slate-200 pl-3">
+                      <div className="flex items-center gap-1 border-l border-[#334155] pl-3">
                         <button
                           type="button"
                           disabled={index === 0}
                           onClick={() => moveUp(index)}
-                          className="p-1.5 rounded-lg border border-slate-200 hover:bg-slate-100 disabled:opacity-30 disabled:cursor-not-allowed text-slate-600"
+                          className="p-1.5 rounded-lg border border-[#334155] hover:bg-[#1E293B] disabled:opacity-30 disabled:cursor-not-allowed text-[#94A3B8] hover:text-white transition-colors"
                           title="Move Up"
                         >
                           <ArrowUp className="h-4 w-4" />
@@ -237,7 +237,7 @@ export default function StudentPreferencesPage() {
                           type="button"
                           disabled={index === preferences.length - 1}
                           onClick={() => moveDown(index)}
-                          className="p-1.5 rounded-lg border border-slate-200 hover:bg-slate-100 disabled:opacity-30 disabled:cursor-not-allowed text-slate-600"
+                          className="p-1.5 rounded-lg border border-[#334155] hover:bg-[#1E293B] disabled:opacity-30 disabled:cursor-not-allowed text-[#94A3B8] hover:text-white transition-colors"
                           title="Move Down"
                         >
                           <ArrowDown className="h-4 w-4" />
@@ -245,7 +245,7 @@ export default function StudentPreferencesPage() {
                         <button
                           type="button"
                           onClick={() => removePreference(index)}
-                          className="p-1.5 rounded-lg border border-rose-200 hover:bg-rose-50 text-rose-600"
+                          className="p-1.5 rounded-lg border border-rose-900/50 hover:bg-rose-950/40 text-rose-400 transition-colors"
                           title="Remove Choice"
                         >
                           <Trash2 className="h-4 w-4" />

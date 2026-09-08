@@ -3,16 +3,16 @@ import './globals.css';
 import { ToastProvider } from '../components/ui/toast';
 
 export const metadata: Metadata = {
-  title: 'Smart Internship Allocation System | Algorithm-Based Platform',
+  title: 'InternMatch Portal | College Internship & Placement Management Portal',
   description:
-    'A college AOA (Analysis and Optimization of Algorithms) project demonstrating intelligent, deterministic multi-criteria greedy optimization for fair and efficient internship allocation.',
+    'A centralized platform for managing internship opportunities, student preferences, eligibility and internship allocation.',
   keywords: [
+    'InternMatch Portal',
+    'College Internship Portal',
+    'Placement Management Portal',
+    'Campus Placements',
     'Internship Allocation',
-    'Algorithm Optimization',
-    'AOA Project',
-    'Greedy Algorithm',
-    'Multi-Criteria Scoring',
-    'College Placement',
+    'Student Career Services',
   ],
 };
 
@@ -22,16 +22,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className="scroll-smooth">
+    <html lang="en" className="dark scroll-smooth">
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link
-          href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Sans+3:wght@400;500;600;700&display=swap"
           rel="stylesheet"
         />
       </head>
-      <body className="min-h-screen bg-slate-50 text-slate-900 antialiased font-sans selection:bg-indigo-500 selection:text-white">
+      <body className="min-h-screen bg-[#0B1120] text-[#F8FAFC] antialiased font-sans selection:bg-[#0284C7] selection:text-white">
         <ToastProvider>{children}</ToastProvider>
       </body>
     </html>

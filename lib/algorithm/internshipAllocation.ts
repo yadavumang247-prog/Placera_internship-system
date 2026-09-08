@@ -1,5 +1,5 @@
 /**
- * SMART INTERNSHIP ALLOCATION SYSTEM - CORE AOA ALGORITHM
+ * INTERNMATCH PORTAL - CORE AOA ALGORITHM
  * 
  * College AOA (Analysis and Optimization of Algorithms) Project
  * Algorithm: Multi-Objective Constrained Greedy Optimization with Multi-Criteria Tie-Breaking

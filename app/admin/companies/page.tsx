@@ -136,33 +136,33 @@ export default function AdminCompaniesPage() {
   return (
     <div className="space-y-6 animate-fade-in">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-[#1E293B] p-6 rounded-xl border border-[#334155] shadow-lg">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900 tracking-tight flex items-center gap-2">
-            <Building2 className="h-6 w-6 text-indigo-600" />
+          <h1 className="text-2xl font-bold text-white tracking-tight flex items-center gap-2">
+            <Building2 className="h-6 w-6 text-[#38BDF8]" />
             Recruiter &amp; Company Directory
           </h1>
-          <p className="text-xs sm:text-sm text-slate-500 mt-1">
+          <p className="text-xs sm:text-sm text-[#94A3B8] mt-1">
             Manage industry partners, active position quotas, and corporate recruitment credentials.
           </p>
         </div>
-        <Button onClick={() => setIsAddModalOpen(true)} className="bg-indigo-600 hover:bg-indigo-700">
+        <Button onClick={() => setIsAddModalOpen(true)} className="bg-[#0284C7] hover:bg-[#0369A1] text-white shadow-md shadow-sky-950">
           <Plus className="h-4 w-4 mr-1.5" />
           Add Company
         </Button>
       </div>
 
       {/* Search Filter */}
-      <Card>
+      <Card className="border-[#334155] bg-[#1E293B]">
         <CardContent className="p-4">
           <div className="relative">
-            <Search className="h-4 w-4 absolute left-3 top-3 text-slate-400" />
+            <Search className="h-4 w-4 absolute left-3 top-3 text-[#64748B]" />
             <input
               type="text"
               placeholder="Search companies by name or description..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-9 pr-4 py-2 text-xs sm:text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="w-full pl-9 pr-4 py-2 text-xs sm:text-sm bg-[#0F172A] border border-[#334155] rounded-lg text-white placeholder-[#64748B] focus:outline-none focus:border-[#38BDF8]"
             />
           </div>
         </CardContent>
@@ -175,11 +175,11 @@ export default function AdminCompaniesPage() {
           const filledSeats = c.internships?.reduce((acc, i) => acc + (i.totalSeats - i.availableSeats), 0) || 0;
 
           return (
-            <Card key={c.id} className="flex flex-col justify-between hover:shadow-card-hover transition-all">
+            <Card key={c.id} className="flex flex-col justify-between hover:border-[#38BDF8] transition-all border-[#334155] bg-[#1E293B]">
               <div>
                 <div className="flex items-start justify-between gap-3 mb-3">
                   <div className="flex items-center gap-3">
-                    <div className="h-12 w-12 rounded-xl bg-slate-100 border border-slate-200 flex items-center justify-center font-bold text-indigo-600 text-lg overflow-hidden shrink-0">
+                    <div className="h-12 w-12 rounded-xl bg-[#0F172A] border border-[#334155] flex items-center justify-center font-bold text-[#38BDF8] text-lg overflow-hidden shrink-0">
                       {c.logoUrl ? (
                         <img src={c.logoUrl} alt={c.name} className="h-full w-full object-cover" />
                       ) : (
@@ -187,13 +187,13 @@ export default function AdminCompaniesPage() {
                       )}
                     </div>
                     <div>
-                      <h3 className="font-bold text-slate-900 text-base">{c.name}</h3>
+                      <h3 className="font-bold text-white text-base">{c.name}</h3>
                       {c.website && (
                         <a
                           href={c.website}
                           target="_blank"
                           rel="noreferrer"
-                          className="text-[11px] text-indigo-600 hover:underline flex items-center gap-1 mt-0.5"
+                          className="text-[11px] text-[#38BDF8] hover:underline flex items-center gap-1 mt-0.5"
                         >
                           <Globe className="h-3 w-3" />
                           <span>Website</span>
@@ -206,14 +206,14 @@ export default function AdminCompaniesPage() {
                   <div className="flex items-center gap-1">
                     <button
                       onClick={() => openEditModal(c)}
-                      className="p-1 rounded hover:bg-slate-100 text-slate-400 hover:text-slate-700"
+                      className="p-1 rounded hover:bg-[#0F172A] text-[#94A3B8] hover:text-[#38BDF8]"
                       title="Edit Company"
                     >
                       <Edit2 className="h-3.5 w-3.5" />
                     </button>
                     <button
                       onClick={() => handleDeleteCompany(c.id, c.name)}
-                      className="p-1 rounded hover:bg-rose-50 text-slate-400 hover:text-rose-600"
+                      className="p-1 rounded hover:bg-rose-950/40 text-[#94A3B8] hover:text-rose-400"
                       title="Delete Company"
                     >
                       <Trash2 className="h-3.5 w-3.5" />
@@ -221,28 +221,28 @@ export default function AdminCompaniesPage() {
                   </div>
                 </div>
 
-                <p className="text-xs text-slate-500 line-clamp-3 leading-relaxed mb-4">
+                <p className="text-xs text-[#94A3B8] line-clamp-3 leading-relaxed mb-4">
                   {c.description}
                 </p>
 
                 {/* Stats */}
-                <div className="grid grid-cols-2 gap-2 p-3 bg-slate-50 rounded-xl border border-slate-100 text-center mb-4">
+                <div className="grid grid-cols-2 gap-2 p-3 bg-[#0F172A] rounded-xl border border-[#334155] text-center mb-4">
                   <div>
-                    <span className="text-[10px] text-slate-400 uppercase font-semibold">Active Roles</span>
-                    <p className="text-sm font-bold text-slate-800">{c.internships?.length || 0}</p>
+                    <span className="text-[10px] text-[#94A3B8] uppercase font-semibold">Active Roles</span>
+                    <p className="text-sm font-bold text-white">{c.internships?.length || 0}</p>
                   </div>
                   <div>
-                    <span className="text-[10px] text-slate-400 uppercase font-semibold">Total Seats</span>
-                    <p className="text-sm font-bold text-indigo-600">{totalSeats}</p>
+                    <span className="text-[10px] text-[#94A3B8] uppercase font-semibold">Total Seats</span>
+                    <p className="text-sm font-bold text-[#38BDF8]">{totalSeats}</p>
                   </div>
                 </div>
               </div>
 
-              <div className="pt-2 border-t border-slate-100 flex items-center justify-between">
-                <span className="text-[11px] text-slate-400 font-medium">
+              <div className="pt-2 border-t border-[#334155] flex items-center justify-between">
+                <span className="text-[11px] text-[#94A3B8] font-medium">
                   {c.internships?.length || 0} Open Positions
                 </span>
-                <Button variant="outline" size="sm" onClick={() => openViewModal(c)}>
+                <Button variant="outline" size="sm" onClick={() => openViewModal(c)} className="border-[#334155] bg-[#0F172A] text-[#38BDF8] hover:bg-[#1E293B]">
                   <Briefcase className="h-3.5 w-3.5 mr-1" />
                   View Internships
                 </Button>
@@ -263,7 +263,7 @@ export default function AdminCompaniesPage() {
             placeholder="Google Cloud / Microsoft"
           />
           <div>
-            <label className="block text-xs font-semibold uppercase tracking-wider text-slate-700 mb-1.5">
+            <label className="block text-xs font-semibold uppercase tracking-wider text-[#94A3B8] mb-1.5">
               Description
             </label>
             <textarea
@@ -272,7 +272,7 @@ export default function AdminCompaniesPage() {
               value={formData.description}
               onChange={(e) => setFormData({ ...formData, description: e.target.value })}
               placeholder="Corporate overview, technology domain, and recruitment vision..."
-              className="w-full px-3 py-2 text-sm bg-white border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500"
+              className="w-full px-3 py-2 text-sm bg-[#0F172A] border border-[#334155] rounded-lg text-white placeholder-[#64748B] focus:outline-none focus:border-[#38BDF8]"
             />
           </div>
           <Input
@@ -287,11 +287,11 @@ export default function AdminCompaniesPage() {
             onChange={(e) => setFormData({ ...formData, logoUrl: e.target.value })}
             placeholder="https://..."
           />
-          <div className="flex justify-end gap-2 pt-3">
-            <Button type="button" variant="outline" onClick={() => setIsAddModalOpen(false)}>
+          <div className="flex justify-end gap-2 pt-3 border-t border-[#334155]">
+            <Button type="button" variant="outline" className="border-[#334155] text-[#94A3B8]" onClick={() => setIsAddModalOpen(false)}>
               Cancel
             </Button>
-            <Button type="submit">Save Company</Button>
+            <Button type="submit" className="bg-[#0284C7] hover:bg-[#0369A1] text-white">Save Company</Button>
           </div>
         </form>
       </Modal>
@@ -306,7 +306,7 @@ export default function AdminCompaniesPage() {
             onChange={(e) => setFormData({ ...formData, name: e.target.value })}
           />
           <div>
-            <label className="block text-xs font-semibold uppercase tracking-wider text-slate-700 mb-1.5">
+            <label className="block text-xs font-semibold uppercase tracking-wider text-[#94A3B8] mb-1.5">
               Description
             </label>
             <textarea
@@ -314,7 +314,7 @@ export default function AdminCompaniesPage() {
               required
               value={formData.description}
               onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-              className="w-full px-3 py-2 text-sm bg-white border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500"
+              className="w-full px-3 py-2 text-sm bg-[#0F172A] border border-[#334155] rounded-lg text-white placeholder-[#64748B] focus:outline-none focus:border-[#38BDF8]"
             />
           </div>
           <Input
@@ -327,11 +327,11 @@ export default function AdminCompaniesPage() {
             value={formData.logoUrl}
             onChange={(e) => setFormData({ ...formData, logoUrl: e.target.value })}
           />
-          <div className="flex justify-end gap-2 pt-3">
-            <Button type="button" variant="outline" onClick={() => setIsEditModalOpen(false)}>
+          <div className="flex justify-end gap-2 pt-3 border-t border-[#334155]">
+            <Button type="button" variant="outline" className="border-[#334155] text-[#94A3B8]" onClick={() => setIsEditModalOpen(false)}>
               Cancel
             </Button>
-            <Button type="submit">Update Company</Button>
+            <Button type="submit" className="bg-[#0284C7] hover:bg-[#0369A1] text-white">Update Company</Button>
           </div>
         </form>
       </Modal>
@@ -345,11 +345,11 @@ export default function AdminCompaniesPage() {
       >
         {selectedCompany && (
           <div className="space-y-4">
-            <div className="p-4 bg-slate-50 rounded-xl border border-slate-200">
-              <p className="text-xs text-slate-600 leading-relaxed">{selectedCompany.description}</p>
+            <div className="p-4 bg-[#0F172A] rounded-xl border border-[#334155]">
+              <p className="text-xs text-[#94A3B8] leading-relaxed">{selectedCompany.description}</p>
             </div>
 
-            <h4 className="text-xs font-bold uppercase tracking-wider text-slate-500 pt-2">
+            <h4 className="text-xs font-bold uppercase tracking-wider text-white pt-2">
               Listed Internship Positions ({selectedCompany.internships?.length || 0})
             </h4>
 
@@ -358,12 +358,12 @@ export default function AdminCompaniesPage() {
                 selectedCompany.internships.map((intern) => (
                   <div
                     key={intern.id}
-                    className="p-4 rounded-xl border border-slate-200 bg-white hover:border-indigo-200 transition-colors space-y-2"
+                    className="p-4 rounded-xl border border-[#334155] bg-[#0F172A] hover:border-[#38BDF8] transition-colors space-y-2"
                   >
                     <div className="flex items-start justify-between gap-2">
                       <div>
-                        <h5 className="font-bold text-slate-900 text-sm">{intern.title}</h5>
-                        <p className="text-xs text-slate-400">
+                        <h5 className="font-bold text-white text-sm">{intern.title}</h5>
+                        <p className="text-xs text-[#94A3B8]">
                           {intern.location} • Mode: {intern.mode} • Duration: {intern.duration}
                         </p>
                       </div>
@@ -371,20 +371,20 @@ export default function AdminCompaniesPage() {
                         ₹{intern.stipend.toLocaleString()}/mo
                       </Badge>
                     </div>
-                    <p className="text-xs text-slate-600 line-clamp-2">{intern.description}</p>
-                    <div className="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-slate-100 text-xs">
-                      <span className="font-semibold text-slate-700">Min CGPA: {intern.minimumCGPA}</span>
-                      <span className="font-semibold text-indigo-600">Total Seats: {intern.totalSeats}</span>
+                    <p className="text-xs text-[#94A3B8] line-clamp-2">{intern.description}</p>
+                    <div className="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-[#334155] text-xs">
+                      <span className="font-semibold text-white">Min CGPA: {intern.minimumCGPA}</span>
+                      <span className="font-semibold text-[#38BDF8]">Total Seats: {intern.totalSeats}</span>
                     </div>
                   </div>
                 ))
               ) : (
-                <p className="text-xs text-slate-400 italic">No internships currently posted by this company.</p>
+                <p className="text-xs text-[#94A3B8] italic">No internships currently posted by this company.</p>
               )}
             </div>
 
-            <div className="flex justify-end pt-3">
-              <Button onClick={() => setIsViewModalOpen(false)}>Close</Button>
+            <div className="flex justify-end pt-3 border-t border-[#334155]">
+              <Button onClick={() => setIsViewModalOpen(false)} className="bg-[#0284C7] text-white">Close</Button>
             </div>
           </div>
         )}
