@@ -525,8 +525,8 @@ export default function CompanyDashboardPage() {
                     </span>
                   </div>
                   <div className="text-right">
-                    <span className="font-mono font-bold text-[#38BDF8] block">{stud.cgpa.toFixed(2)} CGPA</span>
-                    <span className="text-[10px] text-[#94A3B8]">{stud.skills.slice(0, 3).join(', ')}</span>
+                    <span className="font-mono font-bold text-[#38BDF8] block">{(stud.cgpa || 0).toFixed(2)} CGPA</span>
+                    <span className="text-[10px] text-[#94A3B8]">{(stud.skills || []).slice(0, 3).join(', ')}</span>
                   </div>
                 </div>
               ))}

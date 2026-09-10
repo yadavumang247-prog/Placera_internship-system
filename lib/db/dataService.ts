@@ -7,6 +7,10 @@ import {
   AllocationData,
   AlgorithmWeights,
   AlgorithmResult,
+  AllocationRunRecord,
+  AuditLog,
+  NotificationItem,
+  PublicationStatus,
 } from '../types';
 import {
   INITIAL_COMPANIES,
@@ -14,9 +18,11 @@ import {
   INITIAL_STUDENTS,
   INITIAL_PREFERENCES,
 } from './seedData';
-import { runInternshipAllocation, DEFAULT_WEIGHTS } from '../algorithm/internshipAllocation';
+import { runGaleShapleyAllocation } from '../algorithm/galeShapley';
+import { runGreedyAllocation } from '../algorithm/greedyAllocation';
+import { DEFAULT_MERIT_WEIGHTS } from '../algorithm/meritCalculator';
 
-// In-Memory Reactive Store (Fallback & Instant Zero-Setup Mode)
+// In-Memory Reactive Store (Full Local High-Performance Mode)
 class MemoryStore {
   companies: CompanyData[] = [...INITIAL_COMPANIES];
   internships: InternshipData[] = [...INITIAL_INTERNSHIPS];
@@ -24,23 +30,64 @@ class MemoryStore {
   preferences: PreferenceData[] = [...INITIAL_PREFERENCES];
   allocations: AllocationData[] = [];
   lastAlgorithmResult: AlgorithmResult | null = null;
-  weights: AlgorithmWeights = { ...DEFAULT_WEIGHTS };
+  confirmedResult: AlgorithmResult | null = null;
+  weights: AlgorithmWeights = { ...DEFAULT_MERIT_WEIGHTS };
+  isPreferencesLocked: boolean = true;
+  publicationStatus: PublicationStatus = 'PUBLISHED'; // Set to published by default for rich initial demo exploration
+  allocationRuns: AllocationRunRecord[] = [];
+  auditLogs: AuditLog[] = [
+    {
+      id: 'log_init',
+      action: 'SYSTEM_INITIALIZATION',
+      performedBy: 'System Administrator',
+      details: 'SMARTINTERN Placement Portal initialized with 20 student profiles and 10 corporate tracks.',
+      timestamp: new Date().toISOString(),
+    },
+  ];
+  notifications: NotificationItem[] = [
+    {
+      id: 'notif_welcome',
+      title: 'Welcome to SMARTINTERN',
+      message: 'Placement cycle 2025–26 preference ranking window is currently open.',
+      type: 'INFO',
+      timestamp: new Date().toISOString(),
+      read: false,
+      link: '/student/preferences',
+    },
+  ];
 
   constructor() {
-    // Run initial allocation on startup so dashboard immediately has real analytics
-    this.recompute();
+    this.executeInitialMatching();
   }
 
-  recompute() {
-    const result = runInternshipAllocation(
+  executeInitialMatching() {
+    const result = runGaleShapleyAllocation(
       this.students,
       this.internships,
       this.preferences,
       this.weights
     );
+    result.published = true;
     this.allocations = result.allocations;
     this.lastAlgorithmResult = result;
-    return result;
+    this.confirmedResult = result;
+
+    this.allocationRuns.push({
+      id: 'run_baseline_01',
+      algorithmName: result.algorithmName,
+      algorithmVersion: result.algorithmVersion,
+      status: 'PUBLISHED',
+      startedAt: new Date(Date.now() - 3600000).toISOString(),
+      completedAt: new Date(Date.now() - 3598000).toISOString(),
+      executionTimeMs: result.stats.executionTimeMs,
+      totalStudents: result.stats.totalStudents,
+      totalAllocated: result.stats.totalAllocated,
+      totalProposals: result.stats.totalProposals,
+      weights: { ...this.weights },
+      metrics: result.stats,
+      executedBy: 'Dean of Placements',
+      publishedAt: new Date().toISOString(),
+    });
   }
 }
 
@@ -53,318 +100,365 @@ if (process.env.NODE_ENV !== 'production') {
   globalForStore.memoryStore = memoryStore;
 }
 
-/**
- * Data Service with graceful Prisma -> Memory fallback
- */
 export const dataService = {
   // --- Students ---
   async getStudents(): Promise<StudentData[]> {
-    try {
-      if (process.env.DATABASE_URL) {
-        const dbStudents = await prisma.student.findMany({
-          include: {
-            user: true,
-            preferences: { include: { internship: true }, orderBy: { rank: 'asc' } },
-            allocations: { include: { internship: true } },
-          },
-        });
-        if (dbStudents && dbStudents.length > 0) {
-          return dbStudents.map((s) => ({
-            id: s.id,
-            userId: s.userId,
-            name: s.user.name,
-            email: s.user.email,
-            rollNumber: s.rollNumber,
-            branch: s.branch,
-            year: s.year,
-            cgpa: s.cgpa,
-            skills: s.skills ? s.skills.split(',').map((x) => x.trim()) : [],
-            resumeUrl: s.resumeUrl,
-            preferences: s.preferences.map((p) => ({
-              id: p.id,
-              studentId: p.studentId,
-              internshipId: p.internshipId,
-              rank: p.rank,
-            })),
-            allocation: s.allocations[0]
-              ? {
-                  id: s.allocations[0].id,
-                  studentId: s.allocations[0].studentId,
-                  internshipId: s.allocations[0].internshipId,
-                  internshipTitle: s.allocations[0].internship?.title,
-                  score: s.allocations[0].score,
-                  preferenceRank: s.allocations[0].preferenceRank,
-                  skillMatchScore: s.allocations[0].skillMatchScore,
-                  cgpaScore: s.allocations[0].cgpaScore,
-                  status: s.allocations[0].status,
-                  allocatedAt: s.allocations[0].allocatedAt,
-                }
-              : null,
-          }));
-        }
-      }
-    } catch (err) {
-      // Graceful fallback to memory store
-    }
-    // Attach allocation to students in memory store
     const allocMap = new Map(memoryStore.allocations.map((a) => [a.studentId, a]));
     return memoryStore.students.map((s) => ({
       ...s,
-      allocation: allocMap.get(s.id) || null,
-      preferences: memoryStore.preferences.filter((p) => p.studentId === s.id),
+      preferencesLocked: memoryStore.isPreferencesLocked,
+      allocation: memoryStore.publicationStatus === 'PUBLISHED' ? allocMap.get(s.id) || null : null,
+      preferences: memoryStore.preferences
+        .filter((p) => p.studentId === s.id)
+        .sort((a, b) => a.rank - b.rank)
+        .map((p) => ({
+          ...p,
+          internship: memoryStore.internships.find((i) => i.id === p.internshipId),
+        })),
     }));
   },
 
   async getStudentById(id: string): Promise<StudentData | null> {
     const students = await this.getStudents();
-    return students.find((s) => s.id === id || s.userId === id || s.email === id) || null;
+    return (
+      students.find((s) => s.id === id || s.userId === id || s.email === id || s.rollNumber === id) ||
+      null
+    );
   },
 
-  async createStudent(data: {
-    name: string;
-    email: string;
-    rollNumber: string;
-    branch: string;
-    year: number;
-    cgpa: number;
-    skills: string[];
-    resumeUrl?: string;
-  }): Promise<StudentData> {
-    const newStudent: StudentData = {
-      id: `stud_${Date.now()}`,
-      userId: `user_${Date.now()}`,
-      name: data.name,
-      email: data.email,
-      rollNumber: data.rollNumber,
-      branch: data.branch,
-      year: data.year,
-      cgpa: data.cgpa,
-      skills: data.skills,
-      resumeUrl: data.resumeUrl,
-    };
-    memoryStore.students.push(newStudent);
-    memoryStore.recompute();
-    return newStudent;
-  },
-
-  async updateStudent(id: string, data: Partial<StudentData>): Promise<StudentData | null> {
-    const idx = memoryStore.students.findIndex((s) => s.id === id);
+  async updateStudentProfile(
+    studentId: string,
+    updates: Partial<StudentData>
+  ): Promise<StudentData | null> {
+    const idx = memoryStore.students.findIndex((s) => s.id === studentId || s.userId === studentId);
     if (idx === -1) return null;
-    memoryStore.students[idx] = { ...memoryStore.students[idx], ...data };
-    memoryStore.recompute();
-    return memoryStore.students[idx];
-  },
 
-  async deleteStudent(id: string): Promise<boolean> {
-    memoryStore.students = memoryStore.students.filter((s) => s.id !== id);
-    memoryStore.preferences = memoryStore.preferences.filter((p) => p.studentId !== id);
-    memoryStore.recompute();
-    return true;
+    memoryStore.students[idx] = {
+      ...memoryStore.students[idx],
+      ...updates,
+      skills: updates.skills ?? memoryStore.students[idx].skills,
+    };
+
+    memoryStore.auditLogs.unshift({
+      id: `log_${Date.now()}`,
+      action: 'STUDENT_PROFILE_UPDATE',
+      performedBy: memoryStore.students[idx].name,
+      details: `Profile updated: CGPA ${memoryStore.students[idx].cgpa}, Branch ${memoryStore.students[idx].branch}`,
+      timestamp: new Date().toISOString(),
+    });
+
+    return memoryStore.students[idx];
   },
 
   // --- Companies ---
   async getCompanies(): Promise<CompanyData[]> {
-    try {
-      if (process.env.DATABASE_URL) {
-        const dbCompanies = await prisma.company.findMany({
-          include: { internships: true },
-        });
-        if (dbCompanies && dbCompanies.length > 0) {
-          return dbCompanies.map((c) => ({
-            id: c.id,
-            userId: c.userId,
-            name: c.name,
-            description: c.description,
-            logoUrl: c.logoUrl,
-            website: c.website,
-            internships: c.internships.map((i) => ({
-              id: i.id,
-              companyId: i.companyId,
-              companyName: c.name,
-              title: i.title,
-              description: i.description,
-              location: i.location,
-              mode: i.mode,
-              stipend: i.stipend,
-              duration: i.duration,
-              minimumCGPA: i.minimumCGPA,
-              requiredSkills: i.requiredSkills.split(',').map((x) => x.trim()),
-              totalSeats: i.totalSeats,
-              availableSeats: i.availableSeats,
-              applicationDeadline: i.applicationDeadline,
-            })),
-          }));
-        }
-      }
-    } catch (err) {}
     return memoryStore.companies.map((c) => ({
       ...c,
       internships: memoryStore.internships.filter((i) => i.companyId === c.id),
     }));
   },
 
-  async createCompany(data: {
-    name: string;
-    description: string;
-    website?: string;
-    logoUrl?: string;
-  }): Promise<CompanyData> {
-    const newCompany: CompanyData = {
-      id: `comp_${Date.now()}`,
-      name: data.name,
-      description: data.description,
-      website: data.website,
-      logoUrl: data.logoUrl || 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=128&auto=format&fit=crop&q=80',
-    };
-    memoryStore.companies.push(newCompany);
-    return newCompany;
-  },
-
-  async updateCompany(id: string, data: Partial<CompanyData>): Promise<CompanyData | null> {
-    const idx = memoryStore.companies.findIndex((c) => c.id === id);
-    if (idx === -1) return null;
-    memoryStore.companies[idx] = { ...memoryStore.companies[idx], ...data };
-    return memoryStore.companies[idx];
-  },
-
-  async deleteCompany(id: string): Promise<boolean> {
-    memoryStore.companies = memoryStore.companies.filter((c) => c.id !== id);
-    memoryStore.internships = memoryStore.internships.filter((i) => i.companyId !== id);
-    memoryStore.recompute();
-    return true;
+  async getCompanyById(id: string): Promise<CompanyData | null> {
+    const companies = await this.getCompanies();
+    return companies.find((c) => c.id === id || c.userId === id) || null;
   },
 
   // --- Internships ---
   async getInternships(): Promise<InternshipData[]> {
-    try {
-      if (process.env.DATABASE_URL) {
-        const dbInterns = await prisma.internship.findMany({
-          include: { company: true },
-        });
-        if (dbInterns && dbInterns.length > 0) {
-          return dbInterns.map((i) => ({
-            id: i.id,
-            companyId: i.companyId,
-            companyName: i.company.name,
-            companyLogo: i.company.logoUrl,
-            title: i.title,
-            description: i.description,
-            location: i.location,
-            mode: i.mode,
-            stipend: i.stipend,
-            duration: i.duration,
-            minimumCGPA: i.minimumCGPA,
-            requiredSkills: i.requiredSkills.split(',').map((x) => x.trim()),
-            totalSeats: i.totalSeats,
-            availableSeats: i.availableSeats,
-            applicationDeadline: i.applicationDeadline,
-          }));
-        }
-      }
-    } catch (err) {}
-    return memoryStore.internships;
+    return memoryStore.internships.map((i) => {
+      const company = memoryStore.companies.find((c) => c.id === i.companyId);
+      return {
+        ...i,
+        companyName: company?.name || i.companyName || 'Partner Company',
+        companyLogo: company?.logoUrl || i.companyLogo,
+      };
+    });
   },
 
-  async createInternship(data: {
-    companyId: string;
-    title: string;
-    description: string;
-    location: string;
-    mode: 'REMOTE' | 'HYBRID' | 'ONSITE';
-    stipend: number;
-    duration: string;
-    minimumCGPA: number;
-    requiredSkills: string[];
-    totalSeats: number;
-    applicationDeadline: string;
-  }): Promise<InternshipData> {
-    const company = memoryStore.companies.find((c) => c.id === data.companyId);
-    const newIntern: InternshipData = {
+  async getInternshipById(id: string): Promise<InternshipData | null> {
+    const internships = await this.getInternships();
+    return internships.find((i) => i.id === id) || null;
+  },
+
+  async createInternship(data: Omit<InternshipData, 'id'>): Promise<InternshipData> {
+    const newInternship: InternshipData = {
+      ...data,
       id: `int_${Date.now()}`,
-      companyId: data.companyId,
-      companyName: company?.name || 'Partner Company',
-      companyLogo: company?.logoUrl,
-      title: data.title,
-      description: data.description,
-      location: data.location,
-      mode: data.mode,
-      stipend: data.stipend,
-      duration: data.duration,
-      minimumCGPA: data.minimumCGPA,
-      requiredSkills: data.requiredSkills,
-      totalSeats: data.totalSeats,
       availableSeats: data.totalSeats,
-      applicationDeadline: data.applicationDeadline,
+      status: 'ACTIVE',
     };
-    memoryStore.internships.push(newIntern);
-    memoryStore.recompute();
-    return newIntern;
+    memoryStore.internships.push(newInternship);
+
+    memoryStore.auditLogs.unshift({
+      id: `log_${Date.now()}`,
+      action: 'INTERNSHIP_CREATED',
+      performedBy: 'Corporate Recruiter',
+      details: `Created new internship role '${newInternship.title}' with ${newInternship.totalSeats} seats.`,
+      timestamp: new Date().toISOString(),
+    });
+
+    return newInternship;
   },
 
-  async updateInternship(id: string, data: Partial<InternshipData>): Promise<InternshipData | null> {
+  async updateInternship(id: string, updates: Partial<InternshipData>): Promise<InternshipData | null> {
     const idx = memoryStore.internships.findIndex((i) => i.id === id);
     if (idx === -1) return null;
-    memoryStore.internships[idx] = { ...memoryStore.internships[idx], ...data };
-    memoryStore.recompute();
+
+    memoryStore.internships[idx] = {
+      ...memoryStore.internships[idx],
+      ...updates,
+    };
     return memoryStore.internships[idx];
   },
 
-  async deleteInternship(id: string): Promise<boolean> {
-    memoryStore.internships = memoryStore.internships.filter((i) => i.id !== id);
-    memoryStore.preferences = memoryStore.preferences.filter((p) => p.internshipId !== id);
-    memoryStore.recompute();
-    return true;
-  },
-
   // --- Preferences ---
-  async getPreferencesByStudent(studentId: string): Promise<PreferenceData[]> {
-    const prefs = memoryStore.preferences.filter((p) => p.studentId === studentId);
-    prefs.sort((a, b) => a.rank - b.rank);
-    return prefs.map((p) => ({
-      ...p,
-      internship: memoryStore.internships.find((i) => i.id === p.internshipId),
-    }));
+  async getPreferences(studentId?: string): Promise<PreferenceData[]> {
+    const filtered = studentId
+      ? memoryStore.preferences.filter((p) => p.studentId === studentId)
+      : memoryStore.preferences;
+
+    return filtered
+      .sort((a, b) => a.rank - b.rank)
+      .map((p) => ({
+        ...p,
+        internship: memoryStore.internships.find((i) => i.id === p.internshipId),
+      }));
   },
 
-  async saveStudentPreferences(
-    studentId: string,
-    internshipIds: string[]
-  ): Promise<PreferenceData[]> {
-    // Remove existing
+  async savePreferences(studentId: string, internshipIds: string[]): Promise<PreferenceData[]> {
+    if (memoryStore.isPreferencesLocked) {
+      throw new Error('Preferences are currently locked by the placement administration.');
+    }
+
+    // Remove old preferences for this student
     memoryStore.preferences = memoryStore.preferences.filter((p) => p.studentId !== studentId);
 
-    const newPrefs: PreferenceData[] = internshipIds.map((internshipId, index) => ({
-      id: `pref_${studentId}_${internshipId}_${Date.now()}`,
+    // Insert new ranked preferences
+    const newPrefs: PreferenceData[] = internshipIds.map((id, index) => ({
+      id: `pref_${studentId}_${index + 1}_${Date.now()}`,
       studentId,
-      internshipId,
+      internshipId: id,
       rank: index + 1,
     }));
 
     memoryStore.preferences.push(...newPrefs);
-    memoryStore.recompute();
-    return this.getPreferencesByStudent(studentId);
+
+    memoryStore.auditLogs.unshift({
+      id: `log_${Date.now()}`,
+      action: 'PREFERENCES_SUBMITTED',
+      performedBy: studentId,
+      details: `Submitted ${newPrefs.length} ranked preferences.`,
+      timestamp: new Date().toISOString(),
+    });
+
+    return this.getPreferences(studentId);
   },
 
-  // --- Algorithm Execution & Results ---
-  async runAllocation(weights?: Partial<AlgorithmWeights>): Promise<AlgorithmResult> {
-    if (weights) {
-      memoryStore.weights = { ...memoryStore.weights, ...weights };
-    }
-    const result = memoryStore.recompute();
+  async setPreferenceLock(locked: boolean, performedBy: string = 'Placement Admin'): Promise<boolean> {
+    memoryStore.isPreferencesLocked = locked;
+    memoryStore.auditLogs.unshift({
+      id: `log_${Date.now()}`,
+      action: locked ? 'PREFERENCES_LOCKED' : 'PREFERENCES_UNLOCKED',
+      performedBy,
+      details: locked
+        ? 'Student preference ranking submission has been locked.'
+        : 'Student preference ranking window has been re-opened.',
+      timestamp: new Date().toISOString(),
+    });
+    return locked;
+  },
+
+  isPreferencesLocked(): boolean {
+    return memoryStore.isPreferencesLocked;
+  },
+
+  // --- Allocation Workflow (Preview, Run, Publish, Audit) ---
+
+  getPublicationStatus(): PublicationStatus {
+    return memoryStore.publicationStatus;
+  },
+
+  /**
+   * STEP 4 & 5: PREVIEW ALLOCATION (Does NOT publish to students)
+   */
+  async previewAllocation(
+    weights?: AlgorithmWeights,
+    algorithmType: 'GALE_SHAPLEY' | 'GREEDY' = 'GALE_SHAPLEY'
+  ): Promise<AlgorithmResult> {
+    const w = weights ? { ...memoryStore.weights, ...weights } : memoryStore.weights;
+    memoryStore.weights = w;
+
+    const result =
+      algorithmType === 'GREEDY'
+        ? runGreedyAllocation(memoryStore.students, memoryStore.internships, memoryStore.preferences, w)
+        : runGaleShapleyAllocation(memoryStore.students, memoryStore.internships, memoryStore.preferences, w);
+
+    result.published = false;
+    memoryStore.lastAlgorithmResult = result;
+    memoryStore.publicationStatus = 'PREVIEWED';
+
+    memoryStore.auditLogs.unshift({
+      id: `log_${Date.now()}`,
+      action: 'ALLOCATION_PREVIEW',
+      performedBy: 'Placement Admin',
+      details: `Generated allocation preview using ${result.algorithmName} (${result.stats.totalAllocated} allocated, ${result.stats.totalProposals} proposals).`,
+      timestamp: new Date().toISOString(),
+    });
+
     return result;
   },
 
-  async getAllocations(): Promise<AllocationData[]> {
-    if (!memoryStore.lastAlgorithmResult) {
-      memoryStore.recompute();
-    }
-    return memoryStore.allocations;
+  /**
+   * STEP 6 & 7: RUN / CONFIRM ALLOCATION (Persists confirmed matching, status = DRAFT until published)
+   */
+  async runAllocation(
+    weights?: AlgorithmWeights,
+    algorithmType: 'GALE_SHAPLEY' | 'GREEDY' = 'GALE_SHAPLEY',
+    executedBy: string = 'Placement Admin'
+  ): Promise<AlgorithmResult> {
+    const w = weights ? { ...memoryStore.weights, ...weights } : memoryStore.weights;
+    memoryStore.weights = w;
+
+    const result =
+      algorithmType === 'GREEDY'
+        ? runGreedyAllocation(memoryStore.students, memoryStore.internships, memoryStore.preferences, w)
+        : runGaleShapleyAllocation(memoryStore.students, memoryStore.internships, memoryStore.preferences, w);
+
+    result.published = false;
+    memoryStore.confirmedResult = result;
+    memoryStore.lastAlgorithmResult = result;
+    memoryStore.allocations = result.allocations;
+    memoryStore.publicationStatus = 'DRAFT';
+
+    const runRecord: AllocationRunRecord = {
+      id: `run_${Date.now()}`,
+      algorithmName: result.algorithmName,
+      algorithmVersion: result.algorithmVersion,
+      status: 'DRAFT',
+      startedAt: new Date(Date.now() - result.stats.executionTimeMs).toISOString(),
+      completedAt: new Date().toISOString(),
+      executionTimeMs: result.stats.executionTimeMs,
+      totalStudents: result.stats.totalStudents,
+      totalAllocated: result.stats.totalAllocated,
+      totalProposals: result.stats.totalProposals,
+      weights: { ...w },
+      metrics: result.stats,
+      executedBy,
+    };
+
+    memoryStore.allocationRuns.unshift(runRecord);
+
+    memoryStore.auditLogs.unshift({
+      id: `log_${Date.now()}`,
+      action: 'ALLOCATION_RUN_CONFIRMED',
+      performedBy: executedBy,
+      details: `Executed and confirmed ${result.algorithmName} run (${result.stats.totalAllocated} matches generated). Awaiting publication.`,
+      timestamp: new Date().toISOString(),
+    });
+
+    return result;
   },
 
-  async getLatestAlgorithmResult(): Promise<AlgorithmResult> {
+  /**
+   * STEP 8: PUBLISH RESULTS (Students and companies can now view verified results)
+   */
+  async publishAllocation(publishedBy: string = 'Placement Admin'): Promise<AlgorithmResult> {
+    if (!memoryStore.confirmedResult && !memoryStore.lastAlgorithmResult) {
+      await this.runAllocation(undefined, 'GALE_SHAPLEY', publishedBy);
+    }
+
+    const current = memoryStore.confirmedResult || memoryStore.lastAlgorithmResult!;
+    current.published = true;
+    memoryStore.publicationStatus = 'PUBLISHED';
+
+    if (memoryStore.allocationRuns.length > 0) {
+      memoryStore.allocationRuns[0].status = 'PUBLISHED';
+      memoryStore.allocationRuns[0].publishedAt = new Date().toISOString();
+    }
+
+    memoryStore.auditLogs.unshift({
+      id: `log_${Date.now()}`,
+      action: 'RESULTS_PUBLISHED',
+      performedBy: publishedBy,
+      details: `Official allocation results published to ${memoryStore.students.length} students and ${memoryStore.companies.length} employers.`,
+      timestamp: new Date().toISOString(),
+    });
+
+    // Notify all students
+    memoryStore.notifications.unshift({
+      id: `notif_${Date.now()}`,
+      title: 'Allocation Results Published',
+      message: 'The official internship allocations have been verified and published by the placement cell.',
+      type: 'ALLOCATION',
+      timestamp: new Date().toISOString(),
+      read: false,
+      link: '/student/result',
+    });
+
+    return current;
+  },
+
+  async getLatestResult(): Promise<AlgorithmResult> {
     if (!memoryStore.lastAlgorithmResult) {
-      return memoryStore.recompute();
+      return this.previewAllocation();
     }
     return memoryStore.lastAlgorithmResult;
   },
+
+  async getAllocationRuns(): Promise<AllocationRunRecord[]> {
+    return memoryStore.allocationRuns;
+  },
+
+  async getAuditLogs(): Promise<AuditLog[]> {
+    return memoryStore.auditLogs;
+  },
+
+  async getNotifications(): Promise<NotificationItem[]> {
+    return memoryStore.notifications;
+  },
+
+  async getStudentAllocation(studentId: string): Promise<{
+    published: boolean;
+    allocation: AllocationData | null;
+    unallocatedInfo?: { reason: string } | null;
+  }> {
+    if (memoryStore.publicationStatus !== 'PUBLISHED') {
+      return {
+        published: false,
+        allocation: null,
+      };
+    }
+
+    const alloc = memoryStore.allocations.find((a) => a.studentId === studentId) || null;
+    let unallocInfo = null;
+
+    if (!alloc && memoryStore.lastAlgorithmResult) {
+      const found = memoryStore.lastAlgorithmResult.unallocatedStudents.find(
+        (u) => u.id === studentId
+      );
+      if (found) {
+        unallocInfo = { reason: found.reason };
+      }
+    }
+
+    return {
+      published: true,
+      allocation: alloc,
+      unallocatedInfo: unallocInfo,
+    };
+  },
+
+  // --- Aliases for compatibility ---
+  async getPreferencesByStudent(studentId: string): Promise<PreferenceData[]> {
+    return this.getPreferences(studentId);
+  },
+
+  async saveStudentPreferences(studentId: string, internshipIds: string[]): Promise<PreferenceData[]> {
+    return this.savePreferences(studentId, internshipIds);
+  },
+
+  async getLatestAlgorithmResult(): Promise<AlgorithmResult> {
+    return this.getLatestResult();
+  },
 };
+

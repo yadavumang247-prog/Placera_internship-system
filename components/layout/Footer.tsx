@@ -1,6 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
-import { GraduationCap, Mail, Phone, MapPin } from 'lucide-react';
+import { GraduationCap, Mail, Phone, MapPin, Cpu, ShieldCheck } from 'lucide-react';
 
 export function Footer() {
   return (
@@ -10,30 +10,34 @@ export function Footer() {
           {/* Col 1 - Brand & Identity */}
           <div className="md:col-span-2 space-y-3">
             <div className="flex items-center gap-2.5">
-              <div className="h-8 w-8 rounded-md bg-[#0284C7] flex items-center justify-center text-white shadow-sm">
+              <div className="h-8 w-8 rounded-lg bg-gradient-to-tr from-[#0284C7] to-[#0EA5E9] flex items-center justify-center text-white shadow-sm">
                 <GraduationCap className="h-5 w-5" />
               </div>
-              <span className="font-bold text-[#F8FAFC] text-base">
-                InternMatch Portal
+              <span className="font-extrabold text-[#F8FAFC] text-base tracking-tight">
+                SMART<span className="text-[#38BDF8]">INTERN</span>
               </span>
             </div>
-            <p className="text-xs text-[#94A3B8] font-medium">
-              College Internship &amp; Placement Management Portal
+            <p className="text-xs text-[#94A3B8] font-semibold">
+              Smart Internship Allocation &amp; Placement System
             </p>
             <p className="text-xs text-[#64748B] max-w-md leading-relaxed">
-              A centralized platform for managing internship opportunities, student preferences, eligibility, and internship allocation across academic departments.
+              An institutional placement platform replacing subjective manual assignments with a capacity-constrained Many-to-One Gale-Shapley Stable Matching algorithm, pre-matching eligibility gate, and transparent merit scoring.
             </p>
+            <div className="flex items-center gap-2 pt-1 text-[11px] text-[#38BDF8]">
+              <ShieldCheck className="h-3.5 w-3.5" />
+              <span>Provably Stable • Zero Subjective Bias • Capacity Constrained</span>
+            </div>
           </div>
 
           {/* Col 2 - Quick Links */}
           <div className="space-y-2.5">
             <h4 className="font-semibold text-[#F8FAFC] text-xs uppercase tracking-wider">
-              Quick Navigation
+              Navigation
             </h4>
             <ul className="space-y-1.5 text-xs text-[#94A3B8]">
               <li>
                 <Link href="/" className="hover:text-[#38BDF8] transition-colors">
-                  Portal Home
+                  Home
                 </Link>
               </li>
               <li>
@@ -42,13 +46,19 @@ export function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/login" className="hover:text-[#38BDF8] transition-colors">
-                  Student &amp; Staff Login
+                <Link href="/algorithm-explanation" className="hover:text-[#38BDF8] transition-colors flex items-center gap-1">
+                  <Cpu className="h-3 w-3 text-[#38BDF8]" />
+                  <span>Matching Methodology</span>
                 </Link>
               </li>
               <li>
-                <Link href="/algorithm-explanation" className="hover:text-[#38BDF8] transition-colors">
-                  Allocation Methodology
+                <Link href="/about" className="hover:text-[#38BDF8] transition-colors">
+                  About Placement Cell
+                </Link>
+              </li>
+              <li>
+                <Link href="/login" className="hover:text-[#38BDF8] transition-colors">
+                  Sign In
                 </Link>
               </li>
             </ul>
@@ -57,20 +67,20 @@ export function Footer() {
           {/* Col 3 - Placement Office */}
           <div className="space-y-2.5">
             <h4 className="font-semibold text-[#F8FAFC] text-xs uppercase tracking-wider">
-              Placement Cell
+              Training &amp; Placement Cell
             </h4>
             <div className="space-y-1.5 text-xs text-[#94A3B8]">
               <div className="flex items-center gap-2">
                 <Mail className="h-3.5 w-3.5 text-[#38BDF8] shrink-0" />
-                <span>placement@university.edu</span>
+                <span>placement@smartintern.edu</span>
               </div>
               <div className="flex items-center gap-2">
                 <Phone className="h-3.5 w-3.5 text-[#38BDF8] shrink-0" />
-                <span>+91 22 2576 7000</span>
+                <span>+91 (022) 2576-7890</span>
               </div>
               <div className="flex items-start gap-2">
                 <MapPin className="h-3.5 w-3.5 text-[#38BDF8] shrink-0 mt-0.5" />
-                <span>Training &amp; Placement Office, Admin Block</span>
+                <span>Department of Computer Science &amp; Engineering, Academic Complex</span>
               </div>
             </div>
           </div>
@@ -78,16 +88,16 @@ export function Footer() {
 
         {/* Bottom Strip */}
         <div className="mt-8 pt-6 border-t border-[#1E293B] flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-[#64748B]">
-          <p>© {new Date().getFullYear()} InternMatch Portal. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} SMARTINTERN. Smart Internship Allocation &amp; Placement System.</p>
           <div className="flex items-center gap-6">
-            <Link href="/#about" className="hover:text-[#38BDF8] transition-colors">
-              Privacy Policy
+            <Link href="/about" className="hover:text-[#38BDF8] transition-colors">
+              Academic Governance
             </Link>
-            <Link href="/#about" className="hover:text-[#38BDF8] transition-colors">
-              Placement Guidelines
+            <Link href="/algorithm-explanation" className="hover:text-[#38BDF8] transition-colors">
+              Mathematical Formulations
             </Link>
-            <Link href="/#about" className="hover:text-[#38BDF8] transition-colors">
-              Terms of Service
+            <Link href="/login" className="hover:text-[#38BDF8] transition-colors">
+              Role Access
             </Link>
           </div>
         </div>

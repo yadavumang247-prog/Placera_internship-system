@@ -8,31 +8,43 @@ import {
   ArrowDown,
   Trash2,
   Save,
+  Lock,
+  Unlock,
   Sparkles,
   Award,
   AlertCircle,
   CheckCircle2,
+  XCircle,
   Plus,
-  ArrowRight,
+  GripVertical,
+  Briefcase,
+  MapPin,
+  Clock,
+  ShieldCheck,
 } from 'lucide-react';
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '../../../components/ui/card';
 import { Button } from '../../../components/ui/button';
 import { Badge } from '../../../components/ui/badge';
 import { useToast } from '../../../components/ui/toast';
-import { PreferenceData, InternshipData } from '../../../lib/types';
+import { PreferenceData, InternshipData, StudentData } from '../../../lib/types';
+import { checkEligibility } from '../../../lib/algorithm/eligibilityEngine';
+import { calculateMeritScore } from '../../../lib/algorithm/meritCalculator';
 
 export default function StudentPreferencesPage() {
   const { success, error: showError } = useToast();
   const [preferences, setPreferences] = useState<PreferenceData[]>([]);
   const [allInternships, setAllInternships] = useState<InternshipData[]>([]);
+  const [student, setStudent] = useState<StudentData | null>(null);
+  const [isLocked, setIsLocked] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
 
   const loadData = async () => {
     try {
-      const [prefRes, internRes] = await Promise.all([
+      const [prefRes, internRes, profRes] = await Promise.all([
         fetch('/api/student/preferences').then((r) => r.json()),
         fetch('/api/admin/internships').then((r) => r.json()),
+        fetch('/api/student/profile').then((r) => r.json()),
       ]);
 
       if (prefRes.preferences) {
@@ -40,6 +52,10 @@ export default function StudentPreferencesPage() {
       }
       if (internRes.internships) {
         setAllInternships(internRes.internships);
+      }
+      if (profRes.student) {
+        setStudent(profRes.student);
+        setIsLocked(!!profRes.student.preferencesLocked);
       }
     } catch (err) {
       showError('Failed to load preferences');
@@ -52,39 +68,78 @@ export default function StudentPreferencesPage() {
     loadData();
   }, []);
 
-  // Move Up
+  // Drag and Drop handlers
+  const handleDragStart = (index: number) => {
+    if (isLocked) return;
+    setDraggedIndex(index);
+  };
+
+  const handleDragOver = (e: React.DragEvent, index: number) => {
+    e.preventDefault();
+    if (isLocked || draggedIndex === null || draggedIndex === index) return;
+
+    const updated = [...preferences];
+    const item = updated.splice(draggedIndex, 1)[0];
+    updated.splice(index, 0, item);
+    updated.forEach((p, idx) => (p.rank = idx + 1));
+
+    setDraggedIndex(index);
+    setPreferences(updated);
+  };
+
+  const handleDragEnd = () => {
+    setDraggedIndex(null);
+  };
+
+  // Reorder buttons for accessibility
   const moveUp = (index: number) => {
-    if (index <= 0) return;
+    if (isLocked || index <= 0) return;
     const next = [...preferences];
     const temp = next[index];
     next[index] = next[index - 1];
     next[index - 1] = temp;
-    // Re-index ranks
     next.forEach((p, idx) => (p.rank = idx + 1));
     setPreferences(next);
   };
 
-  // Move Down
   const moveDown = (index: number) => {
-    if (index >= preferences.length - 1) return;
+    if (isLocked || index >= preferences.length - 1) return;
     const next = [...preferences];
     const temp = next[index];
     next[index] = next[index + 1];
     next[index + 1] = temp;
-    // Re-index ranks
     next.forEach((p, idx) => (p.rank = idx + 1));
     setPreferences(next);
   };
 
-  // Remove Preference
   const removePreference = (index: number) => {
+    if (isLocked) return;
     const next = preferences.filter((_, idx) => idx !== index);
     next.forEach((p, idx) => (p.rank = idx + 1));
     setPreferences(next);
   };
 
+  // Add an unranked internship
+  const handleAddInternship = (internshipId: string) => {
+    if (isLocked) return;
+    if (preferences.some((p) => p.internshipId === internshipId)) {
+      showError('This role is already in your preference ranking list.');
+      return;
+    }
+    const intern = allInternships.find((i) => i.id === internshipId);
+    const newPref: PreferenceData = {
+      id: `pref_${Date.now()}`,
+      studentId: student?.id || 'stud_1',
+      internshipId,
+      rank: preferences.length + 1,
+      internship: intern,
+    };
+    setPreferences([...preferences, newPref]);
+  };
+
   // Save Preferences
   const handleSavePreferences = async () => {
+    if (isLocked) return;
     setIsSaving(true);
     try {
       const internshipIds = preferences.map((p) => p.internshipId);
@@ -97,8 +152,7 @@ export default function StudentPreferencesPage() {
       const data = await res.json();
       if (!res.ok) throw new Error(data.error);
 
-      success('Preferences updated and persisted successfully!');
-      loadData();
+      success('Preferences saved successfully!');
     } catch (err: any) {
       showError(err.message || 'Failed to save preferences');
     } finally {
@@ -106,159 +160,290 @@ export default function StudentPreferencesPage() {
     }
   };
 
+  // Lock Preferences
+  const handleLockPreferences = async () => {
+    if (preferences.length === 0) {
+      showError('Please add at least 1 preference before locking.');
+      return;
+    }
+    const confirm = window.confirm(
+      'Are you sure you want to lock your preferences? Once locked, you will not be able to modify rankings or add new tracks.'
+    );
+    if (!confirm) return;
+
+    try {
+      // First ensure current order is saved
+      const internshipIds = preferences.map((p) => p.internshipId);
+      await fetch('/api/student/preferences', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ internshipIds }),
+      });
+
+      // Call lock endpoint
+      const lockRes = await fetch('/api/student/preferences/lock', { method: 'POST' });
+      const lockData = await lockRes.json();
+      if (!lockRes.ok) throw new Error(lockData.error);
+
+      setIsLocked(true);
+      success('Preferences Locked. Your submissions are locked for algorithmic allocation.');
+    } catch (err: any) {
+      showError(err.message || 'Failed to lock preferences');
+    }
+  };
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center min-h-[60vh]">
+        <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-[#0284C7]" />
+      </div>
+    );
+  }
+
+  // Unselected internships available to add
+  const unselectedInternships = allInternships.filter(
+    (i) => !preferences.some((p) => p.internshipId === i.id)
+  );
+
   return (
-    <div className="space-y-8 animate-fade-in">
-      {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-[#1E293B] p-6 rounded-xl border border-[#334155] shadow-lg">
-        <div>
-          <h1 className="text-2xl font-bold text-white tracking-tight flex items-center gap-2">
-            <ListOrdered className="h-6 w-6 text-[#38BDF8]" />
-            Ranked Internship Preferences
-          </h1>
-          <p className="text-xs sm:text-sm text-[#94A3B8] mt-1">
-            Order your top 5 internship preferences. Higher ranked choices receive significantly higher algorithm weight (100 down to 60 pts).
-          </p>
-        </div>
-
-        <div className="flex items-center gap-3">
-          <Link href="/student/internships">
-            <Button variant="outline" size="sm" className="border-[#334155] bg-[#0F172A] text-[#38BDF8] hover:bg-[#1E293B]">
-              <Plus className="h-4 w-4 mr-1" />
-              Browse More Roles
-            </Button>
-          </Link>
-          <Button
-            onClick={handleSavePreferences}
-            isLoading={isSaving}
-            size="sm"
-            className="bg-[#0284C7] hover:bg-[#0369A1] text-white shadow-md shadow-sky-950"
-          >
-            <Save className="h-4 w-4 mr-1.5" />
-            Save Ranked Order
-          </Button>
-        </div>
-      </div>
-
-      {/* Priority Scoring Reference Cards */}
-      <div className="grid grid-cols-2 sm:grid-cols-5 gap-3 text-center">
-        {[
-          { rank: 1, pts: 100, label: 'Highest Priority' },
-          { rank: 2, pts: 90, label: '2nd Choice' },
-          { rank: 3, pts: 80, label: '3rd Choice' },
-          { rank: 4, pts: 70, label: '4th Choice' },
-          { rank: 5, pts: 60, label: '5th Choice' },
-        ].map((item) => (
-          <div
-            key={item.rank}
-            className={`p-3 rounded-xl border text-xs ${
-              item.rank === 1
-                ? 'bg-sky-950/40 border-sky-700/60 text-sky-200'
-                : 'bg-[#1E293B] border-[#334155] text-[#94A3B8]'
-            }`}
-          >
-            <span className="text-[10px] uppercase font-bold text-[#64748B] block">Rank #{item.rank}</span>
-            <span className="text-lg font-bold font-mono text-[#38BDF8] block my-0.5">{item.pts} pts</span>
-            <span className="text-[10px] text-[#94A3B8]">{item.label}</span>
-          </div>
-        ))}
-      </div>
-
-      {/* Interactive Ranking List */}
-      <Card className="border-[#334155] bg-[#1E293B]">
-        <CardHeader className="border-b border-[#334155]">
-          <div className="flex items-center justify-between">
-            <div>
-              <CardTitle className="text-base font-bold text-white">Priority Ranking Order ({preferences.length}/5)</CardTitle>
-              <CardDescription className="text-xs text-[#94A3B8]">
-                Use the up/down arrows to reorder your preferred companies and roles.
-              </CardDescription>
+    <div className="space-y-8 max-w-5xl">
+      {/* Top Header */}
+      <div className="bg-white p-6 sm:p-8 rounded-2xl border border-[#E2E8F0] shadow-sm space-y-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div className="space-y-1">
+            <div className="flex items-center gap-2">
+              <span className="text-xs font-bold uppercase tracking-wider text-[#0284C7] bg-[#E0F2FE] px-2.5 py-0.5 rounded">
+                Gale-Shapley Matching Input
+              </span>
+              {isLocked ? (
+                <span className="inline-flex items-center gap-1 text-xs font-bold text-[#065F46] bg-[#ECFDF5] px-2.5 py-0.5 rounded border border-[#A7F3D0]">
+                  <Lock className="h-3 w-3" /> Preferences Locked
+                </span>
+              ) : (
+                <span className="inline-flex items-center gap-1 text-xs font-bold text-[#D97706] bg-[#FFFBEB] px-2.5 py-0.5 rounded border border-[#FDE68A]">
+                  <Unlock className="h-3 w-3" /> Preferences Open
+                </span>
+              )}
             </div>
-            {preferences.length < 5 && (
-              <Badge variant="warning">
-                {5 - preferences.length} more slots available
+            <h1 className="text-2xl sm:text-3xl font-extrabold text-[#0F172A] tracking-tight">
+              Rank Internship Preferences
+            </h1>
+            <p className="text-xs sm:text-sm text-[#64748B]">
+              Drag and drop or use arrow controls to prioritize opportunities. The Gale-Shapley algorithm will propose to your #1 choice first, continuing down your list only if capacity is full.
+            </p>
+          </div>
+
+          <div className="flex items-center gap-3">
+            {!isLocked ? (
+              <>
+                <Button
+                  onClick={handleSavePreferences}
+                  disabled={isSaving}
+                  variant="outline"
+                  size="sm"
+                  className="border-[#CBD5E1] bg-white text-[#0F172A] shadow-sm"
+                >
+                  <Save className="h-4 w-4 mr-1.5 text-[#0284C7]" />
+                  {isSaving ? 'Saving...' : 'Save Draft'}
+                </Button>
+                <Button
+                  onClick={handleLockPreferences}
+                  size="sm"
+                  className="bg-[#0284C7] hover:bg-[#0369A1] text-white shadow-sm"
+                >
+                  <Lock className="h-4 w-4 mr-1.5" />
+                  Lock Preferences
+                </Button>
+              </>
+            ) : (
+              <Badge className="bg-[#ECFDF5] text-[#065F46] border-[#A7F3D0] px-3 py-1 text-xs font-bold">
+                ✓ Locked for Allocation
               </Badge>
             )}
           </div>
-        </CardHeader>
-        <CardContent className="p-6">
-          {preferences.length === 0 ? (
-            <div className="text-center py-12 text-[#94A3B8] text-sm space-y-3">
-              <AlertCircle className="h-8 w-8 mx-auto text-[#64748B]" />
-              <p>You have not selected any internship preferences yet.</p>
-              <Link href="/student/internships">
-                <Button className="bg-[#0284C7] hover:bg-[#0369A1] text-white">
-                  Browse Internships Directory
-                  <ArrowRight className="h-4 w-4 ml-1.5" />
-                </Button>
-              </Link>
-            </div>
-          ) : (
-            <div className="space-y-3">
-              {preferences.map((pref, index) => {
-                const calculatedPoints = 100 - (index * 10);
-                return (
-                  <div
-                    key={pref.id || pref.internshipId}
-                    className="p-4 rounded-xl border border-[#334155] bg-[#0F172A] hover:border-[#38BDF8]/40 shadow-sm flex items-center justify-between gap-4 transition-all"
-                  >
-                    {/* Rank Badge & Details */}
-                    <div className="flex items-center gap-4">
-                      <div className="h-10 w-10 rounded-xl bg-[#0284C7] text-white flex items-center justify-center font-bold text-base shadow-sm">
-                        #{index + 1}
+        </div>
+
+        {isLocked && (
+          <div className="bg-[#EFF6FF] border border-[#BAE6FD] p-3 rounded-xl text-xs text-[#0369A1] flex items-center gap-2">
+            <Lock className="h-4 w-4 shrink-0" />
+            <span>
+              Your preferences have been finalized and locked. The placement cell is evaluating matching rounds.
+            </span>
+          </div>
+        )}
+      </div>
+
+      {/* Main Ranking List */}
+      <div className="bg-white rounded-2xl border border-[#E2E8F0] shadow-sm overflow-hidden space-y-4 p-6">
+        <div className="flex items-center justify-between border-b border-[#F1F5F9] pb-3 text-xs font-bold text-[#64748B] uppercase tracking-wider">
+          <span>Priority Ranking ({preferences.length} Selected)</span>
+          <span>Matching Metadata</span>
+        </div>
+
+        {preferences.length === 0 ? (
+          <div className="text-center py-12 space-y-3">
+            <ListOrdered className="h-10 w-10 text-[#94A3B8] mx-auto" />
+            <h3 className="font-bold text-base text-[#0F172A]">No Preferences Selected Yet</h3>
+            <p className="text-xs text-[#64748B] max-w-sm mx-auto">
+              Select roles from the directory below to build your priority schedule for Gale-Shapley matching.
+            </p>
+          </div>
+        ) : (
+          <div className="space-y-3">
+            {preferences.map((pref, index) => {
+              const intern = allInternships.find((i) => i.id === pref.internshipId) || pref.internship;
+              const elig = student && intern ? checkEligibility(student, intern) : null;
+              const merit = student && intern ? calculateMeritScore(student, intern) : null;
+
+              return (
+                <div
+                  key={pref.id || pref.internshipId}
+                  draggable={!isLocked}
+                  onDragStart={() => handleDragStart(index)}
+                  onDragOver={(e) => handleDragOver(e, index)}
+                  onDragEnd={handleDragEnd}
+                  className={`flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 rounded-xl border transition-all ${
+                    draggedIndex === index
+                      ? 'border-[#0284C7] bg-[#EFF6FF] shadow-md'
+                      : 'border-[#E2E8F0] bg-[#F8FAFC] hover:bg-white hover:border-[#BAE6FD]'
+                  }`}
+                >
+                  {/* Left: Grip, Rank, Role info */}
+                  <div className="flex items-center gap-3">
+                    {!isLocked && (
+                      <div className="cursor-grab active:cursor-grabbing text-[#94A3B8] hover:text-[#0284C7] p-1">
+                        <GripVertical className="h-5 w-5" />
                       </div>
-                      <div>
-                        <h4 className="font-bold text-white text-base">
-                          {pref.internship?.title || 'Internship Position'}
-                        </h4>
-                        <p className="text-xs text-[#94A3B8]">
-                          {pref.internship?.companyName || 'Company'} • {pref.internship?.location} • Min CGPA: {pref.internship?.minimumCGPA}
-                        </p>
+                    )}
+
+                    <div className="h-8 w-8 rounded-lg bg-[#0284C7] text-white flex items-center justify-center font-extrabold text-sm shrink-0 shadow-sm">
+                      {pref.rank}
+                    </div>
+
+                    <div className="space-y-0.5">
+                      <div className="flex items-center gap-2">
+                        <span className="text-xs font-bold text-[#0284C7] uppercase">
+                          {intern?.companyName}
+                        </span>
+                        <Badge variant="outline" className="text-[10px] border-[#CBD5E1] font-medium">
+                          {intern?.mode}
+                        </Badge>
                       </div>
+                      <h3 className="font-bold text-sm text-[#0F172A]">
+                        {intern?.title}
+                      </h3>
+                      <p className="text-[11px] text-[#64748B]">
+                        {intern?.location.split(',')[0]} • ₹{intern?.stipend.toLocaleString()}/mo • {intern?.duration}
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Right: Match Score, Eligibility, Reorder controls */}
+                  <div className="flex items-center gap-4 justify-between sm:justify-end">
+                    {/* Merit & Eligibility */}
+                    <div className="text-right text-xs">
+                      {merit && (
+                        <div className="font-bold text-[#0284C7]">
+                          Merit: {merit.totalMeritScore.toFixed(1)}/100
+                        </div>
+                      )}
+                      {elig?.isEligible ? (
+                        <span className="inline-flex items-center gap-1 text-[11px] text-[#065F46] font-semibold">
+                          <CheckCircle2 className="h-3 w-3 text-[#10B981]" /> Eligible
+                        </span>
+                      ) : (
+                        <span className="inline-flex items-center gap-1 text-[11px] text-[#991B1B] font-semibold">
+                          <XCircle className="h-3 w-3 text-[#EF4444]" /> Ineligible
+                        </span>
+                      )}
                     </div>
 
                     {/* Controls */}
-                    <div className="flex items-center gap-3">
-                      <div className="text-right hidden sm:block">
-                        <span className="text-[10px] text-[#64748B] uppercase font-semibold block">Algorithm Merit</span>
-                        <span className="font-mono font-bold text-[#38BDF8] text-sm">{calculatedPoints} pts</span>
-                      </div>
-
-                      <div className="flex items-center gap-1 border-l border-[#334155] pl-3">
+                    {!isLocked && (
+                      <div className="flex items-center gap-1">
                         <button
-                          type="button"
-                          disabled={index === 0}
                           onClick={() => moveUp(index)}
-                          className="p-1.5 rounded-lg border border-[#334155] hover:bg-[#1E293B] disabled:opacity-30 disabled:cursor-not-allowed text-[#94A3B8] hover:text-white transition-colors"
-                          title="Move Up"
+                          disabled={index === 0}
+                          className="p-1.5 rounded-lg border border-[#E2E8F0] bg-white text-[#64748B] hover:text-[#0284C7] disabled:opacity-30 disabled:cursor-not-allowed"
+                          title="Move Rank Up"
                         >
-                          <ArrowUp className="h-4 w-4" />
+                          <ArrowUp className="h-3.5 w-3.5" />
                         </button>
                         <button
-                          type="button"
-                          disabled={index === preferences.length - 1}
                           onClick={() => moveDown(index)}
-                          className="p-1.5 rounded-lg border border-[#334155] hover:bg-[#1E293B] disabled:opacity-30 disabled:cursor-not-allowed text-[#94A3B8] hover:text-white transition-colors"
-                          title="Move Down"
+                          disabled={index === preferences.length - 1}
+                          className="p-1.5 rounded-lg border border-[#E2E8F0] bg-white text-[#64748B] hover:text-[#0284C7] disabled:opacity-30 disabled:cursor-not-allowed"
+                          title="Move Rank Down"
                         >
-                          <ArrowDown className="h-4 w-4" />
+                          <ArrowDown className="h-3.5 w-3.5" />
                         </button>
                         <button
-                          type="button"
                           onClick={() => removePreference(index)}
-                          className="p-1.5 rounded-lg border border-rose-900/50 hover:bg-rose-950/40 text-rose-400 transition-colors"
-                          title="Remove Choice"
+                          className="p-1.5 rounded-lg border border-[#E2E8F0] bg-white text-red-500 hover:bg-red-50"
+                          title="Remove from Rankings"
                         >
-                          <Trash2 className="h-4 w-4" />
+                          <Trash2 className="h-3.5 w-3.5" />
                         </button>
                       </div>
-                    </div>
+                    )}
                   </div>
-                );
-              })}
+                </div>
+              );
+            })}
+          </div>
+        )}
+      </div>
+
+      {/* Available Track Picker (Add More Roles) */}
+      {!isLocked && unselectedInternships.length > 0 && (
+        <div className="bg-white p-6 rounded-2xl border border-[#E2E8F0] shadow-sm space-y-4">
+          <div className="flex items-center justify-between border-b border-[#F1F5F9] pb-3">
+            <div>
+              <h3 className="font-bold text-[#0F172A] text-sm">Add Additional Opportunities</h3>
+              <p className="text-xs text-[#64748B]">Click any approved role to append to your ranking list.</p>
             </div>
-          )}
-        </CardContent>
-      </Card>
+            <Link href="/internships">
+              <Button size="sm" variant="outline" className="text-xs border-[#CBD5E1]">
+                Directory View
+              </Button>
+            </Link>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            {unselectedInternships.map((intern) => {
+              const elig = student ? checkEligibility(student, intern) : null;
+
+              return (
+                <div
+                  key={intern.id}
+                  className="p-3.5 rounded-xl border border-[#F1F5F9] bg-[#F8FAFC] hover:bg-white hover:border-[#BAE6FD] transition-all flex items-center justify-between gap-3"
+                >
+                  <div className="space-y-0.5 truncate">
+                    <span className="text-[10px] font-bold text-[#0284C7] uppercase block truncate">
+                      {intern.companyName}
+                    </span>
+                    <h4 className="font-bold text-xs text-[#0F172A] truncate">
+                      {intern.title}
+                    </h4>
+                    <span className="text-[11px] text-[#64748B] block">
+                      Min CGPA: {intern.minimumCGPA.toFixed(1)} • ₹{intern.stipend.toLocaleString()}/mo
+                    </span>
+                  </div>
+
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={() => handleAddInternship(intern.id)}
+                    className="text-xs border-[#0284C7] text-[#0284C7] bg-white shrink-0 hover:bg-[#EFF6FF]"
+                  >
+                    <Plus className="h-3.5 w-3.5 mr-1" /> Add
+                  </Button>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
     </div>
   );
 }

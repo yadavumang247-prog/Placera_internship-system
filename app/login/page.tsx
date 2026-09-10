@@ -85,10 +85,10 @@ function LoginFormContent() {
           </div>
         </Link>
         <h2 className="text-2xl sm:text-3xl font-bold text-white tracking-tight">
-          InternMatch Portal
+          SMARTINTERN
         </h2>
         <p className="mt-1 text-xs sm:text-sm text-[#94A3B8]">
-          College Internship &amp; Placement Management Portal
+          Smart Internship Allocation &amp; Placement System
         </p>
       </div>
 
@@ -99,7 +99,7 @@ function LoginFormContent() {
             <div className="flex items-center justify-between mb-3">
               <span className="text-xs font-semibold uppercase tracking-wider text-[#94A3B8] flex items-center gap-1.5">
                 <KeyRound className="h-3.5 w-3.5 text-[#38BDF8]" />
-                Select Portal Role
+                Select Account Role
               </span>
               <span className="text-[11px] text-[#38BDF8] font-medium">1-Click Auto Fill</span>
             </div>
@@ -184,7 +184,7 @@ function LoginFormContent() {
               className="w-full bg-[#0284C7] hover:bg-[#0369A1] text-white mt-2 font-medium shadow-md shadow-sky-950"
               isLoading={isLoading}
             >
-              Sign In to Portal
+              Sign In
               <ArrowRight className="h-4 w-4 ml-2" />
             </Button>
           </form>
@@ -209,7 +209,7 @@ function LoginFormContent() {
 
         <div className="mt-6 text-center text-xs text-[#94A3B8]">
           <Link href="/" className="hover:text-[#38BDF8] transition-colors">
-            ← Return to Portal Homepage
+            ← Return to Homepage
           </Link>
         </div>
       </div>
@@ -219,7 +219,7 @@ function LoginFormContent() {
 
 export default function LoginPage() {
   return (
-    <Suspense fallback={<div className="min-h-screen flex items-center justify-center bg-[#0B1120] text-[#94A3B8]">Loading portal...</div>}>
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center bg-[#0B1120] text-[#94A3B8]">Loading...</div>}>
       <LoginFormContent />
     </Suspense>
   );

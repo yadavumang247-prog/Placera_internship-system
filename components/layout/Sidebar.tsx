@@ -20,6 +20,11 @@ import {
   Menu,
   X,
   UserCheck,
+  Award,
+  Bell,
+  FileText,
+  ShieldCheck,
+  Cpu,
 } from 'lucide-react';
 import { Role } from '../../lib/types';
 
@@ -51,157 +56,159 @@ export function Sidebar({ userRole, userName, userEmail }: SidebarProps) {
     }
   };
 
-  // ADMIN Navigation: Dashboard, Students, Companies, Internships, Allocation, Analytics, Algorithm, Settings
+  // ADMIN Navigation
   const adminNav: NavItem[] = [
     { name: 'Dashboard', href: '/admin/dashboard', icon: LayoutDashboard },
-    { name: 'Students', href: '/admin/students', icon: Users },
-    { name: 'Companies', href: '/admin/companies', icon: Building2 },
-    { name: 'Internships', href: '/admin/internships', icon: Briefcase },
-    { name: 'Allocation', href: '/admin/allocations', icon: FileSpreadsheet },
-    { name: 'Analytics', href: '/admin/dashboard#analytics', icon: LineChart },
-    { name: 'Algorithm', href: '/admin/algorithm', icon: Sliders },
+    { name: 'Control Center', href: '/admin/algorithm', icon: Sliders },
+    { name: 'Students Directory', href: '/admin/students', icon: Users },
+    { name: 'Corporate Partners', href: '/admin/companies', icon: Building2 },
+    { name: 'Internship Roles', href: '/admin/internships', icon: Briefcase },
+    { name: 'Master Ledger', href: '/admin/allocations', icon: FileSpreadsheet },
+    { name: 'Algorithm Analysis', href: '/algorithm-explanation', icon: Cpu },
     { name: 'Settings', href: '/admin/settings', icon: Settings },
   ];
 
-  // STUDENT Navigation: Dashboard, My Profile, Internships, My Preferences, My Allocation
+  // STUDENT Navigation: Dashboard, My Profile, Internships, Eligibility, My Preferences, Allocation Result, Notifications, Documents
   const studentNav: NavItem[] = [
     { name: 'Dashboard', href: '/student/dashboard', icon: LayoutDashboard },
-    { name: 'My Profile', href: '/student/dashboard#profile', icon: User },
-    { name: 'Internships', href: '/student/internships', icon: Briefcase },
+    { name: 'My Profile', href: '/student/profile', icon: User },
+    { name: 'Browse Internships', href: '/student/internships', icon: Briefcase },
+    { name: 'Eligibility Matrix', href: '/student/eligibility', icon: ShieldCheck },
     { name: 'My Preferences', href: '/student/preferences', icon: ListOrdered },
-    { name: 'My Allocation', href: '/student/dashboard#allocation', icon: CheckCircle2 },
+    { name: 'Allocation Result', href: '/student/result', icon: Award },
+    { name: 'Notifications', href: '/student/notifications', icon: Bell },
+    { name: 'Placement Documents', href: '/student/documents', icon: FileText },
   ];
 
-  // COMPANY Navigation: Dashboard, Company Profile, Internships, Candidates, Allocations
+  // COMPANY Navigation
   const companyNav: NavItem[] = [
-    { name: 'Dashboard', href: '/company/dashboard', icon: LayoutDashboard },
-    { name: 'Company Profile', href: '/company/dashboard#profile', icon: Building2 },
-    { name: 'Internships', href: '/company/dashboard#internships', icon: Briefcase },
-    { name: 'Candidates', href: '/company/dashboard#candidates', icon: UserCheck },
-    { name: 'Allocations', href: '/company/dashboard#allocations', icon: CheckCircle2 },
+    { name: 'Recruiter Overview', href: '/company/dashboard', icon: LayoutDashboard },
+    { name: 'Internship Postings', href: '/company/dashboard#internships', icon: Briefcase },
+    { name: 'Applicant Pool', href: '/company/dashboard#candidates', icon: UserCheck },
+    { name: 'Matched Cohort', href: '/company/dashboard#allocations', icon: CheckCircle2 },
   ];
 
   const navItems: NavItem[] =
     userRole === 'ADMIN' ? adminNav : userRole === 'STUDENT' ? studentNav : companyNav;
 
   const roleLabel =
-    userRole === 'ADMIN' ? 'Placement Admin' : userRole === 'STUDENT' ? 'Student Portal' : 'Recruiter Portal';
+    userRole === 'ADMIN' ? 'Control Center' : userRole === 'STUDENT' ? 'Student Dashboard' : 'Employer Console';
 
   return (
     <>
       {/* Mobile Top Bar */}
       <div className="lg:hidden flex items-center justify-between p-3.5 bg-[#0F172A] border-b border-[#1E293B] sticky top-0 z-30">
         <div className="flex items-center gap-2">
-          <div className="h-7 w-7 rounded bg-[#0284C7] flex items-center justify-center text-white">
+          <div className="h-8 w-8 rounded-lg bg-[#0284C7] flex items-center justify-center text-white">
             <GraduationCap className="h-4 w-4" />
           </div>
-          <span className="font-bold text-[#F8FAFC] text-sm">InternMatch Portal</span>
+          <span className="font-extrabold text-[#F8FAFC] text-sm tracking-tight">
+            SMART<span className="text-[#38BDF8]">INTERN</span>
+          </span>
         </div>
         <button
           onClick={() => setMobileOpen(!mobileOpen)}
-          className="p-1.5 rounded text-[#94A3B8] hover:bg-[#1E293B]"
+          className="p-1.5 rounded-md text-[#94A3B8] hover:text-white hover:bg-[#1E293B]"
         >
           {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
         </button>
       </div>
 
-      {/* Mobile Overlay */}
-      {mobileOpen && (
-        <div
-          className="fixed inset-0 bg-black/70 z-40 lg:hidden"
-          onClick={() => setMobileOpen(false)}
-        />
-      )}
-
-      {/* Main Sidebar */}
+      {/* Sidebar Container */}
       <aside
-        className={`fixed top-0 bottom-0 left-0 z-40 w-60 bg-[#0F172A] text-[#F8FAFC] flex flex-col justify-between transition-transform duration-200 ease-in-out border-r border-[#1E293B] ${
-          mobileOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
+        className={`fixed inset-y-0 left-0 z-40 w-64 bg-[#0F172A] border-r border-[#1E293B] flex flex-col justify-between transition-transform duration-200 lg:translate-x-0 ${
+          mobileOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
       >
-        {/* Header */}
-        <div className="p-4 border-b border-[#1E293B]">
-          <Link href="/" className="flex items-center gap-2.5">
-            <div className="h-8 w-8 rounded bg-[#0284C7] flex items-center justify-center text-white shrink-0 shadow-sm">
-              <GraduationCap className="h-5 w-5" />
-            </div>
-            <div>
-              <div className="font-bold text-[#F8FAFC] text-sm tracking-tight leading-tight">
-                InternMatch Portal
+        {/* Top Header */}
+        <div>
+          <div className="p-5 border-b border-[#1E293B]">
+            <Link href="/" className="flex items-center gap-2.5">
+              <div className="h-9 w-9 rounded-lg bg-gradient-to-tr from-[#0284C7] to-[#0EA5E9] flex items-center justify-center text-white shadow-sm">
+                <GraduationCap className="h-5 w-5" />
               </div>
-              <div className="text-[10px] text-[#94A3B8]">Placement Management</div>
+              <div>
+                <span className="font-extrabold text-white text-base tracking-tight block leading-tight">
+                  SMART<span className="text-[#38BDF8]">INTERN</span>
+                </span>
+                <span className="text-[10px] text-[#38BDF8] font-semibold uppercase tracking-wider block">
+                  {roleLabel}
+                </span>
+              </div>
+            </Link>
+          </div>
+
+          {/* User Profile Summary */}
+          <div className="p-4 mx-3 my-3 rounded-xl bg-[#1E293B]/70 border border-[#334155]/60">
+            <div className="text-xs font-bold text-white truncate">{userName}</div>
+            <div className="text-[11px] text-[#94A3B8] truncate">{userEmail}</div>
+            <div className="flex items-center gap-1.5 mt-2">
+              <span className="inline-block h-2 w-2 rounded-full bg-[#10B981]"></span>
+              <span className="text-[10px] uppercase font-bold tracking-wider text-[#38BDF8]">
+                {userRole}
+              </span>
             </div>
+          </div>
+
+          {/* Navigation Links */}
+          <nav className="px-3 py-2 space-y-1">
+            {navItems.map((item) => {
+              const Icon = item.icon;
+              const isActive = pathname === item.href;
+
+              return (
+                <Link
+                  key={item.name}
+                  href={item.href}
+                  onClick={() => setMobileOpen(false)}
+                  className={`flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-semibold transition-all ${
+                    isActive
+                      ? 'bg-[#0284C7] text-white shadow-sm shadow-sky-950/40'
+                      : 'text-[#94A3B8] hover:text-white hover:bg-[#1E293B]'
+                  }`}
+                >
+                  <div className="flex items-center gap-2.5">
+                    <Icon className={`h-4 w-4 ${isActive ? 'text-white' : 'text-[#38BDF8]'}`} />
+                    <span>{item.name}</span>
+                  </div>
+                  {item.badge && (
+                    <span className="text-[10px] px-1.5 py-0.5 rounded bg-sky-950 text-[#38BDF8] border border-[#0284C7]/40">
+                      {item.badge}
+                    </span>
+                  )}
+                </Link>
+              );
+            })}
+          </nav>
+        </div>
+
+        {/* Footer & Logout */}
+        <div className="p-3 border-t border-[#1E293B] space-y-2">
+          <Link
+            href="/"
+            className="flex items-center gap-2 px-3 py-2 rounded-xl text-xs text-[#94A3B8] hover:text-white hover:bg-[#1E293B] font-medium"
+          >
+            <Briefcase className="h-4 w-4 text-[#64748B]" />
+            <span>Public Home</span>
           </Link>
-
-          <div className="mt-3 pt-2.5 border-t border-[#1E293B] flex items-center justify-between">
-            <span className="text-[11px] font-semibold text-[#94A3B8]">{roleLabel}</span>
-            <span className="text-[10px] font-mono uppercase tracking-wider px-1.5 py-0.5 rounded bg-[#0284C7]/20 text-[#38BDF8] border border-[#0284C7]/30 font-semibold">
-              {userRole}
-            </span>
-          </div>
-        </div>
-
-        {/* Navigation Items */}
-        <div className="flex-1 px-3 py-3 space-y-1 overflow-y-auto">
-          {navItems.map((item) => {
-            const isActive = pathname === item.href;
-            const Icon = item.icon;
-            return (
-              <Link
-                key={item.name}
-                href={item.href}
-                onClick={() => setMobileOpen(false)}
-                className={`flex items-center justify-between px-3 py-2 rounded-md text-xs font-medium transition-colors ${
-                  isActive
-                    ? 'bg-[#1E293B] text-[#38BDF8] border-l-2 border-[#38BDF8] font-semibold'
-                    : 'text-[#94A3B8] hover:text-[#F8FAFC] hover:bg-[#1E293B]/60'
-                }`}
-              >
-                <div className="flex items-center gap-2.5">
-                  <Icon
-                    className={`h-4 w-4 ${
-                      isActive ? 'text-[#38BDF8]' : 'text-[#64748B]'
-                    }`}
-                  />
-                  <span>{item.name}</span>
-                </div>
-                {item.badge && (
-                  <span
-                    className={`text-[10px] px-1.5 py-0.2 rounded ${
-                      isActive
-                        ? 'bg-[#0284C7]/30 text-[#38BDF8]'
-                        : 'bg-[#1E293B] text-[#94A3B8]'
-                    }`}
-                  >
-                    {item.badge}
-                  </span>
-                )}
-              </Link>
-            );
-          })}
-        </div>
-
-        {/* User Profile & Logout */}
-        <div className="p-3 border-t border-[#1E293B] bg-[#0B1120]">
-          <div className="flex items-center gap-2.5 mb-2.5">
-            <div className="h-7 w-7 rounded-full bg-[#0284C7]/20 text-[#38BDF8] border border-[#0284C7]/40 flex items-center justify-center font-bold text-xs shrink-0">
-              {userName.charAt(0)}
-            </div>
-            <div className="flex-1 min-w-0">
-              <p className="text-xs font-semibold text-[#F8FAFC] truncate">{userName}</p>
-              <p className="text-[10px] text-[#94A3B8] truncate">{userEmail}</p>
-            </div>
-          </div>
 
           <button
             onClick={handleLogout}
-            className="w-full flex items-center justify-center gap-1.5 px-2.5 py-1.5 text-xs font-medium text-[#F87171] bg-[#1E293B] hover:bg-[#EF4444]/20 border border-[#EF4444]/30 rounded transition-colors"
+            className="w-full flex items-center gap-2 px-3 py-2 rounded-xl text-xs text-[#EF4444] hover:bg-red-500/10 font-semibold transition-colors"
           >
-            <LogOut className="h-3.5 w-3.5" />
+            <LogOut className="h-4 w-4" />
             <span>Sign Out</span>
           </button>
         </div>
       </aside>
+
+      {/* Backdrop for mobile */}
+      {mobileOpen && (
+        <div
+          onClick={() => setMobileOpen(false)}
+          className="fixed inset-0 bg-black/60 z-30 lg:hidden backdrop-blur-sm"
+        />
+      )}
     </>
   );
 }

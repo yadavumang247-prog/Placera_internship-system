@@ -156,7 +156,7 @@ export default function AdminAllocationsPage() {
               Run Algorithm
             </Button>
           </Link>
-          <a href="/api/admin/allocations/export" download>
+          <a href="/api/reports/download?format=csv" download>
             <Button size="sm" className="bg-[#059669] hover:bg-[#047857] text-white">
               <Download className="h-4 w-4 mr-1.5" />
               Export Full CSV
@@ -453,27 +453,28 @@ export default function AdminAllocationsPage() {
                   </tr>
                 ) : (
                   filteredUnallocated.map((u) => {
+                    const cgpaVal = typeof u.cgpa === 'number' ? u.cgpa : 0;
                     const reason =
-                      u.cgpa < 7.0
+                      cgpaVal < 7.0
                         ? 'Minimum CGPA cutoff unmet on submitted preferences'
                         : 'Seat quota capacity reached on ranked preferences';
 
                     return (
                       <tr key={u.id} className="hover:bg-[#334155]/40 transition-colors">
                         <td className="py-3.5 px-4 font-mono font-semibold text-[#38BDF8]">
-                          {u.rollNumber}
+                          {u.rollNumber || 'N/A'}
                         </td>
                         <td className="py-3.5 px-4">
                           <div className="font-bold text-[#F8FAFC]">{u.name}</div>
                           <span className="text-[11px] text-[#94A3B8]">{u.email}</span>
                         </td>
-                        <td className="py-3.5 px-4 text-[#CBD5E1]">{u.branch}</td>
+                        <td className="py-3.5 px-4 text-[#CBD5E1]">{u.branch || 'General'}</td>
                         <td className="py-3.5 px-4 font-mono font-bold text-[#F87171]">
-                          {u.cgpa.toFixed(2)}
+                          {cgpaVal.toFixed(2)}
                         </td>
                         <td className="py-3.5 px-4 max-w-[200px]">
                           <div className="flex flex-wrap gap-1">
-                            {u.skills.slice(0, 3).map((sk) => (
+                            {(u.skills || []).slice(0, 3).map((sk) => (
                               <span
                                 key={sk}
                                 className="text-[10px] bg-[#0F172A] text-[#94A3B8] border border-[#334155] px-1.5 py-0.5 rounded"

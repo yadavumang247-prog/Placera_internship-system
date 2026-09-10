@@ -5,14 +5,18 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import {
   GraduationCap,
-  Bell,
+  Cpu,
   User,
   LogOut,
   LogIn,
   Menu,
   X,
+  Sparkles,
+  Award,
+  BookOpen,
 } from 'lucide-react';
 import { Button } from '../ui/button';
+import { Badge } from '../ui/badge';
 import { UserSession } from '../../lib/types';
 
 export function Navbar() {
@@ -52,25 +56,27 @@ export function Navbar() {
   };
 
   return (
-    <header className="sticky top-0 z-40 w-full bg-[#0F172A] border-b border-[#1E293B]">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-15 flex items-center justify-between py-2.5">
+    <header className="sticky top-0 z-40 w-full bg-[#0F172A] border-b border-[#1E293B] shadow-sm backdrop-blur-md bg-opacity-95">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
         {/* Brand */}
         <div className="flex items-center gap-8">
-          <Link href="/" className="flex items-center gap-2.5 group">
-            <div className="h-9 w-9 rounded-md bg-[#0284C7] flex items-center justify-center text-white shadow-sm">
-              <GraduationCap className="h-5 w-5" />
+          <Link href="/" className="flex items-center gap-3 group">
+            <div className="h-10 w-10 rounded-lg bg-gradient-to-tr from-[#0284C7] to-[#0EA5E9] flex items-center justify-center text-white shadow-md shadow-sky-950/40">
+              <GraduationCap className="h-6 w-6" />
             </div>
             <div>
-              <span className="font-bold text-[#F8FAFC] text-base tracking-tight block leading-tight">
-                InternMatch Portal
-              </span>
-              <span className="text-[11px] text-[#94A3B8] block">
-                College Internship &amp; Placement
+              <div className="flex items-center gap-1.5">
+                <span className="font-extrabold text-[#F8FAFC] text-lg tracking-tight block leading-tight">
+                  SMART<span className="text-[#38BDF8]">INTERN</span>
+                </span>
+              </div>
+              <span className="text-[11px] text-[#94A3B8] block leading-none mt-0.5">
+                Smart Internship Allocation System
               </span>
             </div>
           </Link>
 
-          {/* Nav Links - Desktop */}
+          {/* Desktop Nav Links */}
           <nav className="hidden md:flex items-center gap-6 text-sm font-medium text-[#94A3B8]">
             <Link href="/" className="hover:text-[#38BDF8] transition-colors">
               Home
@@ -78,153 +84,184 @@ export function Navbar() {
             <Link href="/internships" className="hover:text-[#38BDF8] transition-colors">
               Internships
             </Link>
+            <Link
+              href="/algorithm-explanation"
+              className="flex items-center gap-1.5 text-[#38BDF8] hover:text-[#7DD3FC] transition-colors"
+            >
+              <Cpu className="h-4 w-4" />
+              Algorithm
+            </Link>
+            <Link href="/about" className="hover:text-[#38BDF8] transition-colors">
+              About
+            </Link>
 
             {user && (
               <>
                 {user.role === 'ADMIN' && (
                   <>
-                    <Link href="/admin/students" className="hover:text-[#38BDF8] transition-colors">
-                      Students
+                    <span className="text-[#334155]">|</span>
+                    <Link href="/admin/dashboard" className="text-white hover:text-[#38BDF8] transition-colors font-semibold">
+                      Control Center
                     </Link>
-                    <Link href="/admin/companies" className="hover:text-[#38BDF8] transition-colors">
-                      Companies
+                    <Link href="/admin/algorithm" className="hover:text-[#38BDF8] transition-colors">
+                      Allocation Engine
                     </Link>
                     <Link href="/admin/allocations" className="hover:text-[#38BDF8] transition-colors">
-                      Allocations
+                      Ledger
                     </Link>
                   </>
                 )}
 
                 {user.role === 'STUDENT' && (
                   <>
+                    <span className="text-[#334155]">|</span>
+                    <Link href="/student/dashboard" className="text-white hover:text-[#38BDF8] transition-colors font-semibold">
+                      Dashboard
+                    </Link>
                     <Link href="/student/preferences" className="hover:text-[#38BDF8] transition-colors">
                       My Preferences
                     </Link>
-                    <Link href="/student/dashboard" className="hover:text-[#38BDF8] transition-colors">
-                      My Allocation
+                    <Link href="/student/result" className="hover:text-[#38BDF8] transition-colors">
+                      Allocation Result
                     </Link>
                   </>
                 )}
 
                 {user.role === 'COMPANY' && (
                   <>
-                    <Link href="/company/dashboard" className="hover:text-[#38BDF8] transition-colors">
-                      Candidates
-                    </Link>
-                    <Link href="/company/dashboard" className="hover:text-[#38BDF8] transition-colors">
-                      Allocations
+                    <span className="text-[#334155]">|</span>
+                    <Link href="/company/dashboard" className="text-white hover:text-[#38BDF8] transition-colors font-semibold">
+                      Recruiter Dashboard
                     </Link>
                   </>
                 )}
               </>
             )}
-
-            <Link href="/#about" className="hover:text-[#38BDF8] transition-colors">
-              About
-            </Link>
           </nav>
         </div>
 
-        {/* Right Side */}
+        {/* Right Section / Auth */}
         <div className="hidden md:flex items-center gap-3">
           {user ? (
             <div className="flex items-center gap-3">
-              <button
-                type="button"
-                className="p-1.5 text-[#94A3B8] hover:text-[#F8FAFC] hover:bg-[#1E293B] rounded-md transition-colors relative"
-                title="Notifications"
-              >
-                <Bell className="h-4 w-4" />
-                <span className="absolute top-1 right-1 h-2 w-2 rounded-full bg-[#34D399]" />
-              </button>
+              <div className="text-right">
+                <div className="text-xs font-semibold text-white leading-tight">{user.name}</div>
+                <div className="flex items-center justify-end gap-1 mt-0.5">
+                  <span className="inline-block h-1.5 w-1.5 rounded-full bg-[#10B981]"></span>
+                  <span className="text-[10px] font-medium text-[#94A3B8] uppercase tracking-wider">
+                    {user.role}
+                  </span>
+                </div>
+              </div>
 
-              <Link
-                href={getDashboardHref()}
-                className="flex items-center gap-2 px-2.5 py-1.5 rounded-md hover:bg-[#1E293B] border border-transparent hover:border-[#334155] transition-all"
-              >
-                <div className="h-7 w-7 rounded-full bg-[#0284C7]/20 text-[#38BDF8] border border-[#0284C7]/40 flex items-center justify-center font-bold text-xs">
-                  {user.name.charAt(0)}
-                </div>
-                <div className="text-left">
-                  <span className="text-xs font-semibold text-[#F8FAFC] block leading-tight">
-                    {user.name}
-                  </span>
-                  <span className="text-[10px] text-[#94A3B8] block font-mono capitalize">
-                    {user.role.toLowerCase()}
-                  </span>
-                </div>
+              <Link href={getDashboardHref()}>
+                <Button size="sm" className="bg-[#0284C7] hover:bg-[#0369A1] text-white shadow-sm">
+                  Dashboard
+                </Button>
               </Link>
 
-              <button
+              <Button
+                size="sm"
+                variant="outline"
                 onClick={handleLogout}
-                className="p-1.5 text-[#94A3B8] hover:text-[#F87171] hover:bg-[#EF4444]/10 rounded-md transition-colors"
-                title="Logout"
+                className="border-[#334155] bg-transparent text-[#94A3B8] hover:text-white hover:bg-[#1E293B]"
               >
                 <LogOut className="h-4 w-4" />
-              </button>
+              </Button>
             </div>
           ) : (
-            <Link href="/login">
-              <Button size="sm" className="bg-[#0284C7] hover:bg-[#0369A1] text-white">
-                <LogIn className="h-4 w-4 mr-1.5" />
-                Portal Login
-              </Button>
-            </Link>
+            <div className="flex items-center gap-2.5">
+              <Link href="/login">
+                <Button
+                  size="sm"
+                  variant="outline"
+                  className="border-[#334155] bg-transparent text-[#94A3B8] hover:text-white hover:bg-[#1E293B]"
+                >
+                  <LogIn className="h-4 w-4 mr-1.5" />
+                  Sign In
+                </Button>
+              </Link>
+            </div>
           )}
         </div>
 
         {/* Mobile menu button */}
-        <div className="flex md:hidden items-center gap-2">
-          <button
+        <div className="md:hidden flex items-center">
+          <Button
+            size="sm"
+            variant="ghost"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="p-2 rounded-md text-[#94A3B8] hover:bg-[#1E293B]"
+            className="text-[#94A3B8] hover:text-white"
           >
-            {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-          </button>
+            {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+          </Button>
         </div>
       </div>
 
-      {/* Mobile Menu Dropdown */}
+      {/* Mobile menu dropdown */}
       {mobileMenuOpen && (
-        <div className="md:hidden border-t border-[#1E293B] bg-[#0F172A] px-4 pt-2 pb-4 space-y-2">
+        <div className="md:hidden bg-[#0B1329] border-b border-[#1E293B] px-4 pt-3 pb-5 space-y-3">
           <Link
             href="/"
             onClick={() => setMobileMenuOpen(false)}
-            className="block py-2 text-sm font-medium text-[#CBD5E1] hover:text-[#38BDF8]"
+            className="block text-[#F8FAFC] font-medium py-1.5"
           >
             Home
           </Link>
           <Link
             href="/internships"
             onClick={() => setMobileMenuOpen(false)}
-            className="block py-2 text-sm font-medium text-[#CBD5E1] hover:text-[#38BDF8]"
+            className="block text-[#94A3B8] font-medium py-1.5"
           >
             Internships
           </Link>
+          <Link
+            href="/algorithm-explanation"
+            onClick={() => setMobileMenuOpen(false)}
+            className="block text-[#38BDF8] font-medium py-1.5"
+          >
+            Algorithm
+          </Link>
+          <Link
+            href="/about"
+            onClick={() => setMobileMenuOpen(false)}
+            className="block text-[#94A3B8] font-medium py-1.5"
+          >
+            About
+          </Link>
+
           {user ? (
-            <>
+            <div className="pt-3 border-t border-[#1E293B] space-y-2">
+              <div className="text-xs text-[#94A3B8]">
+                Signed in as <span className="text-white font-semibold">{user.name}</span> ({user.role})
+              </div>
               <Link
                 href={getDashboardHref()}
                 onClick={() => setMobileMenuOpen(false)}
-                className="block py-2 text-sm font-medium text-[#38BDF8]"
+                className="block text-[#38BDF8] font-medium py-1.5"
               >
-                Dashboard ({user.name})
+                Go to Dashboard
               </Link>
-              <button
-                onClick={handleLogout}
-                className="block w-full text-left py-2 text-sm font-medium text-[#F87171]"
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  handleLogout();
+                }}
+                className="w-full border-[#334155] text-[#94A3B8]"
               >
-                Logout
-              </button>
-            </>
+                Sign Out
+              </Button>
+            </div>
           ) : (
-            <Link
-              href="/login"
-              onClick={() => setMobileMenuOpen(false)}
-              className="block py-2 text-sm font-medium text-[#38BDF8]"
-            >
-              Sign In to Portal
-            </Link>
+            <div className="pt-3 border-t border-[#1E293B]">
+              <Link href="/login" onClick={() => setMobileMenuOpen(false)}>
+                <Button size="sm" className="w-full bg-[#0284C7] text-white">
+                  Sign In
+                </Button>
+              </Link>
+            </div>
           )}
         </div>
       )}

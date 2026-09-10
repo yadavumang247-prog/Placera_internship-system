@@ -2,7 +2,9 @@ export type Role = 'ADMIN' | 'STUDENT' | 'COMPANY';
 
 export type Mode = 'REMOTE' | 'HYBRID' | 'ONSITE';
 
-export type AllocationStatus = 'ALLOCATED' | 'ACCEPTED' | 'REJECTED';
+export type AllocationStatus = 'ALLOCATED' | 'ACCEPTED' | 'REJECTED' | 'UNALLOCATED';
+
+export type PublicationStatus = 'DRAFT' | 'PREVIEWED' | 'PUBLISHED';
 
 export interface UserSession {
   id: string;
@@ -21,11 +23,16 @@ export interface StudentData {
   rollNumber: string;
   branch: string;
   year: number;
+  graduationYear?: number;
   cgpa: number;
   skills: string[];
+  experienceMonths?: number;
+  experienceSummary?: string;
   resumeUrl?: string | null;
+  preferencesLocked?: boolean;
   preferences?: PreferenceData[];
   allocation?: AllocationData | null;
+  createdAt?: string | Date;
 }
 
 export interface CompanyData {
@@ -35,7 +42,10 @@ export interface CompanyData {
   description: string;
   logoUrl?: string | null;
   website?: string | null;
+  industry?: string;
+  location?: string;
   internships?: InternshipData[];
+  createdAt?: string | Date;
 }
 
 export interface InternshipData {
@@ -50,18 +60,31 @@ export interface InternshipData {
   stipend: number;
   duration: string;
   minimumCGPA: number;
+  allowedBranches: string[];
   requiredSkills: string[];
   totalSeats: number;
   availableSeats: number;
   applicationDeadline: string | Date;
+  status?: 'ACTIVE' | 'CLOSED' | 'ARCHIVED';
+  createdAt?: string | Date;
 }
 
 export interface PreferenceData {
   id: string;
   studentId: string;
   internshipId: string;
-  rank: number;
+  rank: number; // 1-based ranking (1 is highest priority)
   internship?: InternshipData;
+}
+
+export interface MeritScoreBreakdown {
+  skillScore: number;
+  cgpaScore: number;
+  experienceScore: number;
+  branchScore: number;
+  totalMeritScore: number;
+  matchedSkills: string[];
+  requiredSkills: string[];
 }
 
 export interface AllocationData {
@@ -78,14 +101,24 @@ export interface AllocationData {
   preferenceRank: number;
   skillMatchScore: number;
   cgpaScore: number;
+  experienceScore?: number;
+  branchScore?: number;
+  meritBreakdown?: MeritScoreBreakdown;
+  rankWithinQuota?: number;
+  totalSeats?: number;
   status: AllocationStatus;
   allocatedAt: string | Date;
+  explanationReasons?: string[];
 }
 
 export interface AlgorithmWeights {
-  preferenceWeight: number; // e.g. 0.40
-  cgpaWeight: number;       // e.g. 0.30
-  skillWeight: number;      // e.g. 0.30
+  // Legacy compatibility weights
+  preferenceWeight?: number;
+  // Standard AoA Merit weights (Summing to 1.0)
+  skillWeight: number;       // default 0.40 (40%)
+  cgpaWeight: number;        // default 0.30 (30%)
+  experienceWeight: number;  // default 0.20 (20%)
+  branchWeight: number;      // default 0.10 (10%)
   minSkillMatchRatio?: number; // default 0.0 (allow partial match)
 }
 
@@ -102,6 +135,8 @@ export interface CandidatePair {
   preferenceScore: number;
   cgpaScore: number;
   skillMatchScore: number;
+  experienceScore?: number;
+  branchScore?: number;
   matchedSkills: string[];
   requiredSkills: string[];
   totalScore: number;
@@ -109,7 +144,48 @@ export interface CandidatePair {
   rejectionReason?: string;
 }
 
+export interface ProposalStep {
+  stepNumber: number;
+  round: number;
+  studentId: string;
+  studentName: string;
+  internshipId: string;
+  internshipTitle: string;
+  companyName: string;
+  action: 'PROPOSE' | 'ACCEPT_PROVISIONALLY' | 'REJECT_EXCESS' | 'HELD';
+  meritScore: number;
+  displacedStudentName?: string;
+  message: string;
+}
+
+export interface AlgorithmStats {
+  totalStudents: number;
+  eligibleStudents: number;
+  totalInternships: number;
+  totalSeats: number;
+  totalEligiblePairs: number;
+  eligiblePreferenceRelationships: number;
+  totalProposals: number;
+  totalAllocated: number;
+  totalUnallocated: number;
+  allocationRate: number; // percentage
+  seatUtilization: number; // percentage
+  averageScore: number;
+  averagePreferenceRank: number;
+  executionTimeMs: number;
+  firstPreferenceAllocatedCount: number;
+  secondPreferenceAllocatedCount: number;
+  thirdPreferenceAllocatedCount: number;
+  topThreePreferencesAllocatedCount: number;
+  stabilityVerified: boolean;
+  blockingPairsCount: number;
+  branchDistribution: Record<string, number>;
+  companyUtilization: Record<string, { filled: number; total: number }>;
+}
+
 export interface AlgorithmResult {
+  algorithmName: string;
+  algorithmVersion: string;
   allocations: AllocationData[];
   unallocatedStudents: {
     id: string;
@@ -118,24 +194,52 @@ export interface AlgorithmResult {
     branch: string;
     cgpa: number;
     reason: string;
+    unmetPreferences?: {
+      rank: number;
+      internshipTitle: string;
+      companyName: string;
+      reason: string;
+    }[];
   }[];
   candidatePairs: CandidatePair[];
-  stats: {
-    totalStudents: number;
-    totalInternships: number;
-    totalSeats: number;
-    totalEligiblePairs: number;
-    totalAllocated: number;
-    totalUnallocated: number;
-    allocationRate: number; // percentage
-    averageScore: number;
-    averagePreferenceRank: number;
-    executionTimeMs: number;
-    firstPreferenceAllocatedCount: number;
-    topThreePreferencesAllocatedCount: number;
-    branchDistribution: Record<string, number>;
-    companyUtilization: Record<string, { filled: number; total: number }>;
-  };
+  steps?: ProposalStep[];
+  stats: AlgorithmStats;
   weights: AlgorithmWeights;
   timestamp: string;
+  published: boolean;
+}
+
+export interface AllocationRunRecord {
+  id: string;
+  algorithmName: string;
+  algorithmVersion: string;
+  status: PublicationStatus;
+  startedAt: string;
+  completedAt: string;
+  executionTimeMs: number;
+  totalStudents: number;
+  totalAllocated: number;
+  totalProposals: number;
+  weights: AlgorithmWeights;
+  metrics: AlgorithmStats;
+  executedBy: string;
+  publishedAt?: string | null;
+}
+
+export interface AuditLog {
+  id: string;
+  action: string;
+  performedBy: string;
+  details: string;
+  timestamp: string;
+}
+
+export interface NotificationItem {
+  id: string;
+  title: string;
+  message: string;
+  type: 'INFO' | 'SUCCESS' | 'WARNING' | 'ALLOCATION';
+  timestamp: string;
+  read: boolean;
+  link?: string;
 }

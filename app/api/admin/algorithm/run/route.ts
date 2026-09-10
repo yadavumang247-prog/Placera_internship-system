@@ -11,27 +11,23 @@ export async function POST(request: Request) {
     }
 
     const body = await request.json().catch(() => ({}));
-    const weights: Partial<AlgorithmWeights> = {};
+    const weights: AlgorithmWeights = {
+      skillWeight: typeof body.skillWeight === 'number' ? body.skillWeight : 0.40,
+      cgpaWeight: typeof body.cgpaWeight === 'number' ? body.cgpaWeight : 0.30,
+      experienceWeight: typeof body.experienceWeight === 'number' ? body.experienceWeight : 0.20,
+      branchWeight: typeof body.branchWeight === 'number' ? body.branchWeight : 0.10,
+      minSkillMatchRatio: typeof body.minSkillMatchRatio === 'number' ? body.minSkillMatchRatio : 0.0,
+      preferenceWeight: typeof body.preferenceWeight === 'number' ? body.preferenceWeight : 0.40,
+    };
 
-    if (typeof body.preferenceWeight === 'number') {
-      weights.preferenceWeight = body.preferenceWeight;
-    }
-    if (typeof body.cgpaWeight === 'number') {
-      weights.cgpaWeight = body.cgpaWeight;
-    }
-    if (typeof body.skillWeight === 'number') {
-      weights.skillWeight = body.skillWeight;
-    }
-    if (typeof body.minSkillMatchRatio === 'number') {
-      weights.minSkillMatchRatio = body.minSkillMatchRatio;
-    }
-
-    const result = await dataService.runAllocation(weights);
+    const algorithmType = body.algorithmType === 'GREEDY' ? 'GREEDY' : 'GALE_SHAPLEY';
+    const result = await dataService.runAllocation(weights, algorithmType, session.name || 'Placement Admin');
 
     return NextResponse.json({
       success: true,
       message: 'Algorithm execution completed successfully',
       result,
+      publicationStatus: dataService.getPublicationStatus(),
     });
   } catch (err: any) {
     return NextResponse.json(
@@ -48,8 +44,13 @@ export async function GET() {
       return NextResponse.json({ error: 'Unauthorized.' }, { status: 403 });
     }
 
-    const result = await dataService.getLatestAlgorithmResult();
-    return NextResponse.json({ success: true, result });
+    const result = await dataService.getLatestResult();
+    return NextResponse.json({
+      success: true,
+      result,
+      publicationStatus: dataService.getPublicationStatus(),
+      isPreferencesLocked: dataService.isPreferencesLocked(),
+    });
   } catch (err: any) {
     return NextResponse.json({ error: err.message }, { status: 500 });
   }

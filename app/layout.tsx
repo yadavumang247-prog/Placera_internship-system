@@ -3,13 +3,13 @@ import './globals.css';
 import { ToastProvider } from '../components/ui/toast';
 
 export const metadata: Metadata = {
-  title: 'InternMatch Portal | College Internship & Placement Management Portal',
+  title: 'SMARTINTERN | Smart Internship Allocation & Placement System',
   description:
     'A centralized platform for managing internship opportunities, student preferences, eligibility and internship allocation.',
   keywords: [
-    'InternMatch Portal',
-    'College Internship Portal',
-    'Placement Management Portal',
+    'SMARTINTERN',
+    'Smart Internship Allocation',
+    'Placement Management System',
     'Campus Placements',
     'Internship Allocation',
     'Student Career Services',
