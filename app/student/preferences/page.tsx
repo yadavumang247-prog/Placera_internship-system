@@ -119,40 +119,47 @@ export default function StudentPreferencesPage() {
     setPreferences(next);
   };
 
-  // Add an unranked internship
   const handleAddInternship = (internshipId: string) => {
     if (isLocked) return;
     if (preferences.some((p) => p.internshipId === internshipId)) {
-      showError('This role is already in your preference ranking list.');
+      showError('This internship is already in your preference list');
       return;
     }
-    const intern = allInternships.find((i) => i.id === internshipId);
+
+    const nextRank = preferences.length + 1;
+    const targetIntern = allInternships.find((i) => i.id === internshipId);
+
     const newPref: PreferenceData = {
-      id: `pref_${Date.now()}`,
-      studentId: student?.id || 'stud_1',
+      id: `temp_${Date.now()}`,
+      studentId: student?.id || '',
       internshipId,
-      rank: preferences.length + 1,
-      internship: intern,
+      rank: nextRank,
+      internship: targetIntern,
     };
+
     setPreferences([...preferences, newPref]);
+    success('Added to your ranked preferences');
   };
 
-  // Save Preferences
   const handleSavePreferences = async () => {
     if (isLocked) return;
     setIsSaving(true);
     try {
-      const internshipIds = preferences.map((p) => p.internshipId);
       const res = await fetch('/api/student/preferences', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ internshipIds }),
+        body: JSON.stringify({
+          preferences: preferences.map((p) => ({
+            internshipId: p.internshipId,
+            rank: p.rank,
+          })),
+        }),
       });
 
       const data = await res.json();
-      if (!res.ok) throw new Error(data.error);
+      if (!res.ok) throw new Error(data.error || 'Failed to save');
 
-      success('Preferences saved successfully!');
+      success('Preferences draft saved successfully!');
     } catch (err: any) {
       showError(err.message || 'Failed to save preferences');
     } finally {
@@ -160,33 +167,37 @@ export default function StudentPreferencesPage() {
     }
   };
 
-  // Lock Preferences
   const handleLockPreferences = async () => {
     if (preferences.length === 0) {
-      showError('Please add at least 1 preference before locking.');
+      showError('You must add at least one internship before locking preferences');
       return;
     }
-    const confirm = window.confirm(
-      'Are you sure you want to lock your preferences? Once locked, you will not be able to modify rankings or add new tracks.'
+
+    const confirmed = window.confirm(
+      'Are you sure you want to permanently lock your preferences? Once locked, order cannot be modified.'
     );
-    if (!confirm) return;
+    if (!confirmed) return;
 
     try {
-      // First ensure current order is saved
-      const internshipIds = preferences.map((p) => p.internshipId);
+      // First save
       await fetch('/api/student/preferences', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ internshipIds }),
+        body: JSON.stringify({
+          preferences: preferences.map((p) => ({
+            internshipId: p.internshipId,
+            rank: p.rank,
+          })),
+        }),
       });
 
-      // Call lock endpoint
-      const lockRes = await fetch('/api/student/preferences/lock', { method: 'POST' });
-      const lockData = await lockRes.json();
-      if (!lockRes.ok) throw new Error(lockData.error);
+      // Then lock
+      const res = await fetch('/api/student/preferences/lock', { method: 'POST' });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Failed to lock');
 
       setIsLocked(true);
-      success('Preferences Locked. Your submissions are locked for algorithmic allocation.');
+      success('Preferences successfully locked for allocation!');
     } catch (err: any) {
       showError(err.message || 'Failed to lock preferences');
     }
@@ -195,7 +206,7 @@ export default function StudentPreferencesPage() {
   if (isLoading) {
     return (
       <div className="flex items-center justify-center min-h-[60vh]">
-        <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-[#0284C7]" />
+        <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-[#E5BA73]" />
       </div>
     );
   }
@@ -208,28 +219,28 @@ export default function StudentPreferencesPage() {
   return (
     <div className="space-y-8 max-w-5xl">
       {/* Top Header */}
-      <div className="bg-white p-6 sm:p-8 rounded-2xl border border-[#E2E8F0] shadow-sm space-y-4">
+      <div className="bg-[#0F1A36] p-6 sm:p-8 rounded-2xl border border-[#1E3466] shadow-sm space-y-4">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div className="space-y-1">
             <div className="flex items-center gap-2">
-              <span className="text-xs font-bold uppercase tracking-wider text-[#0284C7] bg-[#E0F2FE] px-2.5 py-0.5 rounded">
-                Gale-Shapley Matching Input
+              <span className="text-xs font-bold uppercase tracking-wider text-[#E5BA73] bg-[#E5BA73]/15 px-2.5 py-0.5 rounded border border-[#E5BA73]/30">
+                Automated Matching Input
               </span>
               {isLocked ? (
-                <span className="inline-flex items-center gap-1 text-xs font-bold text-[#065F46] bg-[#ECFDF5] px-2.5 py-0.5 rounded border border-[#A7F3D0]">
+                <span className="inline-flex items-center gap-1 text-xs font-bold text-[#34D399] bg-[#064E3B]/40 px-2.5 py-0.5 rounded border border-[#059669]/50">
                   <Lock className="h-3 w-3" /> Preferences Locked
                 </span>
               ) : (
-                <span className="inline-flex items-center gap-1 text-xs font-bold text-[#D97706] bg-[#FFFBEB] px-2.5 py-0.5 rounded border border-[#FDE68A]">
+                <span className="inline-flex items-center gap-1 text-xs font-bold text-[#F3CA68] bg-[#E5BA73]/15 px-2.5 py-0.5 rounded border border-[#E5BA73]/30">
                   <Unlock className="h-3 w-3" /> Preferences Open
                 </span>
               )}
             </div>
-            <h1 className="text-2xl sm:text-3xl font-extrabold text-[#0F172A] tracking-tight">
+            <h1 className="text-2xl sm:text-3xl font-extrabold text-[#FAF8F5] tracking-tight">
               Rank Internship Preferences
             </h1>
-            <p className="text-xs sm:text-sm text-[#64748B]">
-              Drag and drop or use arrow controls to prioritize opportunities. The Gale-Shapley algorithm will propose to your #1 choice first, continuing down your list only if capacity is full.
+            <p className="text-xs sm:text-sm text-[#D8CEBC]">
+              Drag and drop or use arrow controls to prioritize opportunities. The matching engine will prioritize your top preferences first, continuing down your list based on seat capacities.
             </p>
           </div>
 
@@ -241,22 +252,22 @@ export default function StudentPreferencesPage() {
                   disabled={isSaving}
                   variant="outline"
                   size="sm"
-                  className="border-[#CBD5E1] bg-white text-[#0F172A] shadow-sm"
+                  className="border-[#1E3466] bg-[#0A1128] text-[#FAF8F5] hover:bg-[#142247] hover:border-[#E5BA73]/50 shadow-sm"
                 >
-                  <Save className="h-4 w-4 mr-1.5 text-[#0284C7]" />
+                  <Save className="h-4 w-4 mr-1.5 text-[#E5BA73]" />
                   {isSaving ? 'Saving...' : 'Save Draft'}
                 </Button>
                 <Button
                   onClick={handleLockPreferences}
                   size="sm"
-                  className="bg-[#0284C7] hover:bg-[#0369A1] text-white shadow-sm"
+                  className="bg-[#E5BA73] hover:bg-[#D4A253] text-[#0A1128] font-bold shadow-sm"
                 >
                   <Lock className="h-4 w-4 mr-1.5" />
                   Lock Preferences
                 </Button>
               </>
             ) : (
-              <Badge className="bg-[#ECFDF5] text-[#065F46] border-[#A7F3D0] px-3 py-1 text-xs font-bold">
+              <Badge className="bg-[#064E3B]/40 text-[#34D399] border-[#059669]/50 px-3 py-1 text-xs font-bold">
                 ✓ Locked for Allocation
               </Badge>
             )}
@@ -264,7 +275,7 @@ export default function StudentPreferencesPage() {
         </div>
 
         {isLocked && (
-          <div className="bg-[#EFF6FF] border border-[#BAE6FD] p-3 rounded-xl text-xs text-[#0369A1] flex items-center gap-2">
+          <div className="bg-[#0A1128] border border-[#1E3466] p-3 rounded-xl text-xs text-[#E5BA73] flex items-center gap-2">
             <Lock className="h-4 w-4 shrink-0" />
             <span>
               Your preferences have been finalized and locked. The placement cell is evaluating matching rounds.
@@ -274,18 +285,18 @@ export default function StudentPreferencesPage() {
       </div>
 
       {/* Main Ranking List */}
-      <div className="bg-white rounded-2xl border border-[#E2E8F0] shadow-sm overflow-hidden space-y-4 p-6">
-        <div className="flex items-center justify-between border-b border-[#F1F5F9] pb-3 text-xs font-bold text-[#64748B] uppercase tracking-wider">
+      <div className="bg-[#0F1A36] rounded-2xl border border-[#1E3466] shadow-sm overflow-hidden space-y-4 p-6">
+        <div className="flex items-center justify-between border-b border-[#1E3466] pb-3 text-xs font-bold text-[#D8CEBC] uppercase tracking-wider">
           <span>Priority Ranking ({preferences.length} Selected)</span>
           <span>Matching Metadata</span>
         </div>
 
         {preferences.length === 0 ? (
           <div className="text-center py-12 space-y-3">
-            <ListOrdered className="h-10 w-10 text-[#94A3B8] mx-auto" />
-            <h3 className="font-bold text-base text-[#0F172A]">No Preferences Selected Yet</h3>
-            <p className="text-xs text-[#64748B] max-w-sm mx-auto">
-              Select roles from the directory below to build your priority schedule for Gale-Shapley matching.
+            <ListOrdered className="h-10 w-10 text-[#8A97B5] mx-auto" />
+            <h3 className="font-bold text-base text-[#FAF8F5]">No Preferences Selected Yet</h3>
+            <p className="text-xs text-[#D8CEBC] max-w-sm mx-auto">
+              Select roles from the directory below to build your priority schedule for automated matching.
             </p>
           </div>
         ) : (
@@ -304,35 +315,35 @@ export default function StudentPreferencesPage() {
                   onDragEnd={handleDragEnd}
                   className={`flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 rounded-xl border transition-all ${
                     draggedIndex === index
-                      ? 'border-[#0284C7] bg-[#EFF6FF] shadow-md'
-                      : 'border-[#E2E8F0] bg-[#F8FAFC] hover:bg-white hover:border-[#BAE6FD]'
+                      ? 'border-[#E5BA73] bg-[#142247] shadow-md'
+                      : 'border-[#1E3466] bg-[#0A1128] hover:bg-[#142247] hover:border-[#E5BA73]/50'
                   }`}
                 >
                   {/* Left: Grip, Rank, Role info */}
                   <div className="flex items-center gap-3">
                     {!isLocked && (
-                      <div className="cursor-grab active:cursor-grabbing text-[#94A3B8] hover:text-[#0284C7] p-1">
+                      <div className="cursor-grab active:cursor-grabbing text-[#8A97B5] hover:text-[#E5BA73] p-1">
                         <GripVertical className="h-5 w-5" />
                       </div>
                     )}
 
-                    <div className="h-8 w-8 rounded-lg bg-[#0284C7] text-white flex items-center justify-center font-extrabold text-sm shrink-0 shadow-sm">
+                    <div className="h-8 w-8 rounded-lg bg-[#E5BA73] text-[#0A1128] flex items-center justify-center font-extrabold text-sm shrink-0 shadow-sm">
                       {pref.rank}
                     </div>
 
                     <div className="space-y-0.5">
                       <div className="flex items-center gap-2">
-                        <span className="text-xs font-bold text-[#0284C7] uppercase">
+                        <span className="text-xs font-bold text-[#E5BA73] uppercase">
                           {intern?.companyName}
                         </span>
-                        <Badge variant="outline" className="text-[10px] border-[#CBD5E1] font-medium">
+                        <Badge variant="outline" className="text-[10px] border-[#1E3466] font-medium text-[#D8CEBC]">
                           {intern?.mode}
                         </Badge>
                       </div>
-                      <h3 className="font-bold text-sm text-[#0F172A]">
+                      <h3 className="font-bold text-sm text-[#FAF8F5]">
                         {intern?.title}
                       </h3>
-                      <p className="text-[11px] text-[#64748B]">
+                      <p className="text-[11px] text-[#D8CEBC]">
                         {intern?.location.split(',')[0]} • ₹{intern?.stipend.toLocaleString()}/mo • {intern?.duration}
                       </p>
                     </div>
@@ -343,16 +354,16 @@ export default function StudentPreferencesPage() {
                     {/* Merit & Eligibility */}
                     <div className="text-right text-xs">
                       {merit && (
-                        <div className="font-bold text-[#0284C7]">
+                        <div className="font-bold text-[#E5BA73]">
                           Merit: {merit.totalMeritScore.toFixed(1)}/100
                         </div>
                       )}
                       {elig?.isEligible ? (
-                        <span className="inline-flex items-center gap-1 text-[11px] text-[#065F46] font-semibold">
+                        <span className="inline-flex items-center gap-1 text-[11px] text-[#34D399] font-semibold">
                           <CheckCircle2 className="h-3 w-3 text-[#10B981]" /> Eligible
                         </span>
                       ) : (
-                        <span className="inline-flex items-center gap-1 text-[11px] text-[#991B1B] font-semibold">
+                        <span className="inline-flex items-center gap-1 text-[11px] text-rose-400 font-semibold">
                           <XCircle className="h-3 w-3 text-[#EF4444]" /> Ineligible
                         </span>
                       )}
@@ -364,7 +375,7 @@ export default function StudentPreferencesPage() {
                         <button
                           onClick={() => moveUp(index)}
                           disabled={index === 0}
-                          className="p-1.5 rounded-lg border border-[#E2E8F0] bg-white text-[#64748B] hover:text-[#0284C7] disabled:opacity-30 disabled:cursor-not-allowed"
+                          className="p-1.5 rounded-lg border border-[#1E3466] bg-[#0F1A36] text-[#D8CEBC] hover:text-[#E5BA73] disabled:opacity-30 disabled:cursor-not-allowed"
                           title="Move Rank Up"
                         >
                           <ArrowUp className="h-3.5 w-3.5" />
@@ -372,14 +383,14 @@ export default function StudentPreferencesPage() {
                         <button
                           onClick={() => moveDown(index)}
                           disabled={index === preferences.length - 1}
-                          className="p-1.5 rounded-lg border border-[#E2E8F0] bg-white text-[#64748B] hover:text-[#0284C7] disabled:opacity-30 disabled:cursor-not-allowed"
+                          className="p-1.5 rounded-lg border border-[#1E3466] bg-[#0F1A36] text-[#D8CEBC] hover:text-[#E5BA73] disabled:opacity-30 disabled:cursor-not-allowed"
                           title="Move Rank Down"
                         >
                           <ArrowDown className="h-3.5 w-3.5" />
                         </button>
                         <button
                           onClick={() => removePreference(index)}
-                          className="p-1.5 rounded-lg border border-[#E2E8F0] bg-white text-red-500 hover:bg-red-50"
+                          className="p-1.5 rounded-lg border border-[#1E3466] bg-[#0F1A36] text-rose-400 hover:bg-rose-950/40"
                           title="Remove from Rankings"
                         >
                           <Trash2 className="h-3.5 w-3.5" />
@@ -396,14 +407,14 @@ export default function StudentPreferencesPage() {
 
       {/* Available Track Picker (Add More Roles) */}
       {!isLocked && unselectedInternships.length > 0 && (
-        <div className="bg-white p-6 rounded-2xl border border-[#E2E8F0] shadow-sm space-y-4">
-          <div className="flex items-center justify-between border-b border-[#F1F5F9] pb-3">
+        <div className="bg-[#0F1A36] p-6 rounded-2xl border border-[#1E3466] shadow-sm space-y-4">
+          <div className="flex items-center justify-between border-b border-[#1E3466] pb-3">
             <div>
-              <h3 className="font-bold text-[#0F172A] text-sm">Add Additional Opportunities</h3>
-              <p className="text-xs text-[#64748B]">Click any approved role to append to your ranking list.</p>
+              <h3 className="font-bold text-[#FAF8F5] text-sm">Add Additional Opportunities</h3>
+              <p className="text-xs text-[#D8CEBC]">Click any approved role to append to your ranking list.</p>
             </div>
             <Link href="/internships">
-              <Button size="sm" variant="outline" className="text-xs border-[#CBD5E1]">
+              <Button size="sm" variant="outline" className="text-xs border-[#1E3466] text-[#E5BA73]">
                 Directory View
               </Button>
             </Link>
@@ -411,21 +422,19 @@ export default function StudentPreferencesPage() {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             {unselectedInternships.map((intern) => {
-              const elig = student ? checkEligibility(student, intern) : null;
-
               return (
                 <div
                   key={intern.id}
-                  className="p-3.5 rounded-xl border border-[#F1F5F9] bg-[#F8FAFC] hover:bg-white hover:border-[#BAE6FD] transition-all flex items-center justify-between gap-3"
+                  className="p-3.5 rounded-xl border border-[#1E3466] bg-[#0A1128] hover:bg-[#142247] hover:border-[#E5BA73]/50 transition-all flex items-center justify-between gap-3"
                 >
                   <div className="space-y-0.5 truncate">
-                    <span className="text-[10px] font-bold text-[#0284C7] uppercase block truncate">
+                    <span className="text-[10px] font-bold text-[#E5BA73] uppercase block truncate">
                       {intern.companyName}
                     </span>
-                    <h4 className="font-bold text-xs text-[#0F172A] truncate">
+                    <h4 className="font-bold text-xs text-[#FAF8F5] truncate">
                       {intern.title}
                     </h4>
-                    <span className="text-[11px] text-[#64748B] block">
+                    <span className="text-[11px] text-[#D8CEBC] block">
                       Min CGPA: {intern.minimumCGPA.toFixed(1)} • ₹{intern.stipend.toLocaleString()}/mo
                     </span>
                   </div>
@@ -434,7 +443,7 @@ export default function StudentPreferencesPage() {
                     size="sm"
                     variant="outline"
                     onClick={() => handleAddInternship(intern.id)}
-                    className="text-xs border-[#0284C7] text-[#0284C7] bg-white shrink-0 hover:bg-[#EFF6FF]"
+                    className="text-xs border-[#E5BA73]/60 text-[#E5BA73] bg-[#0F1A36] shrink-0 hover:bg-[#E5BA73]/15"
                   >
                     <Plus className="h-3.5 w-3.5 mr-1" /> Add
                   </Button>

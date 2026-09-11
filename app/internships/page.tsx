@@ -100,14 +100,12 @@ export default function InternshipsDirectoryPage() {
     }
 
     if (companyFilter !== 'ALL') {
-      result = result.filter((i) => (i.companyName || 'Corporate Partner') === companyFilter);
+      result = result.filter((i) => i.companyName === companyFilter);
     }
 
     if (branchFilter !== 'ALL') {
-      result = result.filter((i) =>
-        i.allowedBranches?.some(
-          (b) => b.toLowerCase() === 'all branches' || b.toLowerCase() === branchFilter.toLowerCase()
-        )
+      result = result.filter(
+        (i) => i.allowedBranches.includes('All Branches') || i.allowedBranches.includes(branchFilter)
       );
     }
 
@@ -120,7 +118,9 @@ export default function InternshipsDirectoryPage() {
     }
 
     if (skillFilter !== 'ALL') {
-      result = result.filter((i) => i.requiredSkills.includes(skillFilter));
+      result = result.filter((i) =>
+        i.requiredSkills.some((s) => s.toLowerCase() === skillFilter.toLowerCase())
+      );
     }
 
     if (minCgpaFilter !== 'ALL') {
@@ -163,44 +163,36 @@ export default function InternshipsDirectoryPage() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#F8FAFC] text-[#0F172A]">
+    <div className="min-h-screen flex flex-col bg-[#0A1128] text-[#FAF8F5]">
       <Navbar />
 
       <main className="flex-1 py-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
           {/* Top Banner */}
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white p-6 rounded-2xl border border-[#E2E8F0] shadow-sm">
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-[#0F1A36] p-6 rounded-2xl border border-[#1E3466] shadow-sm">
             <div>
               <div className="flex items-center gap-2">
-                <span className="text-xs font-bold uppercase tracking-wider text-[#0284C7] bg-[#E0F2FE] px-2.5 py-0.5 rounded">
+                <span className="text-xs font-bold uppercase tracking-wider text-[#E5BA73] bg-[#E5BA73]/15 px-2.5 py-0.5 rounded border border-[#E5BA73]/30">
                   Campus Recruitment
                 </span>
-                <span className="text-xs text-[#64748B]">Cycle 2025–26</span>
+                <span className="text-xs text-[#D8CEBC]">Active Opportunities</span>
               </div>
-              <h1 className="text-2xl sm:text-3xl font-extrabold text-[#0F172A] tracking-tight mt-1">
+              <h1 className="text-2xl sm:text-3xl font-extrabold text-[#FAF8F5] tracking-tight mt-1">
                 Verified Internship Directory
               </h1>
-              <p className="text-xs sm:text-sm text-[#64748B] mt-1">
-                Explore approved corporate opportunities, inspect academic eligibility criteria, and rank your preferences for Gale-Shapley matching.
+              <p className="text-xs sm:text-sm text-[#D8CEBC] mt-1">
+                Explore approved corporate opportunities, inspect academic eligibility criteria, and rank your preferences for automated matching.
               </p>
-            </div>
-
-            <div className="flex items-center gap-3">
-              <Link href="/algorithm-explanation">
-                <Button variant="outline" size="sm" className="border-[#CBD5E1] text-[#0284C7]">
-                  AoA Allocation Methodology
-                </Button>
-              </Link>
             </div>
           </div>
 
           {/* Filter Toolbar */}
-          <div className="bg-white p-5 rounded-2xl border border-[#E2E8F0] shadow-sm space-y-4">
+          <div className="bg-[#0F1A36] p-5 rounded-2xl border border-[#1E3466] shadow-sm space-y-4">
             <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2 text-sm font-bold text-[#0F172A]">
-                <SlidersHorizontal className="h-4 w-4 text-[#0284C7]" />
+              <div className="flex items-center gap-2 text-sm font-bold text-[#FAF8F5]">
+                <SlidersHorizontal className="h-4 w-4 text-[#E5BA73]" />
                 <span>Multi-Factor Filters</span>
-                <Badge variant="outline" className="text-xs font-normal border-[#E2E8F0]">
+                <Badge variant="outline" className="text-xs font-normal border-[#1E3466] text-[#E5BA73]">
                   {filteredInternships.length} Available
                 </Badge>
               </div>
@@ -208,7 +200,7 @@ export default function InternshipsDirectoryPage() {
                 variant="ghost"
                 size="sm"
                 onClick={handleResetFilters}
-                className="text-xs text-[#64748B] hover:text-[#0F172A] p-1.5 h-auto"
+                className="text-xs text-[#D8CEBC] hover:text-[#FAF8F5] p-1.5 h-auto"
               >
                 <RotateCcw className="h-3.5 w-3.5 mr-1" />
                 Reset All
@@ -217,13 +209,13 @@ export default function InternshipsDirectoryPage() {
 
             {/* Search Input */}
             <div className="relative">
-              <Search className="absolute left-3.5 top-3 h-4 w-4 text-[#94A3B8]" />
+              <Search className="absolute left-3.5 top-3 h-4 w-4 text-[#8A97B5]" />
               <input
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Search by role title, corporate partner, or skills (e.g. Python, Azure)..."
-                className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-[#F8FAFC] border border-[#E2E8F0] text-sm text-[#0F172A] focus:outline-none focus:ring-2 focus:ring-[#0284C7] focus:bg-white transition-all"
+                className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-[#0A1128] border border-[#1E3466] text-sm text-[#FAF8F5] placeholder-[#8A97B5] focus:outline-none focus:ring-2 focus:ring-[#E5BA73]/50 focus:border-[#E5BA73] transition-all"
               />
             </div>
 
@@ -231,11 +223,11 @@ export default function InternshipsDirectoryPage() {
             <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-2.5 text-xs">
               {/* Company */}
               <div>
-                <label className="block text-[11px] font-semibold text-[#64748B] mb-1">Company</label>
+                <label className="block text-[11px] font-semibold text-[#D8CEBC] mb-1">Company</label>
                 <select
                   value={companyFilter}
                   onChange={(e) => setCompanyFilter(e.target.value)}
-                  className="w-full p-2 rounded-lg bg-[#F8FAFC] border border-[#E2E8F0] text-[#0F172A]"
+                  className="w-full p-2 rounded-lg bg-[#0A1128] border border-[#1E3466] text-[#FAF8F5]"
                 >
                   <option value="ALL">All Companies</option>
                   {companies.map((c, i) => (
@@ -246,11 +238,11 @@ export default function InternshipsDirectoryPage() {
 
               {/* Branch */}
               <div>
-                <label className="block text-[11px] font-semibold text-[#64748B] mb-1">Branch</label>
+                <label className="block text-[11px] font-semibold text-[#D8CEBC] mb-1">Branch</label>
                 <select
                   value={branchFilter}
                   onChange={(e) => setBranchFilter(e.target.value)}
-                  className="w-full p-2 rounded-lg bg-[#F8FAFC] border border-[#E2E8F0] text-[#0F172A]"
+                  className="w-full p-2 rounded-lg bg-[#0A1128] border border-[#1E3466] text-[#FAF8F5]"
                 >
                   <option value="ALL">All Branches</option>
                   {allBranches.map((b, i) => (
@@ -261,11 +253,11 @@ export default function InternshipsDirectoryPage() {
 
               {/* Work Mode */}
               <div>
-                <label className="block text-[11px] font-semibold text-[#64748B] mb-1">Work Mode</label>
+                <label className="block text-[11px] font-semibold text-[#D8CEBC] mb-1">Work Mode</label>
                 <select
                   value={modeFilter}
                   onChange={(e) => setModeFilter(e.target.value)}
-                  className="w-full p-2 rounded-lg bg-[#F8FAFC] border border-[#E2E8F0] text-[#0F172A]"
+                  className="w-full p-2 rounded-lg bg-[#0A1128] border border-[#1E3466] text-[#FAF8F5]"
                 >
                   <option value="ALL">All Modes</option>
                   <option value="REMOTE">Remote</option>
@@ -276,11 +268,11 @@ export default function InternshipsDirectoryPage() {
 
               {/* Min CGPA */}
               <div>
-                <label className="block text-[11px] font-semibold text-[#64748B] mb-1">My CGPA &ge;</label>
+                <label className="block text-[11px] font-semibold text-[#D8CEBC] mb-1">My CGPA &ge;</label>
                 <select
                   value={minCgpaFilter}
                   onChange={(e) => setMinCgpaFilter(e.target.value)}
-                  className="w-full p-2 rounded-lg bg-[#F8FAFC] border border-[#E2E8F0] text-[#0F172A]"
+                  className="w-full p-2 rounded-lg bg-[#0A1128] border border-[#1E3466] text-[#FAF8F5]"
                 >
                   <option value="ALL">Any Cutoff</option>
                   <option value="7.0">&le; 7.0 Cutoff</option>
@@ -291,11 +283,11 @@ export default function InternshipsDirectoryPage() {
 
               {/* Location */}
               <div>
-                <label className="block text-[11px] font-semibold text-[#64748B] mb-1">Location</label>
+                <label className="block text-[11px] font-semibold text-[#D8CEBC] mb-1">Location</label>
                 <select
                   value={locationFilter}
                   onChange={(e) => setLocationFilter(e.target.value)}
-                  className="w-full p-2 rounded-lg bg-[#F8FAFC] border border-[#E2E8F0] text-[#0F172A]"
+                  className="w-full p-2 rounded-lg bg-[#0A1128] border border-[#1E3466] text-[#FAF8F5]"
                 >
                   <option value="ALL">All Locations</option>
                   {locations.map((l, i) => (
@@ -306,11 +298,11 @@ export default function InternshipsDirectoryPage() {
 
               {/* Duration */}
               <div>
-                <label className="block text-[11px] font-semibold text-[#64748B] mb-1">Duration</label>
+                <label className="block text-[11px] font-semibold text-[#D8CEBC] mb-1">Duration</label>
                 <select
                   value={durationFilter}
                   onChange={(e) => setDurationFilter(e.target.value)}
-                  className="w-full p-2 rounded-lg bg-[#F8FAFC] border border-[#E2E8F0] text-[#0F172A]"
+                  className="w-full p-2 rounded-lg bg-[#0A1128] border border-[#1E3466] text-[#FAF8F5]"
                 >
                   <option value="ALL">All Durations</option>
                   {durations.map((d, i) => (
@@ -321,11 +313,11 @@ export default function InternshipsDirectoryPage() {
 
               {/* Skills */}
               <div>
-                <label className="block text-[11px] font-semibold text-[#64748B] mb-1">Skill</label>
+                <label className="block text-[11px] font-semibold text-[#D8CEBC] mb-1">Skill</label>
                 <select
                   value={skillFilter}
                   onChange={(e) => setSkillFilter(e.target.value)}
-                  className="w-full p-2 rounded-lg bg-[#F8FAFC] border border-[#E2E8F0] text-[#0F172A]"
+                  className="w-full p-2 rounded-lg bg-[#0A1128] border border-[#1E3466] text-[#FAF8F5]"
                 >
                   <option value="ALL">All Skills</option>
                   {allSkills.map((s, i) => (
@@ -336,11 +328,11 @@ export default function InternshipsDirectoryPage() {
 
               {/* Stipend */}
               <div>
-                <label className="block text-[11px] font-semibold text-[#64748B] mb-1">Min Stipend</label>
+                <label className="block text-[11px] font-semibold text-[#D8CEBC] mb-1">Min Stipend</label>
                 <select
                   value={minStipendFilter}
                   onChange={(e) => setMinStipendFilter(parseInt(e.target.value))}
-                  className="w-full p-2 rounded-lg bg-[#F8FAFC] border border-[#E2E8F0] text-[#0F172A]"
+                  className="w-full p-2 rounded-lg bg-[#0A1128] border border-[#1E3466] text-[#FAF8F5]"
                 >
                   <option value="0">Any</option>
                   <option value="50000">&ge; ₹50,000</option>
@@ -351,15 +343,15 @@ export default function InternshipsDirectoryPage() {
             </div>
           </div>
 
-          {/* Internship Grid (Equal Heights) */}
+          {/* Internship Grid */}
           {filteredInternships.length === 0 ? (
-            <div className="bg-white p-12 text-center rounded-2xl border border-[#E2E8F0] space-y-3">
-              <Briefcase className="h-10 w-10 text-[#94A3B8] mx-auto" />
-              <h3 className="font-bold text-lg text-[#0F172A]">No Matching Opportunities Found</h3>
-              <p className="text-xs text-[#64748B] max-w-sm mx-auto">
+            <div className="bg-[#0F1A36] p-12 text-center rounded-2xl border border-[#1E3466] space-y-3">
+              <Briefcase className="h-10 w-10 text-[#8A97B5] mx-auto" />
+              <h3 className="font-bold text-lg text-[#FAF8F5]">No Matching Opportunities Found</h3>
+              <p className="text-xs text-[#D8CEBC] max-w-sm mx-auto">
                 No active internships meet your selected filter criteria. Try clearing filters or expanding your search.
               </p>
-              <Button size="sm" variant="outline" onClick={handleResetFilters} className="mt-2">
+              <Button size="sm" variant="outline" onClick={handleResetFilters} className="mt-2 border-[#1E3466] text-[#E5BA73]">
                 Reset All Filters
               </Button>
             </div>
@@ -371,60 +363,60 @@ export default function InternshipsDirectoryPage() {
                 return (
                   <div
                     key={intern.id}
-                    className="bg-white rounded-2xl border border-[#E2E8F0] p-6 shadow-sm hover:shadow-md hover:border-[#BAE6FD] transition-all flex flex-col justify-between h-full"
+                    className="bg-[#0F1A36] rounded-2xl border border-[#1E3466] p-6 shadow-sm hover:shadow-md hover:border-[#E5BA73]/60 transition-all flex flex-col justify-between h-full"
                   >
                     <div className="space-y-4">
                       {/* Company Header & Mode */}
                       <div className="flex items-start justify-between gap-3">
                         <div>
-                          <span className="text-xs font-bold text-[#0284C7] uppercase tracking-wider block">
+                          <span className="text-xs font-bold text-[#E5BA73] uppercase tracking-wider block">
                             {intern.companyName}
                           </span>
-                          <h2 className="text-lg font-bold text-[#0F172A] leading-snug line-clamp-1 mt-0.5">
+                          <h2 className="text-lg font-bold text-[#FAF8F5] leading-snug line-clamp-1 mt-0.5">
                             {intern.title}
                           </h2>
                         </div>
-                        <Badge variant="outline" className="text-[11px] border-[#BAE6FD] bg-[#EFF6FF] text-[#0369A1] font-semibold shrink-0">
+                        <Badge variant="outline" className="text-[11px] border-[#E5BA73]/40 bg-[#E5BA73]/15 text-[#F3CA68] font-semibold shrink-0">
                           {intern.mode}
                         </Badge>
                       </div>
 
                       {/* Metadata Row */}
-                      <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5 text-xs text-[#64748B]">
+                      <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5 text-xs text-[#D8CEBC]">
                         <div className="flex items-center gap-1">
-                          <MapPin className="h-3.5 w-3.5 text-[#94A3B8]" />
+                          <MapPin className="h-3.5 w-3.5 text-[#E5BA73]" />
                           <span>{intern.location.split(',')[0]}</span>
                         </div>
                         <div className="flex items-center gap-1">
-                          <Clock className="h-3.5 w-3.5 text-[#94A3B8]" />
+                          <Clock className="h-3.5 w-3.5 text-[#E5BA73]" />
                           <span>{intern.duration}</span>
                         </div>
-                        <div className="font-bold text-[#0F172A]">
+                        <div className="font-bold text-[#FAF8F5]">
                           ₹{intern.stipend.toLocaleString()}/mo
                         </div>
                       </div>
 
                       {/* Description snippet */}
-                      <p className="text-xs text-[#64748B] line-clamp-2 leading-relaxed">
+                      <p className="text-xs text-[#D8CEBC] line-clamp-2 leading-relaxed">
                         {intern.description}
                       </p>
 
                       {/* Required Skills */}
                       <div className="space-y-1.5">
-                        <span className="text-[10px] uppercase font-bold text-[#94A3B8] tracking-wider block">
+                        <span className="text-[10px] uppercase font-bold text-[#D8CEBC]/70 tracking-wider block">
                           Required Competencies
                         </span>
                         <div className="flex flex-wrap gap-1.5">
                           {intern.requiredSkills.slice(0, 3).map((skill, sIdx) => (
                             <span
                               key={sIdx}
-                              className="text-[11px] px-2.5 py-0.5 rounded-md bg-[#F1F5F9] text-[#334155] font-medium border border-[#E2E8F0]"
+                              className="text-[11px] px-2.5 py-0.5 rounded-md bg-[#142247] text-[#D8CEBC] font-medium border border-[#1E3466]"
                             >
                               {skill}
                             </span>
                           ))}
                           {intern.requiredSkills.length > 3 && (
-                            <span className="text-[11px] px-1.5 py-0.5 rounded bg-[#F1F5F9] text-[#94A3B8]">
+                            <span className="text-[11px] px-1.5 py-0.5 rounded bg-[#142247] text-[#D8CEBC]/70 border border-[#1E3466]">
                               +{intern.requiredSkills.length - 3} more
                             </span>
                           )}
@@ -435,13 +427,13 @@ export default function InternshipsDirectoryPage() {
                       {studentProfile && (
                         <div className="pt-2">
                           {elig?.isEligible ? (
-                            <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-[#ECFDF5] border border-[#A7F3D0] text-[#065F46] text-xs font-semibold">
-                              <CheckCircle2 className="h-3.5 w-3.5 text-[#10B981]" />
+                            <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-[#064E3B]/40 border border-[#059669]/50 text-emerald-300 text-xs font-semibold">
+                              <CheckCircle2 className="h-3.5 w-3.5 text-[#34D399]" />
                               <span>Eligible ({elig.skillMatchPercentage}% skill match)</span>
                             </div>
                           ) : (
-                            <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-[#FEF2F2] border border-[#FECACA] text-[#991B1B] text-xs font-semibold">
-                              <XCircle className="h-3.5 w-3.5 text-[#EF4444]" />
+                            <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-[#7F1D1D]/30 border border-[#DC2626]/40 text-rose-300 text-xs font-semibold">
+                              <XCircle className="h-3.5 w-3.5 text-[#F87171]" />
                               <span>Not Eligible: Min CGPA {intern.minimumCGPA.toFixed(1)}</span>
                             </div>
                           )}
@@ -450,13 +442,13 @@ export default function InternshipsDirectoryPage() {
                     </div>
 
                     {/* Card Footer: Quota & Action Button */}
-                    <div className="mt-6 pt-4 border-t border-[#F1F5F9] flex items-center justify-between">
-                      <div className="text-xs text-[#64748B]">
-                        <span className="font-bold text-[#0F172A]">{intern.totalSeats}</span> seats • Min CGPA <span className="font-bold text-[#0F172A]">{intern.minimumCGPA.toFixed(1)}</span>
+                    <div className="mt-6 pt-4 border-t border-[#1E3466] flex items-center justify-between">
+                      <div className="text-xs text-[#D8CEBC]">
+                        <span className="font-bold text-[#FAF8F5]">{intern.totalSeats}</span> seats • Min CGPA <span className="font-bold text-[#FAF8F5]">{intern.minimumCGPA.toFixed(1)}</span>
                       </div>
 
                       <Link href={`/internships/${intern.id}`}>
-                        <Button size="sm" className="bg-[#0284C7] hover:bg-[#0369A1] text-white text-xs font-semibold shadow-sm">
+                        <Button size="sm" className="bg-[#E5BA73] hover:bg-[#D4A253] text-[#0A1128] text-xs font-bold shadow-sm">
                           View Details
                           <ChevronRight className="h-3.5 w-3.5 ml-1" />
                         </Button>

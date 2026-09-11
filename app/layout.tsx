@@ -31,7 +31,7 @@ export default function RootLayout({
           rel="stylesheet"
         />
       </head>
-      <body className="min-h-screen bg-[#0B1120] text-[#F8FAFC] antialiased font-sans selection:bg-[#0284C7] selection:text-white">
+      <body className="min-h-screen bg-[#0A1128] text-[#FAF8F5] antialiased font-sans selection:bg-[#E5BA73] selection:text-[#0A1128]">
         <ToastProvider>{children}</ToastProvider>
       </body>
     </html>

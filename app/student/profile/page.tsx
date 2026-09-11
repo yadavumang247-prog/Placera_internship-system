@@ -3,69 +3,65 @@
 import React, { useEffect, useState } from 'react';
 import {
   User,
+  GraduationCap,
   BookOpen,
-  Award,
-  Briefcase,
+  Sparkles,
   Save,
   CheckCircle2,
   FileText,
-  Sparkles,
   Plus,
   X,
+  Layers,
 } from 'lucide-react';
 import { Button } from '../../../components/ui/button';
-import { Badge } from '../../../components/ui/badge';
 import { useToast } from '../../../components/ui/toast';
-import { StudentData } from '../../../lib/types';
+import { Student } from '../../../lib/types';
 
 export default function StudentProfilePage() {
   const { success, error: showError } = useToast();
-  const [student, setStudent] = useState<StudentData | null>(null);
+  const [student, setStudent] = useState<Student | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
 
   // Form State
-  const [branch, setBranch] = useState('');
-  const [cgpa, setCgpa] = useState(8.5);
-  const [year, setYear] = useState(3);
-  const [experienceMonths, setExperienceMonths] = useState(4);
-  const [experienceSummary, setExperienceSummary] = useState('');
+  const [cgpa, setCgpa] = useState<number>(0);
+  const [branch, setBranch] = useState<string>('');
+  const [year, setYear] = useState<number>(3);
+  const [experienceMonths, setExperienceMonths] = useState<number>(0);
+  const [experienceSummary, setExperienceSummary] = useState<string>('');
   const [skills, setSkills] = useState<string[]>([]);
-  const [newSkillInput, setNewSkillInput] = useState('');
-  const [resumeUrl, setResumeUrl] = useState('');
+  const [newSkillInput, setNewSkillInput] = useState<string>('');
+  const [resumeUrl, setResumeUrl] = useState<string>('');
 
   useEffect(() => {
     async function loadProfile() {
       try {
+        setIsLoading(true);
         const res = await fetch('/api/student/profile');
-        const data = await res.json();
-        if (data.student) {
-          setStudent(data.student);
-          setBranch(data.student.branch || '');
-          setCgpa(data.student.cgpa || 8.0);
-          setYear(data.student.year || 3);
-          setExperienceMonths(data.student.experienceMonths || 0);
-          setExperienceSummary(data.student.experienceSummary || '');
-          setSkills(data.student.skills || []);
-          setResumeUrl(data.student.resumeUrl || '');
-        }
-      } catch (err) {
-        showError('Failed to load student profile.');
+        if (!res.ok) throw new Error('Failed to load profile');
+        const data: Student = await res.json();
+        setStudent(data);
+        setCgpa(data.cgpa);
+        setBranch(data.branch);
+        setYear(data.year);
+        setExperienceMonths(data.experienceMonths ?? 0);
+        setExperienceSummary(data.experienceSummary || '');
+        setSkills(data.skills || []);
+        setResumeUrl(data.resumeUrl || '');
+      } catch (err: any) {
+        showError('Could not load profile', err.message);
       } finally {
         setIsLoading(false);
       }
     }
     loadProfile();
-  }, [showError]);
+  }, []);
 
-  const handleAddSkill = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!newSkillInput.trim()) return;
-    if (skills.includes(newSkillInput.trim())) {
-      showError('Skill already added.');
-      return;
-    }
-    setSkills([...skills, newSkillInput.trim()]);
+  const handleAddSkill = () => {
+    const trimmed = newSkillInput.trim();
+    if (!trimmed) return;
+    if (skills.includes(trimmed)) return;
+    setSkills([...skills, trimmed]);
     setNewSkillInput('');
   };
 
@@ -75,27 +71,30 @@ export default function StudentProfilePage() {
 
   const handleSaveProfile = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsSaving(true);
     try {
+      setIsSaving(true);
       const res = await fetch('/api/student/profile', {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
+          cgpa,
           branch,
-          cgpa: parseFloat(cgpa as any),
-          year: parseInt(year as any),
-          experienceMonths: parseInt(experienceMonths as any),
+          year,
+          experienceMonths,
           experienceSummary,
           skills,
           resumeUrl,
         }),
       });
 
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error);
+      if (!res.ok) {
+        const errData = await res.json();
+        throw new Error(errData.error || 'Update failed');
+      }
 
-      setStudent(data.student);
-      success('Academic profile updated successfully!');
+      const updated = await res.json();
+      setStudent(updated);
+      success('Profile Updated', 'Your academic credentials and technical skill set have been persisted.');
     } catch (err: any) {
       showError(err.message || 'Failed to update profile.');
     } finally {
@@ -106,62 +105,62 @@ export default function StudentProfilePage() {
   if (isLoading) {
     return (
       <div className="flex items-center justify-center min-h-[60vh]">
-        <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-[#0284C7]" />
+        <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-[#E5BA73]" />
       </div>
     );
   }
 
   return (
-    <div className="space-y-8 max-w-4xl">
+    <div className="space-y-8 max-w-4xl text-[#FAF8F5]">
       {/* Header */}
-      <div className="bg-white p-6 rounded-2xl border border-[#E2E8F0] shadow-sm space-y-1">
-        <span className="text-xs font-bold uppercase tracking-wider text-[#0284C7] bg-[#E0F2FE] px-2.5 py-0.5 rounded">
+      <div className="bg-[#0F1A36] p-6 rounded-2xl border border-[#1E3466] shadow-md space-y-1">
+        <span className="text-xs font-bold uppercase tracking-wider text-[#E5BA73] bg-[#E5BA73]/15 border border-[#E5BA73]/30 px-2.5 py-0.5 rounded">
           Academic Credentials
         </span>
-        <h1 className="text-2xl sm:text-3xl font-extrabold text-[#0F172A] tracking-tight mt-1">
+        <h1 className="text-2xl sm:text-3xl font-extrabold text-[#FAF8F5] tracking-tight mt-1">
           My Student Profile
         </h1>
-        <p className="text-xs sm:text-sm text-[#64748B]">
-          Your registered CGPA, engineering discipline, and technical skills directly determine your eligibility and merit score in the Gale-Shapley matching rounds.
+        <p className="text-xs sm:text-sm text-[#A8B2D1]">
+          Your registered CGPA, engineering discipline, and technical skills directly determine your eligibility and merit score in the allocation matching rounds.
         </p>
       </div>
 
       <form onSubmit={handleSaveProfile} className="space-y-6">
         {/* Academic Details Card */}
-        <div className="bg-white p-6 rounded-2xl border border-[#E2E8F0] shadow-sm space-y-4">
-          <h2 className="text-base font-bold text-[#0F172A] border-b border-[#F1F5F9] pb-3 flex items-center gap-2">
-            <BookOpen className="h-4 w-4 text-[#0284C7]" />
+        <div className="bg-[#0F1A36] p-6 rounded-2xl border border-[#1E3466] shadow-md space-y-4">
+          <h2 className="text-base font-bold text-[#FAF8F5] border-b border-[#1E3466] pb-3 flex items-center gap-2">
+            <BookOpen className="h-4 w-4 text-[#E5BA73]" />
             <span>Academic Information</span>
           </h2>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
             <div>
-              <label className="block font-semibold text-[#64748B] mb-1">Full Name</label>
+              <label className="block font-semibold text-[#A8B2D1] mb-1">Full Name</label>
               <input
                 type="text"
                 disabled
                 value={student?.name || ''}
-                className="w-full p-2.5 rounded-xl bg-[#F8FAFC] border border-[#E2E8F0] text-[#94A3B8] cursor-not-allowed"
+                className="w-full p-2.5 rounded-xl bg-[#0A1128] border border-[#1E3466] text-[#A8B2D1] cursor-not-allowed"
               />
-              <span className="text-[10px] text-[#94A3B8] mt-1 block">Verified university registry record</span>
+              <span className="text-[10px] text-[#A8B2D1]/70 mt-1 block">Verified university registry record</span>
             </div>
 
             <div>
-              <label className="block font-semibold text-[#64748B] mb-1">Roll Number</label>
+              <label className="block font-semibold text-[#A8B2D1] mb-1">Roll Number</label>
               <input
                 type="text"
                 disabled
                 value={student?.rollNumber || ''}
-                className="w-full p-2.5 rounded-xl bg-[#F8FAFC] border border-[#E2E8F0] text-[#94A3B8] cursor-not-allowed font-mono"
+                className="w-full p-2.5 rounded-xl bg-[#0A1128] border border-[#1E3466] text-[#A8B2D1] cursor-not-allowed font-mono"
               />
             </div>
 
             <div>
-              <label className="block font-semibold text-[#64748B] mb-1">Engineering Branch</label>
+              <label className="block font-semibold text-[#A8B2D1] mb-1">Engineering Branch</label>
               <select
                 value={branch}
                 onChange={(e) => setBranch(e.target.value)}
-                className="w-full p-2.5 rounded-xl bg-white border border-[#CBD5E1] text-[#0F172A] focus:ring-2 focus:ring-[#0284C7]"
+                className="w-full p-2.5 rounded-xl bg-[#142247] border border-[#1E3466] text-[#FAF8F5] focus:ring-2 focus:ring-[#E5BA73]"
               >
                 <option value="Computer Science">Computer Science</option>
                 <option value="Information Technology">Information Technology</option>
@@ -172,7 +171,7 @@ export default function StudentProfilePage() {
             </div>
 
             <div>
-              <label className="block font-semibold text-[#64748B] mb-1">Cumulative CGPA (Scale of 10.0)</label>
+              <label className="block font-semibold text-[#A8B2D1] mb-1">Cumulative CGPA (Scale of 10.0)</label>
               <input
                 type="number"
                 step="0.01"
@@ -180,16 +179,16 @@ export default function StudentProfilePage() {
                 max="10.0"
                 value={cgpa}
                 onChange={(e) => setCgpa(parseFloat(e.target.value))}
-                className="w-full p-2.5 rounded-xl bg-white border border-[#CBD5E1] text-[#0F172A] font-bold focus:ring-2 focus:ring-[#0284C7]"
+                className="w-full p-2.5 rounded-xl bg-[#142247] border border-[#1E3466] text-[#FAF8F5] font-bold focus:ring-2 focus:ring-[#E5BA73]"
               />
             </div>
 
             <div>
-              <label className="block font-semibold text-[#64748B] mb-1">Current Academic Year</label>
+              <label className="block font-semibold text-[#A8B2D1] mb-1">Current Academic Year</label>
               <select
                 value={year}
                 onChange={(e) => setYear(parseInt(e.target.value))}
-                className="w-full p-2.5 rounded-xl bg-white border border-[#CBD5E1] text-[#0F172A]"
+                className="w-full p-2.5 rounded-xl bg-[#142247] border border-[#1E3466] text-[#FAF8F5] focus:ring-2 focus:ring-[#E5BA73]"
               >
                 <option value={2}>2nd Year</option>
                 <option value={3}>3rd Year (Class of 2026)</option>
@@ -198,35 +197,35 @@ export default function StudentProfilePage() {
             </div>
 
             <div>
-              <label className="block font-semibold text-[#64748B] mb-1">Prior Experience (Months)</label>
+              <label className="block font-semibold text-[#A8B2D1] mb-1">Prior Experience (Months)</label>
               <input
                 type="number"
                 min="0"
                 max="36"
                 value={experienceMonths}
                 onChange={(e) => setExperienceMonths(parseInt(e.target.value))}
-                className="w-full p-2.5 rounded-xl bg-white border border-[#CBD5E1] text-[#0F172A]"
+                className="w-full p-2.5 rounded-xl bg-[#142247] border border-[#1E3466] text-[#FAF8F5] focus:ring-2 focus:ring-[#E5BA73]"
               />
-              <span className="text-[10px] text-[#64748B] mt-1 block">Contributes 20% to candidate merit score</span>
+              <span className="text-[10px] text-[#A8B2D1]/70 mt-1 block">Contributes 20% to candidate merit score</span>
             </div>
           </div>
 
           <div>
-            <label className="block font-semibold text-[#64748B] text-xs mb-1">Experience &amp; Project Summary</label>
+            <label className="block font-semibold text-[#A8B2D1] text-xs mb-1">Experience &amp; Project Summary</label>
             <textarea
               rows={3}
               value={experienceSummary}
               onChange={(e) => setExperienceSummary(e.target.value)}
               placeholder="Describe open-source contributions, prior internships, or technical capstones..."
-              className="w-full p-2.5 rounded-xl bg-white border border-[#CBD5E1] text-xs text-[#0F172A] focus:ring-2 focus:ring-[#0284C7]"
+              className="w-full p-2.5 rounded-xl bg-[#142247] border border-[#1E3466] text-xs text-[#FAF8F5] focus:ring-2 focus:ring-[#E5BA73]"
             />
           </div>
         </div>
 
         {/* Technical Skills Card */}
-        <div className="bg-white p-6 rounded-2xl border border-[#E2E8F0] shadow-sm space-y-4">
-          <h2 className="text-base font-bold text-[#0F172A] border-b border-[#F1F5F9] pb-3 flex items-center gap-2">
-            <Sparkles className="h-4 w-4 text-[#0284C7]" />
+        <div className="bg-[#0F1A36] p-6 rounded-2xl border border-[#1E3466] shadow-md space-y-4">
+          <h2 className="text-base font-bold text-[#FAF8F5] border-b border-[#1E3466] pb-3 flex items-center gap-2">
+            <Sparkles className="h-4 w-4 text-[#E5BA73]" />
             <span>Technical Skills &amp; Competencies (40% Weight in Merit)</span>
           </h2>
 
@@ -234,13 +233,13 @@ export default function StudentProfilePage() {
             {skills.map((skill, idx) => (
               <span
                 key={idx}
-                className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-[#EFF6FF] border border-[#BAE6FD] text-xs font-semibold text-[#0284C7]"
+                className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-[#142247] border border-[#E5BA73]/30 text-xs font-semibold text-[#E5BA73]"
               >
                 <span>{skill}</span>
                 <button
                   type="button"
                   onClick={() => handleRemoveSkill(skill)}
-                  className="hover:text-red-500 transition-colors"
+                  className="hover:text-rose-400 transition-colors"
                 >
                   <X className="h-3.5 w-3.5" />
                 </button>
@@ -254,13 +253,13 @@ export default function StudentProfilePage() {
               value={newSkillInput}
               onChange={(e) => setNewSkillInput(e.target.value)}
               placeholder="Add skill (e.g. Go, PyTorch, React, Kubernetes)..."
-              className="flex-1 p-2.5 rounded-xl bg-[#F8FAFC] border border-[#CBD5E1] text-xs text-[#0F172A]"
+              className="flex-1 p-2.5 rounded-xl bg-[#142247] border border-[#1E3466] text-xs text-[#FAF8F5] placeholder-[#A8B2D1]/60 focus:ring-2 focus:ring-[#E5BA73]"
             />
             <Button
               type="button"
               size="sm"
               onClick={handleAddSkill}
-              className="bg-[#0284C7] text-white"
+              className="bg-[#E5BA73] hover:bg-[#F3CA68] text-[#0A1128] font-bold"
             >
               <Plus className="h-4 w-4 mr-1" /> Add Skill
             </Button>
@@ -268,9 +267,9 @@ export default function StudentProfilePage() {
         </div>
 
         {/* Resume Link */}
-        <div className="bg-white p-6 rounded-2xl border border-[#E2E8F0] shadow-sm space-y-3">
-          <h2 className="text-base font-bold text-[#0F172A] flex items-center gap-2">
-            <FileText className="h-4 w-4 text-[#0284C7]" />
+        <div className="bg-[#0F1A36] p-6 rounded-2xl border border-[#1E3466] shadow-md space-y-3">
+          <h2 className="text-base font-bold text-[#FAF8F5] flex items-center gap-2">
+            <FileText className="h-4 w-4 text-[#E5BA73]" />
             <span>Verified Resume Document</span>
           </h2>
           <input
@@ -278,7 +277,7 @@ export default function StudentProfilePage() {
             value={resumeUrl}
             onChange={(e) => setResumeUrl(e.target.value)}
             placeholder="https://example.com/my-resume.pdf"
-            className="w-full p-2.5 rounded-xl bg-white border border-[#CBD5E1] text-xs text-[#0F172A]"
+            className="w-full p-2.5 rounded-xl bg-[#142247] border border-[#1E3466] text-xs text-[#FAF8F5] placeholder-[#A8B2D1]/60 focus:ring-2 focus:ring-[#E5BA73]"
           />
         </div>
 
@@ -288,7 +287,7 @@ export default function StudentProfilePage() {
             type="submit"
             disabled={isSaving}
             size="lg"
-            className="bg-[#0284C7] hover:bg-[#0369A1] text-white px-8 font-semibold shadow-md"
+            className="bg-[#E5BA73] hover:bg-[#F3CA68] text-[#0A1128] px-8 font-bold shadow-md"
           >
             <Save className="h-4 w-4 mr-2" />
             {isSaving ? 'Saving Changes...' : 'Save Profile Changes'}

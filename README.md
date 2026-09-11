@@ -1,7 +1,7 @@
 # SMARTINTERN
 ## Smart Internship Allocation & Placement System
-> **Analysis of Algorithms (AoA) Course Project & Academic Placement Platform**  
-> *Deterministic Many-to-One Gale-Shapley Stable Matching, Multi-Criteria Merit Scoring, and Verifiable Zero-Blocking-Pair Allocation.*
+> **Enterprise University Placement & Internship Allocation Platform**  
+> *Deterministic Many-to-One Stable Matching, Multi-Criteria Merit Scoring, and Verifiable Zero-Blocking-Pair Allocation.*
 
 ---
 
@@ -92,10 +92,10 @@ A matching $\mu$ is **unstable** if there exists a student-internship pair $(s, 
 ```mermaid
 graph TD
     subgraph UI_Layer [User Interface Layer]
-        A1[Student Portal\n/student/*]
+        A1[Student Dashboard\n/student/*]
         A2[Admin Control Center\n/admin/*]
-        A3[Company Portal\n/company/*]
-        A4[AoA Documentation\n/algorithm-explanation]
+        A3[Company Workspace\n/company/*]
+        A4[Public Directory & Info\n/internships]
     end
 
     subgraph Auth_Layer [Authentication & Security]
@@ -112,10 +112,10 @@ graph TD
         C6[CSV Export\n/api/reports/download]
     end
 
-    subgraph Engine_Layer [Core AoA Algorithmic Engine]
+    subgraph Engine_Layer [Core Algorithmic Engine]
         D1[Eligibility Gatekeeper\nlib/algorithm/eligibilityEngine.ts]
         D2[Multi-Factor Merit Engine\nlib/algorithm/meritCalculator.ts]
-        D3[Gale-Shapley Stable Matcher\nlib/algorithm/galeShapley.ts]
+        D3[Stable Matcher Engine\nlib/algorithm/galeShapley.ts]
         D4[Greedy Benchmark\nlib/algorithm/greedyAllocation.ts]
     end
 
@@ -379,9 +379,8 @@ For live evaluation, use the 1-click credential selector on the [Login Screen](h
 
 ---
 
-## 12. Academic Credits & License
+## 12. System Architecture & License
 
-- **Course**: Analysis and Optimization of Algorithms (AoA)
-- **Project Title**: SMARTINTERN — Smart Internship Allocation & Placement System
-- **Core Algorithms**: Many-to-One Gale-Shapley Stable Marriage (Hospital-Residents), Multi-Criteria Greedy Benchmark.
-- **License**: MIT License. Open for educational and institutional research purposes.
+- **Platform Title**: SMARTINTERN — Smart Internship Allocation & Placement System
+- **Core Engine**: Many-to-One Stable Matching, Multi-Criteria Merit Evaluation.
+- **License**: MIT License. Open for enterprise, institutional, and educational deployment.

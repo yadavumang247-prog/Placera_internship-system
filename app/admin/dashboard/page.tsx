@@ -81,6 +81,8 @@ export default function AdminDashboardPage() {
     totalInternships: internships.length || 10,
     totalSeats: internships.reduce((acc, i) => acc + i.totalSeats, 0) || 19,
     totalEligiblePairs: 48,
+    eligiblePreferenceRelationships: 48,
+    totalProposals: 26,
     totalAllocated: result?.allocations?.length || 16,
     totalUnallocated: result?.unallocatedStudents?.length || 4,
     allocationRate: 80.0,
@@ -119,9 +121,9 @@ export default function AdminDashboardPage() {
 
   // 2. Chart Data: Preference Rank Satisfaction Breakdown
   const rankData = [
-    { name: 'Preference #1', count: stats.firstPreferenceAllocatedCount, fill: '#0284C7' },
-    { name: 'Preference #2', count: stats.secondPreferenceAllocatedCount || 3, fill: '#0EA5E9' },
-    { name: 'Preference #3', count: stats.thirdPreferenceAllocatedCount || 2, fill: '#38BDF8' },
+    { name: 'Preference #1', count: stats.firstPreferenceAllocatedCount, fill: '#E5BA73' },
+    { name: 'Preference #2', count: stats.secondPreferenceAllocatedCount || 3, fill: '#F3CA68' },
+    { name: 'Preference #3', count: stats.thirdPreferenceAllocatedCount || 2, fill: '#D4A253' },
     { name: 'Unallocated', count: stats.totalUnallocated, fill: '#64748B' },
   ];
 
@@ -142,33 +144,33 @@ export default function AdminDashboardPage() {
   return (
     <div className="space-y-8">
       {/* Top Header */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-[#0F172A] p-6 sm:p-8 rounded-2xl border border-[#1E293B] shadow-xl">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-[#0F1A36] p-6 sm:p-8 rounded-2xl border border-[#1E3466] shadow-xl">
         <div className="space-y-1">
           <div className="flex items-center gap-2">
-            <span className="text-xs font-bold uppercase tracking-wider text-[#38BDF8] bg-[#0284C7]/20 px-2.5 py-0.5 rounded border border-[#0284C7]/30">
+            <span className="text-xs font-bold uppercase tracking-wider text-[#E5BA73] bg-[#E5BA73]/15 px-2.5 py-0.5 rounded border border-[#E5BA73]/30">
               Placement Control Center
             </span>
-            <span className="text-[#64748B]">•</span>
-            <span className="text-xs text-[#94A3B8]">Cycle 2025–26</span>
+            <span className="text-[#1E3466]">•</span>
+            <span className="text-xs text-[#D8CEBC]">Cycle 2025–26</span>
           </div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-[#FAF8F5] tracking-tight">
             Institutional Allocation Dashboard
           </h1>
-          <p className="text-xs sm:text-sm text-[#94A3B8]">
-            Real-time monitoring of Many-to-One Gale-Shapley matching rounds, quota enforcement, and student preference satisfaction.
+          <p className="text-xs sm:text-sm text-[#D8CEBC]">
+            Real-time monitoring of placement matching rounds, quota enforcement, and student preference satisfaction.
           </p>
         </div>
 
         <div className="flex items-center gap-3">
           <Link href="/admin/algorithm">
-            <Button size="sm" className="bg-[#0284C7] hover:bg-[#0369A1] text-white shadow-md shadow-sky-950">
+            <Button size="sm" className="bg-[#E5BA73] hover:bg-[#D4A253] text-[#0A1128] font-bold shadow-md shadow-[#E5BA73]/20">
               <Sliders className="h-4 w-4 mr-2" />
               Allocation Engine &rarr;
             </Button>
           </Link>
           <Link href="/admin/allocations">
-            <Button size="sm" variant="outline" className="border-[#334155] bg-[#1E293B] text-white hover:bg-[#334155]">
-              <FileSpreadsheet className="h-4 w-4 mr-2 text-[#38BDF8]" />
+            <Button size="sm" variant="outline" className="border-[#1E3466] bg-[#0A1128] text-[#FAF8F5] hover:bg-[#142247] hover:border-[#E5BA73]/50">
+              <FileSpreadsheet className="h-4 w-4 mr-2 text-[#E5BA73]" />
               Master Ledger
             </Button>
           </Link>
@@ -242,13 +244,13 @@ export default function AdminDashboardPage() {
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <span className="font-bold text-white">Algorithm Stability: VERIFIED</span>
+              <span className="font-bold text-white">Matching Stability: VERIFIED</span>
               <span className="bg-[#10B981]/20 text-[#10B981] px-1.5 py-0.5 rounded font-bold text-[10px]">
                 0 Blocking Pairs
               </span>
             </div>
             <span className="text-[#94A3B8]">
-              Execution Time: {stats.executionTimeMs} ms • Total Proposals Made: {stats.totalProposals || 26}
+              Execution Time: {stats.executionTimeMs} ms • Total Proposals Made: {(stats as any).totalProposals || 26}
             </span>
           </div>
         </div>
@@ -294,7 +296,7 @@ export default function AdminDashboardPage() {
                   contentStyle={{ backgroundColor: '#0B1329', borderColor: '#334155', borderRadius: '8px', color: '#fff', fontSize: '12px' }}
                 />
                 <Legend wrapperStyle={{ fontSize: '11px', paddingTop: '10px' }} />
-                <Bar dataKey="Allocated" fill="#0284C7" radius={[4, 4, 0, 0]} stackId="a" />
+                <Bar dataKey="Allocated" fill="#E5BA73" radius={[4, 4, 0, 0]} stackId="a" />
                 <Bar dataKey="Unfilled" fill="#334155" radius={[4, 4, 0, 0]} stackId="a" />
               </BarChart>
             </ResponsiveContainer>

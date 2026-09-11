@@ -1,7 +1,7 @@
 import { NextResponse, type NextRequest } from 'next/server';
 import { jwtVerify } from 'jose';
 
-const SECRET_KEY = process.env.AUTH_SECRET || 'smart-internship-allocation-aoa-secret-key-32chars-min';
+const SECRET_KEY = process.env.AUTH_SECRET || 'smart-internship-allocation-system-secret-key-32chars-min';
 const encodedKey = new TextEncoder().encode(SECRET_KEY);
 const COOKIE_NAME = 'internship_session';
 

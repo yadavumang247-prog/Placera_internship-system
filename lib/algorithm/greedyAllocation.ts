@@ -2,7 +2,7 @@
  * SMARTINTERN - GREEDY BENCHMARK ALGORITHM
  * 
  * Capacity-Constrained Greedy Multi-Objective Allocation
- * Provided for comparative Analysis of Algorithms (AoA) evaluation against Gale-Shapley Stable Matching.
+ * Provided for comparative benchmark evaluation against Stable Matching.
  * 
  * Notice: Greedy allocation does NOT guarantee stability and can produce blocking pairs!
  */

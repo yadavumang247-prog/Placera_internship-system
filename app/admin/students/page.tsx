@@ -241,7 +241,7 @@ export default function AdminStudentsPage() {
 
         <Button
           onClick={() => setIsAddModalOpen(true)}
-          className="bg-[#0284C7] hover:bg-[#0369A1] text-white"
+          className="bg-[#E5BA73] hover:bg-[#F3CA68] text-[#0A1128] font-bold"
         >
           <Plus className="h-4 w-4 mr-1.5" />
           Register Student
@@ -436,7 +436,7 @@ export default function AdminStudentsPage() {
                           s.cgpa >= 9.0
                             ? 'bg-[#065F46]/30 text-[#34D399] border border-[#059669]/40'
                             : s.cgpa >= 8.0
-                            ? 'bg-[#0369A1]/30 text-[#38BDF8] border border-[#0284C7]/40'
+                            ? 'bg-[#E5BA73]/20 text-[#E5BA73] border border-[#E5BA73]/40'
                             : 'bg-[#78350F]/30 text-[#FBBF24] border border-[#D97706]/40'
                         }`}
                       >
@@ -638,7 +638,7 @@ export default function AdminStudentsPage() {
                           <span
                             className={`h-5 w-5 rounded flex items-center justify-center font-bold text-[11px] ${
                               p.rank === 1
-                                ? 'bg-[#0284C7] text-white'
+                                ? 'bg-[#E5BA73] text-[#0A1128] font-bold'
                                 : 'bg-[#1E293B] text-[#94A3B8]'
                             }`}
                           >
@@ -749,7 +749,7 @@ export default function AdminStudentsPage() {
             <Button type="button" variant="outline" onClick={() => setIsAddModalOpen(false)}>
               Cancel
             </Button>
-            <Button type="submit" className="bg-[#0284C7] hover:bg-[#0369A1] text-white">
+            <Button type="submit" className="bg-[#E5BA73] hover:bg-[#F3CA68] text-[#0A1128] font-bold">
               Save Student
             </Button>
           </div>
@@ -798,7 +798,7 @@ export default function AdminStudentsPage() {
             <Button type="button" variant="outline" onClick={() => setIsEditModalOpen(false)}>
               Cancel
             </Button>
-            <Button type="submit" className="bg-[#0284C7] hover:bg-[#0369A1] text-white">
+            <Button type="submit" className="bg-[#E5BA73] hover:bg-[#F3CA68] text-[#0A1128] font-bold">
               Update Record
             </Button>
           </div>

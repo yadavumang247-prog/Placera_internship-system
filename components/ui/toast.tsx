@@ -1,19 +1,21 @@
 'use client';
 
 import React, { createContext, useContext, useState, useCallback } from 'react';
-import { CheckCircle2, AlertCircle, Info, X } from 'lucide-react';
+import { CheckCircle2, AlertCircle, AlertTriangle, Info, X } from 'lucide-react';
 
 interface Toast {
   id: string;
-  type: 'success' | 'error' | 'info';
+  type: 'success' | 'error' | 'info' | 'warning';
   message: string;
   description?: string;
 }
 
 interface ToastContextType {
-  toast: (message: string, options?: { type?: 'success' | 'error' | 'info'; description?: string }) => void;
+  toast: (message: string, options?: { type?: 'success' | 'error' | 'info' | 'warning'; description?: string }) => void;
   success: (message: string, description?: string) => void;
   error: (message: string, description?: string) => void;
+  warning: (message: string, description?: string) => void;
+  info: (message: string, description?: string) => void;
 }
 
 const ToastContext = createContext<ToastContextType | undefined>(undefined);
@@ -26,7 +28,7 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const showToast = useCallback(
-    (message: string, options?: { type?: 'success' | 'error' | 'info'; description?: string }) => {
+    (message: string, options?: { type?: 'success' | 'error' | 'info' | 'warning'; description?: string }) => {
       const id = Math.random().toString(36).substring(2, 9);
       const newToast: Toast = {
         id,
@@ -58,8 +60,22 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
     [showToast]
   );
 
+  const warning = useCallback(
+    (message: string, description?: string) => {
+      showToast(message, { type: 'warning', description });
+    },
+    [showToast]
+  );
+
+  const info = useCallback(
+    (message: string, description?: string) => {
+      showToast(message, { type: 'info', description });
+    },
+    [showToast]
+  );
+
   return (
-    <ToastContext.Provider value={{ toast: showToast, success, error }}>
+    <ToastContext.Provider value={{ toast: showToast, success, error, warning, info }}>
       {children}
       <div className="fixed bottom-4 right-4 z-50 flex flex-col gap-2 max-w-md pointer-events-none">
         {toasts.map((t) => (
@@ -70,16 +86,19 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
                 ? 'bg-[#064E3B]/90 border-[#059669]/50 text-emerald-100 shadow-emerald-950/50'
                 : t.type === 'error'
                 ? 'bg-[#881337]/90 border-[#E11D48]/50 text-rose-100 shadow-rose-950/50'
-                : 'bg-[#1E293B]/95 border-[#334155] text-[#F8FAFC] shadow-slate-950/50'
+                : t.type === 'warning'
+                ? 'bg-[#78350F]/90 border-[#D97706]/50 text-amber-100 shadow-amber-950/50'
+                : 'bg-[#0F1A36]/95 border-[#1E3466] text-[#FAF8F5] shadow-navy-950/50'
             }`}
           >
             {t.type === 'success' && <CheckCircle2 className="h-5 w-5 text-[#34D399] flex-shrink-0 mt-0.5" />}
             {t.type === 'error' && <AlertCircle className="h-5 w-5 text-[#F43F5E] flex-shrink-0 mt-0.5" />}
-            {t.type === 'info' && <Info className="h-5 w-5 text-[#38BDF8] flex-shrink-0 mt-0.5" />}
+            {t.type === 'warning' && <AlertTriangle className="h-5 w-5 text-[#FBBF24] flex-shrink-0 mt-0.5" />}
+            {t.type === 'info' && <Info className="h-5 w-5 text-[#E5BA73] flex-shrink-0 mt-0.5" />}
 
             <div className="flex-1">
               <p className="font-semibold">{t.message}</p>
-              {t.description && <p className="text-xs text-[#94A3B8] mt-0.5">{t.description}</p>}
+              {t.description && <p className="text-xs text-[#D8CEBC] mt-0.5">{t.description}</p>}
             </div>
 
             <button

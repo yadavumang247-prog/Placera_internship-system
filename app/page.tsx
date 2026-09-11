@@ -4,7 +4,6 @@ import {
   Briefcase,
   Users,
   Building2,
-  Cpu,
   CheckCircle2,
   ArrowRight,
   ShieldCheck,
@@ -15,14 +14,14 @@ import {
   MapPin,
   Clock,
   ChevronRight,
-  Sliders,
   Scale,
+  Sliders,
+  Check,
 } from 'lucide-react';
 import { Navbar } from '../components/layout/Navbar';
 import { Footer } from '../components/layout/Footer';
 import { Button } from '../components/ui/button';
 import { Badge } from '../components/ui/badge';
-import { Card } from '../components/ui/card';
 import { dataService } from '../lib/db/dataService';
 
 export default async function HomePage() {
@@ -35,64 +34,64 @@ export default async function HomePage() {
   const featured = internships.slice(0, 6);
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#F8FAFC] text-[#0F172A]">
+    <div className="min-h-screen flex flex-col bg-[#0A1128] text-[#FAF8F5]">
       {/* 1. Navbar */}
       <Navbar />
 
       <main className="flex-1">
         {/* 2. Hero Section */}
-        <section className="relative overflow-hidden bg-gradient-to-b from-[#EFF6FF] via-[#F8FAFC] to-[#F8FAFC] border-b border-[#E2E8F0] pt-20 pb-24 sm:pt-24 sm:pb-28">
-          {/* Subtle Ambient Glow */}
-          <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[350px] bg-sky-200/40 blur-[120px] pointer-events-none -z-10 rounded-full" />
+        <section className="relative overflow-hidden bg-gradient-to-b from-[#0A1128] via-[#0E1B38] to-[#0A1128] border-b border-[#1E3466] pt-20 pb-24 sm:pt-28 sm:pb-32">
+          {/* Subtle Warm Beige/Gold Ambient Glow */}
+          <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[350px] bg-[#E5BA73]/10 blur-[130px] pointer-events-none -z-10 rounded-full" />
 
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-8">
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white text-[#0284C7] text-xs font-semibold border border-[#BAE6FD] shadow-sm">
-              <Sparkles className="h-4 w-4 text-[#0284C7]" />
-              <span>Smart Internship Allocation &amp; Placement Platform</span>
-              <span className="text-[#94A3B8]">•</span>
-              <span className="text-[#0369A1]">Gale-Shapley Stable Matching</span>
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#0F1A36] text-[#E5BA73] text-xs font-semibold border border-[#1E3466] shadow-sm">
+              <Sparkles className="h-4 w-4 text-[#E5BA73]" />
+              <span>Smart Internship Allocation System</span>
+              <span className="text-[#1E3466]">•</span>
+              <span className="text-[#FAF8F5]">Automated Talent Matching</span>
             </div>
 
             <div className="space-y-4 max-w-4xl mx-auto">
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-[#0F172A] leading-[1.15]">
+              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-[#FAF8F5] leading-[1.15]">
                 SMART INTERNSHIPS.
                 <br />
-                <span className="bg-gradient-to-r from-[#0284C7] via-[#0284C7] to-[#0EA5E9] bg-clip-text text-transparent">
+                <span className="bg-gradient-to-r from-[#E5BA73] via-[#F3CA68] to-[#DFC062] bg-clip-text text-transparent">
                   SMARTER ALLOCATION.
                 </span>
               </h1>
-              <p className="text-lg sm:text-xl text-[#475569] font-normal max-w-2xl mx-auto leading-relaxed">
-                Find the right opportunity. Build your career. A centralized, capacity-constrained matching platform powered by provably stable algorithms.
+              <p className="text-lg sm:text-xl text-[#D8CEBC] font-normal max-w-2xl mx-auto leading-relaxed">
+                Find the right opportunity. Accelerate your career. A centralized matching platform connecting ambitious students with industry-leading corporate teams.
               </p>
             </div>
 
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-2">
               <Link href="/internships" className="w-full sm:w-auto">
-                <Button size="lg" className="w-full sm:w-auto bg-[#0284C7] hover:bg-[#0369A1] text-white shadow-lg shadow-sky-600/20 px-8 py-6 text-base font-semibold">
+                <Button size="lg" className="w-full sm:w-auto bg-[#E5BA73] hover:bg-[#D4A253] text-[#0A1128] shadow-lg shadow-[#E5BA73]/20 px-8 py-6 text-base font-bold">
                   <Briefcase className="h-5 w-5 mr-2" />
                   Explore Internships
                 </Button>
               </Link>
               <Link href="/login" className="w-full sm:w-auto">
-                <Button size="lg" variant="outline" className="w-full sm:w-auto border-[#CBD5E1] bg-white hover:bg-[#F1F5F9] text-[#0F172A] px-8 py-6 text-base font-semibold shadow-sm">
-                  Student Login
-                  <ArrowRight className="h-4 w-4 ml-2 text-[#0284C7]" />
+                <Button size="lg" variant="outline" className="w-full sm:w-auto border-[#1E3466] bg-[#0F1A36] hover:bg-[#142247] hover:border-[#E5BA73]/50 text-[#FAF8F5] px-8 py-6 text-base font-semibold shadow-sm">
+                  Candidate Login
+                  <ArrowRight className="h-4 w-4 ml-2 text-[#E5BA73]" />
                 </Button>
               </Link>
             </div>
 
             {/* Micro badges below CTA */}
-            <div className="pt-4 flex flex-wrap items-center justify-center gap-6 text-xs text-[#64748B]">
+            <div className="pt-4 flex flex-wrap items-center justify-center gap-6 text-xs text-[#D8CEBC]">
               <div className="flex items-center gap-1.5">
                 <CheckCircle2 className="h-4 w-4 text-[#10B981]" />
                 <span>Zero Subjective Bias</span>
               </div>
               <div className="flex items-center gap-1.5">
-                <ShieldCheck className="h-4 w-4 text-[#0284C7]" />
-                <span>Guaranteed Stability (No Blocking Pairs)</span>
+                <ShieldCheck className="h-4 w-4 text-[#E5BA73]" />
+                <span>Capacity-Constrained Fair Matching</span>
               </div>
               <div className="flex items-center gap-1.5">
-                <Scale className="h-4 w-4 text-[#8B5CF6]" />
+                <Scale className="h-4 w-4 text-[#F3CA68]" />
                 <span>Multi-Factor Merit Scoring</span>
               </div>
             </div>
@@ -100,28 +99,28 @@ export default async function HomePage() {
         </section>
 
         {/* 3. Platform Statistics */}
-        <section className="bg-white border-b border-[#E2E8F0] py-10 shadow-sm relative z-10">
+        <section className="bg-[#0F1A36] border-b border-[#1E3466] py-10 shadow-sm relative z-10">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 divide-y md:divide-y-0 md:divide-x divide-[#E2E8F0] text-center">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 divide-y md:divide-y-0 md:divide-x divide-[#1E3466] text-center">
               <div className="pt-4 md:pt-0">
-                <div className="text-3xl sm:text-4xl font-extrabold text-[#0284C7] tracking-tight">500+</div>
-                <div className="text-sm font-semibold text-[#0F172A] mt-1">Students</div>
-                <div className="text-xs text-[#64748B] mt-0.5">Participating in cycles</div>
+                <div className="text-3xl sm:text-4xl font-extrabold text-[#E5BA73] tracking-tight">500+</div>
+                <div className="text-sm font-semibold text-[#FAF8F5] mt-1">Students</div>
+                <div className="text-xs text-[#D8CEBC] mt-0.5">Active candidates</div>
               </div>
               <div className="pt-4 md:pt-0">
-                <div className="text-3xl sm:text-4xl font-extrabold text-[#0284C7] tracking-tight">40+</div>
-                <div className="text-sm font-semibold text-[#0F172A] mt-1">Companies</div>
-                <div className="text-xs text-[#64748B] mt-0.5">Top-tier verified employers</div>
+                <div className="text-3xl sm:text-4xl font-extrabold text-[#E5BA73] tracking-tight">40+</div>
+                <div className="text-sm font-semibold text-[#FAF8F5] mt-1">Companies</div>
+                <div className="text-xs text-[#D8CEBC] mt-0.5">Verified hiring partners</div>
               </div>
               <div className="pt-4 md:pt-0">
-                <div className="text-3xl sm:text-4xl font-extrabold text-[#0284C7] tracking-tight">100+</div>
-                <div className="text-sm font-semibold text-[#0F172A] mt-1">Internship Seats</div>
-                <div className="text-xs text-[#64748B] mt-0.5">Capacity constrained quotas</div>
+                <div className="text-3xl sm:text-4xl font-extrabold text-[#E5BA73] tracking-tight">100+</div>
+                <div className="text-sm font-semibold text-[#FAF8F5] mt-1">Internship Seats</div>
+                <div className="text-xs text-[#D8CEBC] mt-0.5">Allocated opportunities</div>
               </div>
               <div className="pt-4 md:pt-0">
-                <div className="text-3xl sm:text-4xl font-extrabold text-[#10B981] tracking-tight">90%+</div>
-                <div className="text-sm font-semibold text-[#0F172A] mt-1">Preference Satisfaction</div>
-                <div className="text-xs text-[#64748B] mt-0.5">Allocated to Top 3 choices</div>
+                <div className="text-3xl sm:text-4xl font-extrabold text-[#10B981] tracking-tight">95%+</div>
+                <div className="text-sm font-semibold text-[#FAF8F5] mt-1">Preference Satisfaction</div>
+                <div className="text-xs text-[#D8CEBC] mt-0.5">Allocated to Top Choices</div>
               </div>
             </div>
           </div>
@@ -130,97 +129,97 @@ export default async function HomePage() {
         {/* 4. How Smart Allocation Works */}
         <section className="py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
           <div className="text-center space-y-3 max-w-3xl mx-auto">
-            <span className="text-xs uppercase font-bold tracking-wider text-[#0284C7] bg-[#E0F2FE] px-3 py-1 rounded-full">
-              Workflow Architecture
+            <span className="text-xs uppercase font-bold tracking-wider text-[#E5BA73] bg-[#E5BA73]/15 px-3 py-1 rounded-full border border-[#E5BA73]/30">
+              Workflow Pipeline
             </span>
-            <h2 className="text-3xl font-extrabold text-[#0F172A] tracking-tight">
+            <h2 className="text-3xl font-extrabold text-[#FAF8F5] tracking-tight">
               How Smart Allocation Works
             </h2>
-            <p className="text-sm sm:text-base text-[#64748B]">
-              A deterministic four-phase pipeline bridging student preferences and company requirements without manual bias.
+            <p className="text-sm sm:text-base text-[#D8CEBC]">
+              A deterministic four-phase process bridging student preferences and company requirements without manual bias.
             </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-            <div className="bg-white p-6 rounded-2xl border border-[#E2E8F0] shadow-sm hover:border-[#BAE6FD] hover:shadow-md transition-all flex flex-col justify-between">
+            <div className="bg-[#0F1A36] p-6 rounded-2xl border border-[#1E3466] shadow-sm hover:border-[#E5BA73]/60 transition-all flex flex-col justify-between">
               <div className="space-y-4">
-                <div className="h-12 w-12 rounded-xl bg-[#E0F2FE] text-[#0284C7] flex items-center justify-center font-bold text-lg">
+                <div className="h-12 w-12 rounded-xl bg-[#E5BA73]/20 text-[#F3CA68] flex items-center justify-center font-bold text-lg border border-[#E5BA73]/30">
                   1
                 </div>
-                <h3 className="font-bold text-[#0F172A] text-lg">Profile &amp; Credentials</h3>
-                <p className="text-xs text-[#64748B] leading-relaxed">
-                  Students register verified academic credentials: CGPA, engineering branch, graduation year, technical skills, and prior project experience.
+                <h3 className="font-bold text-[#FAF8F5] text-lg">Profile &amp; Credentials</h3>
+                <p className="text-xs text-[#D8CEBC] leading-relaxed">
+                  Students complete verified profiles: academic CGPA, engineering branch, graduation year, technical skills, and practical project experience.
                 </p>
               </div>
-              <div className="mt-6 pt-4 border-t border-[#F1F5F9] text-[11px] font-medium text-[#0284C7]">
+              <div className="mt-6 pt-4 border-t border-[#1E3466] text-[11px] font-semibold text-[#E5BA73]">
                 Automated verification
               </div>
             </div>
 
-            <div className="bg-white p-6 rounded-2xl border border-[#E2E8F0] shadow-sm hover:border-[#BAE6FD] hover:shadow-md transition-all flex flex-col justify-between">
+            <div className="bg-[#0F1A36] p-6 rounded-2xl border border-[#1E3466] shadow-sm hover:border-[#E5BA73]/60 transition-all flex flex-col justify-between">
               <div className="space-y-4">
-                <div className="h-12 w-12 rounded-xl bg-[#E0F2FE] text-[#0284C7] flex items-center justify-center font-bold text-lg">
+                <div className="h-12 w-12 rounded-xl bg-[#E5BA73]/20 text-[#F3CA68] flex items-center justify-center font-bold text-lg border border-[#E5BA73]/30">
                   2
                 </div>
-                <h3 className="font-bold text-[#0F172A] text-lg">Eligibility Gate</h3>
-                <p className="text-xs text-[#64748B] leading-relaxed">
-                  Before matching begins, the eligibility engine filters opportunities against strict minimum CGPA cutoffs, allowed branches, and required skill overlaps.
+                <h3 className="font-bold text-[#FAF8F5] text-lg">Eligibility Gate</h3>
+                <p className="text-xs text-[#D8CEBC] leading-relaxed">
+                  The system filters available opportunities against strict minimum CGPA cutoffs, department criteria, and core skill requirements.
                 </p>
               </div>
-              <div className="mt-6 pt-4 border-t border-[#F1F5F9] text-[11px] font-medium text-[#0284C7]">
+              <div className="mt-6 pt-4 border-t border-[#1E3466] text-[11px] font-semibold text-[#E5BA73]">
                 Real-time criteria check
               </div>
             </div>
 
-            <div className="bg-white p-6 rounded-2xl border border-[#E2E8F0] shadow-sm hover:border-[#BAE6FD] hover:shadow-md transition-all flex flex-col justify-between">
+            <div className="bg-[#0F1A36] p-6 rounded-2xl border border-[#1E3466] shadow-sm hover:border-[#E5BA73]/60 transition-all flex flex-col justify-between">
               <div className="space-y-4">
-                <div className="h-12 w-12 rounded-xl bg-[#E0F2FE] text-[#0284C7] flex items-center justify-center font-bold text-lg">
+                <div className="h-12 w-12 rounded-xl bg-[#E5BA73]/20 text-[#F3CA68] flex items-center justify-center font-bold text-lg border border-[#E5BA73]/30">
                   3
                 </div>
-                <h3 className="font-bold text-[#0F172A] text-lg">Ranked Preferences</h3>
-                <p className="text-xs text-[#64748B] leading-relaxed">
-                  Students rank eligible opportunities via an interactive drag-and-drop interface and lock their preferences before the institutional submission deadline.
+                <h3 className="font-bold text-[#FAF8F5] text-lg">Ranked Preferences</h3>
+                <p className="text-xs text-[#D8CEBC] leading-relaxed">
+                  Students explore eligible opportunities, rank their top choices via an interactive drag-and-drop builder, and submit them before the deadline.
                 </p>
               </div>
-              <div className="mt-6 pt-4 border-t border-[#F1F5F9] text-[11px] font-medium text-[#0284C7]">
-                Immutable lock state
+              <div className="mt-6 pt-4 border-t border-[#1E3466] text-[11px] font-semibold text-[#E5BA73]">
+                Candidate-first priority
               </div>
             </div>
 
-            <div className="bg-white p-6 rounded-2xl border border-[#E2E8F0] shadow-sm hover:border-[#BAE6FD] hover:shadow-md transition-all flex flex-col justify-between">
+            <div className="bg-[#0F1A36] p-6 rounded-2xl border border-[#1E3466] shadow-sm hover:border-[#E5BA73]/60 transition-all flex flex-col justify-between">
               <div className="space-y-4">
-                <div className="h-12 w-12 rounded-xl bg-[#E0F2FE] text-[#0284C7] flex items-center justify-center font-bold text-lg">
+                <div className="h-12 w-12 rounded-xl bg-[#E5BA73]/20 text-[#F3CA68] flex items-center justify-center font-bold text-lg border border-[#E5BA73]/30">
                   4
                 </div>
-                <h3 className="font-bold text-[#0F172A] text-lg">Gale-Shapley Match</h3>
-                <p className="text-xs text-[#64748B] leading-relaxed">
-                  The placement cell executes the Many-to-One Gale-Shapley algorithm, resolving capacity quotas through multi-criteria candidate merit scores.
+                <h3 className="font-bold text-[#FAF8F5] text-lg">Smart Matching</h3>
+                <p className="text-xs text-[#D8CEBC] leading-relaxed">
+                  The system resolves capacity quotas using multi-criteria merit scores (skills, CGPA, experience), providing optimal and fair allocations.
                 </p>
               </div>
-              <div className="mt-6 pt-4 border-t border-[#F1F5F9] text-[11px] font-medium text-[#0284C7]">
-                Provably stable outcome
+              <div className="mt-6 pt-4 border-t border-[#1E3466] text-[11px] font-semibold text-[#E5BA73]">
+                Fair &amp; verified outcome
               </div>
             </div>
           </div>
         </section>
 
         {/* 5. Featured Internships Section */}
-        <section className="py-16 bg-[#F1F5F9] border-y border-[#E2E8F0]">
+        <section className="py-16 bg-[#0B1530] border-y border-[#1E3466]">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
             <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
               <div>
-                <span className="text-xs uppercase font-bold tracking-wider text-[#0284C7]">
+                <span className="text-xs uppercase font-bold tracking-wider text-[#E5BA73]">
                   Active Openings
                 </span>
-                <h2 className="text-2xl sm:text-3xl font-bold text-[#0F172A] tracking-tight mt-1">
+                <h2 className="text-2xl sm:text-3xl font-bold text-[#FAF8F5] tracking-tight mt-1">
                   Featured Internships
                 </h2>
-                <p className="text-xs sm:text-sm text-[#64748B] mt-1">
-                  Verified roles offered by recruiting partners in the current academic placement cycle.
+                <p className="text-xs sm:text-sm text-[#D8CEBC] mt-1">
+                  Verified roles offered by recruiting partners in the current placement cycle.
                 </p>
               </div>
               <Link href="/internships">
-                <Button variant="outline" className="border-[#CBD5E1] bg-white hover:bg-slate-50 text-[#0284C7]">
+                <Button variant="outline" className="border-[#1E3466] bg-[#0F1A36] hover:bg-[#142247] hover:border-[#E5BA73]/60 text-[#E5BA73]">
                   View All {internships.length} Internships
                   <ChevronRight className="h-4 w-4 ml-1" />
                 </Button>
@@ -231,38 +230,38 @@ export default async function HomePage() {
               {featured.map((intern) => (
                 <div
                   key={intern.id}
-                  className="bg-white rounded-xl border border-[#E2E8F0] p-5 shadow-sm hover:shadow-md hover:border-[#BAE6FD] transition-all flex flex-col justify-between h-full"
+                  className="bg-[#0F1A36] rounded-2xl border border-[#1E3466] p-5 shadow-sm hover:shadow-md hover:border-[#E5BA73]/60 transition-all flex flex-col justify-between h-full"
                 >
                   <div className="space-y-3">
                     <div className="flex items-start justify-between gap-3">
                       <div>
-                        <span className="text-xs font-semibold text-[#0284C7]">
+                        <span className="text-xs font-semibold text-[#E5BA73]">
                           {intern.companyName}
                         </span>
-                        <h3 className="font-bold text-[#0F172A] text-base line-clamp-1 mt-0.5">
+                        <h3 className="font-bold text-[#FAF8F5] text-base line-clamp-1 mt-0.5">
                           {intern.title}
                         </h3>
                       </div>
-                      <Badge variant="outline" className="text-[10px] border-[#BAE6FD] bg-[#EFF6FF] text-[#0369A1] font-semibold shrink-0">
+                      <Badge variant="outline" className="text-[10px] border-[#E5BA73]/40 bg-[#E5BA73]/15 text-[#F3CA68] font-semibold shrink-0">
                         {intern.mode}
                       </Badge>
                     </div>
 
-                    <div className="flex flex-wrap items-center gap-y-1 gap-x-3 text-xs text-[#64748B]">
+                    <div className="flex flex-wrap items-center gap-y-1 gap-x-3 text-xs text-[#D8CEBC]">
                       <div className="flex items-center gap-1">
-                        <MapPin className="h-3.5 w-3.5 text-[#94A3B8]" />
+                        <MapPin className="h-3.5 w-3.5 text-[#E5BA73]" />
                         <span>{intern.location.split(',')[0]}</span>
                       </div>
                       <div className="flex items-center gap-1">
-                        <Clock className="h-3.5 w-3.5 text-[#94A3B8]" />
+                        <Clock className="h-3.5 w-3.5 text-[#E5BA73]" />
                         <span>{intern.duration}</span>
                       </div>
-                      <div className="font-semibold text-[#0F172A]">
+                      <div className="font-semibold text-[#FAF8F5]">
                         ₹{intern.stipend.toLocaleString()}/mo
                       </div>
                     </div>
 
-                    <p className="text-xs text-[#64748B] line-clamp-2 leading-relaxed">
+                    <p className="text-xs text-[#D8CEBC] line-clamp-2 leading-relaxed">
                       {intern.description}
                     </p>
 
@@ -270,25 +269,25 @@ export default async function HomePage() {
                       {intern.requiredSkills.slice(0, 3).map((skill, sIdx) => (
                         <span
                           key={sIdx}
-                          className="text-[11px] px-2 py-0.5 rounded bg-[#F1F5F9] text-[#475569] font-medium"
+                          className="text-[11px] px-2 py-0.5 rounded bg-[#142247] text-[#D8CEBC] border border-[#1E3466] font-medium"
                         >
                           {skill}
                         </span>
                       ))}
                       {intern.requiredSkills.length > 3 && (
-                        <span className="text-[11px] px-1.5 py-0.5 rounded bg-[#F1F5F9] text-[#94A3B8]">
+                        <span className="text-[11px] px-1.5 py-0.5 rounded bg-[#142247] text-[#D8CEBC]/70 border border-[#1E3466]">
                           +{intern.requiredSkills.length - 3}
                         </span>
                       )}
                     </div>
                   </div>
 
-                  <div className="mt-5 pt-4 border-t border-[#F1F5F9] flex items-center justify-between">
-                    <div className="text-xs text-[#64748B]">
-                      <span className="font-semibold text-[#0F172A]">{intern.totalSeats}</span> seats • Min CGPA <span className="font-semibold text-[#0F172A]">{intern.minimumCGPA.toFixed(1)}</span>
+                  <div className="mt-5 pt-4 border-t border-[#1E3466] flex items-center justify-between">
+                    <div className="text-xs text-[#D8CEBC]">
+                      <span className="font-semibold text-[#FAF8F5]">{intern.totalSeats}</span> seats • Min CGPA <span className="font-semibold text-[#FAF8F5]">{intern.minimumCGPA.toFixed(1)}</span>
                     </div>
                     <Link href={`/internships/${intern.id}`}>
-                      <Button size="sm" variant="ghost" className="text-[#0284C7] hover:bg-[#E0F2FE] hover:text-[#0369A1] text-xs font-semibold p-2 h-auto">
+                      <Button size="sm" variant="ghost" className="text-[#E5BA73] hover:bg-[#E5BA73]/15 hover:text-[#F3CA68] text-xs font-semibold p-2 h-auto">
                         Details &rarr;
                       </Button>
                     </Link>
@@ -302,121 +301,122 @@ export default async function HomePage() {
         {/* 6. Why SmartIntern */}
         <section className="py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
           <div className="text-center space-y-3 max-w-3xl mx-auto">
-            <span className="text-xs uppercase font-bold tracking-wider text-[#0284C7] bg-[#E0F2FE] px-3 py-1 rounded-full">
-              System Advantages
+            <span className="text-xs uppercase font-bold tracking-wider text-[#E5BA73] bg-[#E5BA73]/15 px-3 py-1 rounded-full border border-[#E5BA73]/30">
+              Platform Benefits
             </span>
-            <h2 className="text-3xl font-extrabold text-[#0F172A] tracking-tight">
+            <h2 className="text-3xl font-extrabold text-[#FAF8F5] tracking-tight">
               Why SMARTINTERN?
             </h2>
-            <p className="text-sm sm:text-base text-[#64748B]">
-              Traditional campus placement processes suffer from spreadsheet errors, student discontent, and suboptimal matching. Here is how algorithmic allocation solves it:
+            <p className="text-sm sm:text-base text-[#D8CEBC]">
+              Traditional campus placement processes suffer from spreadsheet errors, student discontent, and slow matching. Here is how modern automated allocation transforms hiring:
             </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="bg-white p-6 rounded-2xl border border-[#E2E8F0] shadow-sm space-y-4">
-              <div className="h-10 w-10 rounded-lg bg-[#E0F2FE] text-[#0284C7] flex items-center justify-center">
+            <div className="bg-[#0F1A36] p-6 rounded-2xl border border-[#1E3466] shadow-sm space-y-4">
+              <div className="h-10 w-10 rounded-xl bg-[#E5BA73]/20 text-[#F3CA68] flex items-center justify-center border border-[#E5BA73]/30">
                 <ShieldCheck className="h-6 w-6" />
               </div>
-              <h3 className="text-lg font-bold text-[#0F172A]">Mathematical Stability</h3>
-              <p className="text-xs sm:text-sm text-[#64748B] leading-relaxed">
-                Guarantees zero blocking pairs. No student and company will ever prefer each other over their assigned matches, preventing back-channel renegotiations and dropouts.
+              <h3 className="text-lg font-bold text-[#FAF8F5]">Fair &amp; Balanced Allocation</h3>
+              <p className="text-xs sm:text-sm text-[#D8CEBC] leading-relaxed">
+                Guarantees transparent matching. Allocations are driven strictly by candidate preference rankings and verified qualifications, eliminating back-channel negotiations.
               </p>
             </div>
 
-            <div className="bg-white p-6 rounded-2xl border border-[#E2E8F0] shadow-sm space-y-4">
-              <div className="h-10 w-10 rounded-lg bg-[#E0F2FE] text-[#0284C7] flex items-center justify-center">
+            <div className="bg-[#0F1A36] p-6 rounded-2xl border border-[#1E3466] shadow-sm space-y-4">
+              <div className="h-10 w-10 rounded-xl bg-[#E5BA73]/20 text-[#F3CA68] flex items-center justify-center border border-[#E5BA73]/30">
                 <Scale className="h-6 w-6" />
               </div>
-              <h3 className="text-lg font-bold text-[#0F172A]">Balanced Merit Scoring</h3>
-              <p className="text-xs sm:text-sm text-[#64748B] leading-relaxed">
-                Does not rely solely on raw CGPA. Integrates verified skill compatibility (40%), CGPA (30%), practical experience (20%), and branch relevance (10%) for well-rounded evaluations.
+              <h3 className="text-lg font-bold text-[#FAF8F5]">Holistic Merit Scoring</h3>
+              <p className="text-xs sm:text-sm text-[#D8CEBC] leading-relaxed">
+                Does not rely solely on raw CGPA. Integrates verified skill compatibility (40%), academic grades (30%), practical experience (20%), and branch relevance (10%).
               </p>
             </div>
 
-            <div className="bg-white p-6 rounded-2xl border border-[#E2E8F0] shadow-sm space-y-4">
-              <div className="h-10 w-10 rounded-lg bg-[#E0F2FE] text-[#0284C7] flex items-center justify-center">
+            <div className="bg-[#0F1A36] p-6 rounded-2xl border border-[#1E3466] shadow-sm space-y-4">
+              <div className="h-10 w-10 rounded-xl bg-[#E5BA73]/20 text-[#F3CA68] flex items-center justify-center border border-[#E5BA73]/30">
                 <Zap className="h-6 w-6" />
               </div>
-              <h3 className="text-lg font-bold text-[#0F172A]">Transparent Explainability</h3>
-              <p className="text-xs sm:text-sm text-[#64748B] leading-relaxed">
-                Every allocation or non-allocation is mathematically justified. Students see exact reasons, skill match percentages, and capacity thresholds for total trust in results.
+              <h3 className="text-lg font-bold text-[#FAF8F5]">Instant Transparency</h3>
+              <p className="text-xs sm:text-sm text-[#D8CEBC] leading-relaxed">
+                Every allocation decision is clearly explained. Students and recruiters see transparent match percentages and seat quotas for complete trust in outcomes.
               </p>
             </div>
           </div>
         </section>
 
-        {/* 7. Algorithm Explanation Teaser */}
-        <section className="bg-gradient-to-r from-[#0F172A] to-[#1E293B] text-white py-16">
+        {/* 7. Enterprise Feature Highlights (Replaced academic pseudocode section) */}
+        <section className="bg-gradient-to-r from-[#0F1A36] via-[#142247] to-[#0F1A36] border-y border-[#1E3466] py-16">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
               <div className="lg:col-span-7 space-y-5">
-                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#38BDF8]/10 text-[#38BDF8] text-xs font-semibold border border-[#38BDF8]/20">
-                  <Cpu className="h-3.5 w-3.5" />
-                  <span>Stable Matching Methodology</span>
+                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#E5BA73]/15 text-[#E5BA73] text-xs font-semibold border border-[#E5BA73]/30">
+                  <Sparkles className="h-3.5 w-3.5" />
+                  <span>Smart Placement Engine</span>
                 </div>
-                <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight leading-tight">
-                  Many-to-One Gale-Shapley (Hospital-Residents) Formulation
+                <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight leading-tight text-[#FAF8F5]">
+                  Automated Capacity Matching &amp; Placement Coordination
                 </h2>
-                <p className="text-sm text-[#94A3B8] leading-relaxed">
-                  Students propose to internships according to their preference rankings. When an internship's capacity $C_i$ is exceeded, it provisionally holds the highest-merit candidates and rejects the others. Rejected candidates continue proposing down their preference list until equilibrium is reached.
+                <p className="text-sm text-[#D8CEBC] leading-relaxed">
+                  Engineered to streamline campus hiring drives. Students rank their preferred positions, while companies define exact candidate criteria. The system calculates optimal matches in seconds, maximizing student satisfaction and filling high-priority seats.
                 </p>
                 <div className="flex flex-wrap gap-4 pt-2">
-                  <Link href="/algorithm-explanation">
-                    <Button className="bg-[#0284C7] hover:bg-[#0369A1] text-white">
-                      Explore Algorithm Complexity &amp; Proofs
+                  <Link href="/internships">
+                    <Button className="bg-[#E5BA73] hover:bg-[#D4A253] text-[#0A1128] font-bold shadow-md shadow-[#E5BA73]/20">
+                      Browse Available Roles
                       <ArrowRight className="h-4 w-4 ml-2" />
                     </Button>
                   </Link>
                 </div>
               </div>
 
-              <div className="lg:col-span-5 bg-[#0B1329] p-6 rounded-2xl border border-[#334155] font-mono text-xs space-y-3">
-                <div className="text-[#38BDF8] font-bold pb-2 border-b border-[#1E293B] flex items-center justify-between">
-                  <span>PSEUDOCODE: GaleShapley(S, I, C, P)</span>
-                  <span className="text-[10px] text-[#94A3B8]">O(S * I)</span>
+              <div className="lg:col-span-5 bg-[#0A1128] p-6 rounded-2xl border border-[#1E3466] space-y-4">
+                <div className="text-[#E5BA73] font-bold text-sm pb-2 border-b border-[#1E3466] flex items-center justify-between">
+                  <span>Engine Features</span>
+                  <span className="text-[11px] text-[#D8CEBC]">Production Ready</span>
                 </div>
-                <pre className="text-[#94A3B8] leading-relaxed overflow-x-auto whitespace-pre">
-{`while (∃ unassigned student s with preferences) {
-  i = s.next_eligible_preference()
-  if (|held[i]| < capacity[i]) {
-    held[i].insert(s)
-  } else {
-    worst = min_merit(held[i])
-    if (merit(s, i) > merit(worst, i)) {
-      held[i].remove(worst)
-      held[i].insert(s)
-      free_queue.push(worst)
-    } else {
-      reject(s)
-    }
-  }
-}`}
-                </pre>
+                <ul className="space-y-3 text-xs text-[#D8CEBC]">
+                  <li className="flex items-start gap-2.5">
+                    <Check className="h-4 w-4 text-[#E5BA73] shrink-0 mt-0.5" />
+                    <span><strong>Pre-matching Eligibility Gate:</strong> Real-time filtering by branch, cutoff CGPA, and required skill overlaps.</span>
+                  </li>
+                  <li className="flex items-start gap-2.5">
+                    <Check className="h-4 w-4 text-[#E5BA73] shrink-0 mt-0.5" />
+                    <span><strong>Interactive Preference Ranking:</strong> Drag-and-drop candidate list with instant deadline locking.</span>
+                  </li>
+                  <li className="flex items-start gap-2.5">
+                    <Check className="h-4 w-4 text-[#E5BA73] shrink-0 mt-0.5" />
+                    <span><strong>Capacity Quota Management:</strong> Real-time seat tracking and automatic waitlist overflow resolution.</span>
+                  </li>
+                  <li className="flex items-start gap-2.5">
+                    <Check className="h-4 w-4 text-[#E5BA73] shrink-0 mt-0.5" />
+                    <span><strong>Full Audit Ledger:</strong> Detailed allocation records for placement officers and recruiters.</span>
+                  </li>
+                </ul>
               </div>
             </div>
           </div>
         </section>
 
         {/* 8. Call To Action */}
-        <section className="py-20 bg-white border-b border-[#E2E8F0]">
+        <section className="py-20 bg-[#0A1128] border-b border-[#1E3466]">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-6">
-            <h2 className="text-3xl sm:text-4xl font-extrabold text-[#0F172A] tracking-tight">
+            <h2 className="text-3xl sm:text-4xl font-extrabold text-[#FAF8F5] tracking-tight">
               Ready to experience smarter placements?
             </h2>
-            <p className="text-sm sm:text-base text-[#64748B] max-w-xl mx-auto">
-              Sign in with demo accounts to explore the student preference manager, administrator allocation control center, and corporate candidate ranking pools.
+            <p className="text-sm sm:text-base text-[#D8CEBC] max-w-xl mx-auto">
+              Sign in with demo accounts to explore the candidate dashboard, administrator control center, and employer recruitment console.
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-2">
               <Link href="/login">
-                <Button size="lg" className="bg-[#0284C7] hover:bg-[#0369A1] text-white px-8 py-6 text-base font-semibold shadow-md">
+                <Button size="lg" className="bg-[#E5BA73] hover:bg-[#D4A253] text-[#0A1128] px-8 py-6 text-base font-bold shadow-md shadow-[#E5BA73]/20">
                   Get Started / Sign In
                   <ArrowRight className="h-4 w-4 ml-2" />
                 </Button>
               </Link>
-              <Link href="/algorithm-explanation">
-                <Button size="lg" variant="outline" className="border-[#CBD5E1] text-[#0F172A] px-8 py-6 text-base font-semibold">
-                  View Algorithm Analysis
+              <Link href="/internships">
+                <Button size="lg" variant="outline" className="border-[#1E3466] bg-[#0F1A36] text-[#FAF8F5] hover:border-[#E5BA73]/50 px-8 py-6 text-base font-semibold">
+                  Browse All Internships
                 </Button>
               </Link>
             </div>

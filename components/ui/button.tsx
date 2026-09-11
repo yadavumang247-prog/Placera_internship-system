@@ -3,7 +3,7 @@ import { clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
 export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: 'primary' | 'secondary' | 'outline' | 'danger' | 'ghost' | 'success';
+  variant?: 'primary' | 'secondary' | 'outline' | 'danger' | 'ghost' | 'success' | 'navy';
   size?: 'sm' | 'md' | 'lg';
   isLoading?: boolean;
 }
@@ -11,19 +11,21 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
 export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant = 'primary', size = 'md', isLoading = false, children, disabled, ...props }, ref) => {
     const baseStyles =
-      'inline-flex items-center justify-center font-medium rounded-md transition-colors duration-150 focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-offset-[#0B1120] disabled:opacity-50 disabled:cursor-not-allowed select-none text-sm';
+      'inline-flex items-center justify-center font-semibold rounded-lg transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-offset-[#0A1128] disabled:opacity-50 disabled:cursor-not-allowed select-none text-sm';
 
     const variants = {
       primary:
-        'bg-[#0284C7] text-white hover:bg-[#0369A1] focus:ring-[#38BDF8] shadow-sm',
+        'bg-[#E5BA73] text-[#0A1128] hover:bg-[#D4A253] focus:ring-[#F3CA68] shadow-md shadow-[#E5BA73]/15',
+      navy:
+        'bg-[#0F1A36] text-[#E5BA73] border border-[#1E3466] hover:bg-[#142247] hover:border-[#E5BA73]/60 focus:ring-[#E5BA73] shadow-sm',
       secondary:
-        'bg-[#334155] text-[#F8FAFC] hover:bg-[#475569] focus:ring-[#64748B] shadow-sm',
+        'bg-[#142247] text-[#FAF8F5] hover:bg-[#1A2C5B] border border-[#1E3466] focus:ring-[#E5BA73] shadow-sm',
       outline:
-        'border border-[#334155] bg-[#0F172A] text-[#F8FAFC] hover:bg-[#1E293B] hover:border-[#475569] focus:ring-[#38BDF8] shadow-sm',
+        'border border-[#1E3466] bg-[#0F1A36] text-[#FAF8F5] hover:bg-[#142247] hover:border-[#E5BA73]/60 focus:ring-[#E5BA73] shadow-sm',
       danger:
         'bg-[#DC2626] text-white hover:bg-[#B91C1C] focus:ring-[#EF4444] shadow-sm',
       ghost:
-        'text-[#94A3B8] hover:text-[#F8FAFC] hover:bg-[#1E293B] focus:ring-[#38BDF8]',
+        'text-[#D8CEBC] hover:text-[#FAF8F5] hover:bg-[#142247] focus:ring-[#E5BA73]',
       success:
         'bg-[#059669] text-white hover:bg-[#047857] focus:ring-[#10B981] shadow-sm',
     };

@@ -40,7 +40,7 @@ class MemoryStore {
       id: 'log_init',
       action: 'SYSTEM_INITIALIZATION',
       performedBy: 'System Administrator',
-      details: 'SMARTINTERN Placement Portal initialized with 20 student profiles and 10 corporate tracks.',
+      details: 'SMARTINTERN Placement System initialized with 20 student profiles and 10 corporate tracks.',
       timestamp: new Date().toISOString(),
     },
   ];
@@ -150,6 +150,38 @@ export const dataService = {
     return memoryStore.students[idx];
   },
 
+  async updateStudent(id: string, updates: Partial<StudentData>): Promise<StudentData | null> {
+    return this.updateStudentProfile(id, updates);
+  },
+
+  async createStudent(
+    data: Omit<StudentData, 'id' | 'userId'> & {
+      userId?: string;
+    }
+  ): Promise<StudentData> {
+    const newStudent: StudentData = {
+      userId: data.userId || `u_${Date.now()}`,
+      ...data,
+      id: `stud_${Date.now()}`,
+    };
+    memoryStore.students.push(newStudent);
+    memoryStore.auditLogs.unshift({
+      id: `log_${Date.now()}`,
+      action: 'STUDENT_CREATED',
+      performedBy: 'Placement Admin',
+      details: `Registered student ${newStudent.name} (${newStudent.rollNumber})`,
+      timestamp: new Date().toISOString(),
+    });
+    return newStudent;
+  },
+
+  async deleteStudent(id: string): Promise<boolean> {
+    const prevLen = memoryStore.students.length;
+    memoryStore.students = memoryStore.students.filter((s) => s.id !== id);
+    memoryStore.preferences = memoryStore.preferences.filter((p) => p.studentId !== id);
+    return memoryStore.students.length < prevLen;
+  },
+
   // --- Companies ---
   async getCompanies(): Promise<CompanyData[]> {
     return memoryStore.companies.map((c) => ({
@@ -161,6 +193,39 @@ export const dataService = {
   async getCompanyById(id: string): Promise<CompanyData | null> {
     const companies = await this.getCompanies();
     return companies.find((c) => c.id === id || c.userId === id) || null;
+  },
+
+  async createCompany(data: Omit<CompanyData, 'id'>): Promise<CompanyData> {
+    const newCompany: CompanyData = {
+      ...data,
+      id: `comp_${Date.now()}`,
+    };
+    memoryStore.companies.push(newCompany);
+    memoryStore.auditLogs.unshift({
+      id: `log_${Date.now()}`,
+      action: 'COMPANY_CREATED',
+      performedBy: 'Placement Admin',
+      details: `Registered company ${newCompany.name}`,
+      timestamp: new Date().toISOString(),
+    });
+    return newCompany;
+  },
+
+  async updateCompany(id: string, updates: Partial<CompanyData>): Promise<CompanyData | null> {
+    const idx = memoryStore.companies.findIndex((c) => c.id === id || c.userId === id);
+    if (idx === -1) return null;
+    memoryStore.companies[idx] = {
+      ...memoryStore.companies[idx],
+      ...updates,
+    };
+    return memoryStore.companies[idx];
+  },
+
+  async deleteCompany(id: string): Promise<boolean> {
+    const prevLen = memoryStore.companies.length;
+    memoryStore.companies = memoryStore.companies.filter((c) => c.id !== id);
+    memoryStore.internships = memoryStore.internships.filter((i) => i.companyId !== id);
+    return memoryStore.companies.length < prevLen;
   },
 
   // --- Internships ---
@@ -180,11 +245,17 @@ export const dataService = {
     return internships.find((i) => i.id === id) || null;
   },
 
-  async createInternship(data: Omit<InternshipData, 'id'>): Promise<InternshipData> {
+  async createInternship(
+    data: Omit<InternshipData, 'id' | 'availableSeats'> & {
+      availableSeats?: number;
+      allowedBranches?: string[];
+    }
+  ): Promise<InternshipData> {
     const newInternship: InternshipData = {
       ...data,
+      allowedBranches: data.allowedBranches || ['Computer Science', 'Information Technology', 'Artificial Intelligence & Data Science'],
+      availableSeats: data.availableSeats ?? data.totalSeats,
       id: `int_${Date.now()}`,
-      availableSeats: data.totalSeats,
       status: 'ACTIVE',
     };
     memoryStore.internships.push(newInternship);
@@ -209,6 +280,13 @@ export const dataService = {
       ...updates,
     };
     return memoryStore.internships[idx];
+  },
+
+  async deleteInternship(id: string): Promise<boolean> {
+    const prevLen = memoryStore.internships.length;
+    memoryStore.internships = memoryStore.internships.filter((i) => i.id !== id);
+    memoryStore.preferences = memoryStore.preferences.filter((p) => p.internshipId !== id);
+    return memoryStore.internships.length < prevLen;
   },
 
   // --- Preferences ---

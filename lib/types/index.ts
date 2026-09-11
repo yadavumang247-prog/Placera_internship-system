@@ -2,7 +2,7 @@ export type Role = 'ADMIN' | 'STUDENT' | 'COMPANY';
 
 export type Mode = 'REMOTE' | 'HYBRID' | 'ONSITE';
 
-export type AllocationStatus = 'ALLOCATED' | 'ACCEPTED' | 'REJECTED' | 'UNALLOCATED';
+export type AllocationStatus = 'ALLOCATED' | 'ACCEPTED' | 'REJECTED';
 
 export type PublicationStatus = 'DRAFT' | 'PREVIEWED' | 'PUBLISHED';
 
@@ -114,7 +114,7 @@ export interface AllocationData {
 export interface AlgorithmWeights {
   // Legacy compatibility weights
   preferenceWeight?: number;
-  // Standard AoA Merit weights (Summing to 1.0)
+  // Standard Merit weights (Summing to 1.0)
   skillWeight: number;       // default 0.40 (40%)
   cgpaWeight: number;        // default 0.30 (30%)
   experienceWeight: number;  // default 0.20 (20%)
@@ -203,6 +203,7 @@ export interface AlgorithmResult {
   }[];
   candidatePairs: CandidatePair[];
   steps?: ProposalStep[];
+  proposalLog?: any[];
   stats: AlgorithmStats;
   weights: AlgorithmWeights;
   timestamp: string;
@@ -243,3 +244,9 @@ export interface NotificationItem {
   read: boolean;
   link?: string;
 }
+
+// Type aliases for UI and component compatibility
+export type Student = StudentData;
+export type Internship = InternshipData;
+export type Company = CompanyData;
+export type AllocationRecord = AllocationData;

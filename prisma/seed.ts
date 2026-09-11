@@ -11,7 +11,7 @@ import { runInternshipAllocation, DEFAULT_WEIGHTS } from '../lib/algorithm/inter
 const prisma = new PrismaClient();
 
 async function main() {
-  console.log('🌱 Starting database seed for InternMatch Portal...');
+  console.log('🌱 Starting database seed for Smart Internship Allocation Platform...');
 
   // Clear existing records in reverse dependency order
   await prisma.allocation.deleteMany();
@@ -131,7 +131,7 @@ async function main() {
   console.log(`✅ Seeded ${INITIAL_PREFERENCES.length} student preference rankings.`);
 
   // 6. Run Initial Allocation and Persist
-  console.log('⚙️ Executing baseline AOA algorithm run...');
+  console.log('⚙️ Executing baseline allocation matching run...');
   const result = runInternshipAllocation(
     INITIAL_STUDENTS,
     INITIAL_INTERNSHIPS,
@@ -161,7 +161,7 @@ async function main() {
         preferenceRank: alloc.preferenceRank,
         skillMatchScore: alloc.skillMatchScore,
         cgpaScore: alloc.cgpaScore,
-        status: alloc.status,
+        status: alloc.status as 'ALLOCATED' | 'ACCEPTED' | 'REJECTED',
         allocatedAt: new Date(alloc.allocatedAt),
       },
     });

@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
-import { getSession } from '../../../../lib/auth/session';
-import { dataService } from '../../../../lib/db/dataService';
+import { getSession } from '../../../../../lib/auth/session';
+import { dataService } from '../../../../../lib/db/dataService';
 
 export async function POST() {
   try {

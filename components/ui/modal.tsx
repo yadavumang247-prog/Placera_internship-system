@@ -54,22 +54,22 @@ export function Modal({
         <div
           className={twMerge(
             clsx(
-              'relative transform overflow-hidden rounded-xl bg-[#1E293B] text-left shadow-2xl transition-all w-full sm:my-8 border border-[#334155] text-[#F8FAFC]',
+              'relative transform overflow-hidden rounded-2xl bg-[#0F1A36] text-left shadow-2xl transition-all w-full sm:my-8 border border-[#1E3466] text-[#FAF8F5]',
               maxWidthClasses[maxWidth]
             )
           )}
         >
           {/* Header */}
-          <div className="flex items-center justify-between px-6 py-4 border-b border-[#334155]">
+          <div className="flex items-center justify-between px-6 py-4 border-b border-[#1E3466]">
             <div>
-              <h3 className="text-lg font-semibold text-[#F8FAFC]">{title}</h3>
+              <h3 className="text-lg font-bold text-[#FAF8F5]">{title}</h3>
               {description && (
-                <p className="text-xs text-[#94A3B8] mt-0.5">{description}</p>
+                <p className="text-xs text-[#D8CEBC] mt-0.5">{description}</p>
               )}
             </div>
             <button
               onClick={onClose}
-              className="rounded-md p-1.5 text-[#94A3B8] hover:bg-[#334155] hover:text-[#F8FAFC] transition-colors"
+              className="rounded-md p-1.5 text-[#D8CEBC] hover:bg-[#142247] hover:text-[#FAF8F5] transition-colors"
             >
               <X className="h-5 w-5" />
             </button>

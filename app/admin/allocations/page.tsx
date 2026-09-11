@@ -221,7 +221,7 @@ export default function AdminAllocationsPage() {
               onClick={() => setActiveTab('ALLOCATED')}
               className={`px-3.5 py-1.5 rounded-md text-xs font-semibold transition-all ${
                 activeTab === 'ALLOCATED'
-                  ? 'bg-[#0284C7] text-white shadow-sm'
+                  ? 'bg-[#E5BA73] text-[#0A1128] font-bold shadow-sm'
                   : 'text-[#94A3B8] hover:text-[#F8FAFC] hover:bg-[#0F172A]'
               }`}
             >
@@ -231,7 +231,7 @@ export default function AdminAllocationsPage() {
               onClick={() => setActiveTab('UNALLOCATED')}
               className={`px-3.5 py-1.5 rounded-md text-xs font-semibold transition-all ${
                 activeTab === 'UNALLOCATED'
-                  ? 'bg-[#0284C7] text-white shadow-sm'
+                  ? 'bg-[#E5BA73] text-[#0A1128] font-bold shadow-sm'
                   : 'text-[#94A3B8] hover:text-[#F8FAFC] hover:bg-[#0F172A]'
               }`}
             >
@@ -377,14 +377,14 @@ export default function AdminAllocationsPage() {
                       <td className="py-3.5 px-4 font-medium text-[#F8FAFC]">
                         {a.companyName}
                       </td>
-                      <td className="py-3.5 px-4 font-semibold text-[#38BDF8]">
+                      <td className="py-3.5 px-4 font-semibold text-[#FAF8F5]">
                         {a.internshipTitle}
                       </td>
                       <td className="py-3.5 px-4">
                         <span
                           className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-semibold ${
                             a.preferenceRank === 1
-                              ? 'bg-[#0284C7]/20 text-[#38BDF8] border border-[#0284C7]/40'
+                              ? 'bg-[#E5BA73]/20 text-[#E5BA73] border border-[#E5BA73]/40'
                               : a.preferenceRank <= 3
                               ? 'bg-[#4F46E5]/20 text-[#818CF8] border border-[#6366F1]/40'
                               : 'bg-[#0F172A] text-[#94A3B8] border border-[#334155]'
@@ -396,7 +396,7 @@ export default function AdminAllocationsPage() {
                       <td className="py-3.5 px-4 font-mono text-[#34D399] font-semibold">
                         {a.skillMatchScore}%
                       </td>
-                      <td className="py-3.5 px-4 font-mono text-[#38BDF8]">
+                      <td className="py-3.5 px-4 font-mono text-[#E5BA73]">
                         {a.cgpaScore} pts
                       </td>
                       <td className="py-3.5 px-4 font-mono font-bold text-base text-[#F8FAFC]">

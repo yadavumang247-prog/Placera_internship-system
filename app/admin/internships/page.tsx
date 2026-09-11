@@ -193,7 +193,7 @@ export default function AdminInternshipsPage() {
             Configure seat capacities, minimum CGPA eligibility cutoffs, and required skill matrices.
           </p>
         </div>
-        <Button onClick={() => setIsAddModalOpen(true)} className="bg-[#0284C7] hover:bg-[#0369A1] text-white">
+        <Button onClick={() => setIsAddModalOpen(true)} className="bg-[#E5BA73] hover:bg-[#F3CA68] text-[#0A1128] font-bold">
           <Plus className="h-4 w-4 mr-1.5" />
           Add Internship
         </Button>
@@ -211,7 +211,7 @@ export default function AdminInternshipsPage() {
                 placeholder="Search position, company, or skills..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-9 pr-4 py-2 text-xs sm:text-sm bg-[#0F172A] border border-[#334155] text-white placeholder:text-[#64748B] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0284C7]"
+                className="w-full pl-9 pr-4 py-2 text-xs sm:text-sm bg-[#0F172A] border border-[#334155] text-white placeholder:text-[#64748B] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#E5BA73]"
               />
             </div>
 
@@ -221,7 +221,7 @@ export default function AdminInternshipsPage() {
               <select
                 value={companyFilter}
                 onChange={(e) => setCompanyFilter(e.target.value)}
-                className="w-full py-2 px-3 text-xs sm:text-sm bg-[#0F172A] border border-[#334155] text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0284C7]"
+                className="w-full py-2 px-3 text-xs sm:text-sm bg-[#0F172A] border border-[#334155] text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-[#E5BA73]"
               >
                 <option value="ALL">All Companies ({companies.length})</option>
                 {companies.map((c) => (
@@ -238,7 +238,7 @@ export default function AdminInternshipsPage() {
               <select
                 value={modeFilter}
                 onChange={(e) => setModeFilter(e.target.value)}
-                className="w-full py-2 px-3 text-xs sm:text-sm bg-[#0F172A] border border-[#334155] text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0284C7]"
+                className="w-full py-2 px-3 text-xs sm:text-sm bg-[#0F172A] border border-[#334155] text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-[#E5BA73]"
               >
                 <option value="ALL">All Modes (Remote/Hybrid/Onsite)</option>
                 <option value="REMOTE">Remote</option>
@@ -353,7 +353,7 @@ export default function AdminInternshipsPage() {
                 required
                 value={formData.companyId}
                 onChange={(e) => setFormData({ ...formData, companyId: e.target.value })}
-                className="w-full px-3 py-2 text-sm bg-[#0F172A] border border-[#334155] text-white rounded-lg focus:ring-2 focus:ring-[#0284C7] focus:outline-none"
+                className="w-full px-3 py-2 text-sm bg-[#0F172A] border border-[#334155] text-white rounded-lg focus:ring-2 focus:ring-[#E5BA73] focus:outline-none"
               >
                 {companies.map((c) => (
                   <option key={c.id} value={c.id}>
@@ -381,7 +381,7 @@ export default function AdminInternshipsPage() {
               value={formData.description}
               onChange={(e) => setFormData({ ...formData, description: e.target.value })}
               placeholder="Specify development tools, responsibilities, and team workflow..."
-              className="w-full px-3 py-2 text-sm bg-[#0F172A] border border-[#334155] text-white rounded-lg focus:ring-2 focus:ring-[#0284C7] focus:outline-none placeholder:text-[#64748B]"
+              className="w-full px-3 py-2 text-sm bg-[#0F172A] border border-[#334155] text-white rounded-lg focus:ring-2 focus:ring-[#E5BA73] focus:outline-none placeholder:text-[#64748B]"
             />
           </div>
 
@@ -400,7 +400,7 @@ export default function AdminInternshipsPage() {
               <select
                 value={formData.mode}
                 onChange={(e) => setFormData({ ...formData, mode: e.target.value as any })}
-                className="w-full px-3 py-2 text-sm bg-[#0F172A] border border-[#334155] text-white rounded-lg focus:ring-2 focus:ring-[#0284C7] focus:outline-none"
+                className="w-full px-3 py-2 text-sm bg-[#0F172A] border border-[#334155] text-white rounded-lg focus:ring-2 focus:ring-[#E5BA73] focus:outline-none"
               >
                 <option value="REMOTE">Remote</option>
                 <option value="HYBRID">Hybrid</option>
@@ -453,7 +453,7 @@ export default function AdminInternshipsPage() {
             <Button type="button" variant="outline" onClick={() => setIsAddModalOpen(false)}>
               Cancel
             </Button>
-            <Button type="submit" className="bg-[#0284C7] hover:bg-[#0369A1] text-white">
+            <Button type="submit" className="bg-[#E5BA73] hover:bg-[#F3CA68] text-[#0A1128] font-bold">
               Create Role
             </Button>
           </div>
@@ -478,7 +478,7 @@ export default function AdminInternshipsPage() {
               required
               value={formData.description}
               onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-              className="w-full px-3 py-2 text-sm bg-[#0F172A] border border-[#334155] text-white rounded-lg focus:ring-2 focus:ring-[#0284C7] focus:outline-none placeholder:text-[#64748B]"
+              className="w-full px-3 py-2 text-sm bg-[#0F172A] border border-[#334155] text-white rounded-lg focus:ring-2 focus:ring-[#E5BA73] focus:outline-none placeholder:text-[#64748B]"
             />
           </div>
           <div className="grid grid-cols-3 gap-3">
@@ -524,7 +524,7 @@ export default function AdminInternshipsPage() {
             <Button type="button" variant="outline" onClick={() => setIsEditModalOpen(false)}>
               Cancel
             </Button>
-            <Button type="submit" className="bg-[#0284C7] hover:bg-[#0369A1] text-white">
+            <Button type="submit" className="bg-[#E5BA73] hover:bg-[#F3CA68] text-[#0A1128] font-bold">
               Update Position
             </Button>
           </div>

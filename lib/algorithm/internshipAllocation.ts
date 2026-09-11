@@ -3,7 +3,7 @@
  * 
  * Central facade for all allocation algorithms:
  * 1. Many-to-One Gale-Shapley Stable Matching (Default, provably stable)
- * 2. Greedy Multi-Objective Optimization (AoA benchmark)
+ * 2. Greedy Multi-Objective Optimization (Benchmark)
  */
 
 import {

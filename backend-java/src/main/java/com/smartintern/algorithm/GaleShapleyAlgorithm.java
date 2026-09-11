@@ -67,7 +67,7 @@ public class GaleShapleyAlgorithm implements MatchingAlgorithm {
         // 4. Filter only eligible preferences
         Map<String, List<Preference>> eligiblePrefsMap = new HashMap<>();
         int eligibleRelations = 0;
-        Set<String> eligibleStudentsSet = new SetFromMap<>(new HashMap<>());
+        Set<String> eligibleStudentsSet = new HashSet<>();
 
         for (Student student : students) {
             List<Preference> rawList = groupedPrefs.getOrDefault(student.getId(), Collections.emptyList());
@@ -198,7 +198,7 @@ public class GaleShapleyAlgorithm implements MatchingAlgorithm {
                         .explanationReasons(reasons)
                         .build();
 
-                allocations.push(alloc);
+                allocations.add(alloc);
             }
         }
 
@@ -224,12 +224,12 @@ public class GaleShapleyAlgorithm implements MatchingAlgorithm {
 
         // 8. Calculate Metrics
         double execMs = (System.nanoTime() - startNs) / 1_000_000.0;
-        int totalSeats = internships.stream().mapToInt(Internship::getTotalSeats).sum();
+        int totalSeats = internships.stream().mapToInt(i -> i.getTotalSeats()).sum();
         int firstPref = (int) allocations.stream().filter(a -> a.getPreferenceRank() == 1).count();
         int secondPref = (int) allocations.stream().filter(a -> a.getPreferenceRank() == 2).count();
         int thirdPref = (int) allocations.stream().filter(a -> a.getPreferenceRank() == 3).count();
-        double avgScore = allocations.isEmpty() ? 0 : allocations.stream().mapToDouble(Allocation::getScore).average().orElse(0);
-        double avgRank = allocations.isEmpty() ? 0 : allocations.stream().mapToInt(Allocation::getPreferenceRank).average().orElse(0);
+        double avgScore = allocations.isEmpty() ? 0 : allocations.stream().mapToDouble(a -> a.getScore()).average().orElse(0);
+        double avgRank = allocations.isEmpty() ? 0 : allocations.stream().mapToInt(a -> a.getPreferenceRank()).average().orElse(0);
 
         AllocationMetrics metrics = AllocationMetrics.builder()
                 .totalStudents(students.size())

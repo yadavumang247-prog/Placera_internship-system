@@ -9,33 +9,47 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
+        // Primary Brand Accent: Beige Yellow / Warm Amber Gold
         primary: {
-          DEFAULT: '#38BDF8',
-          hover: '#0EA5E9',
-          dark: '#0284C7',
-          navy: '#1E3A5F',
+          DEFAULT: '#E5BA73',
+          hover: '#D4A253',
+          dark: '#B88530',
+          light: '#F7EEDB',
+          navy: '#0A1128',
         },
+        // Secondary Warm Beige
         secondary: {
-          DEFAULT: '#818CF8',
-          hover: '#6366F1',
+          DEFAULT: '#EFE7DA',
+          hover: '#DFD4C0',
+          dark: '#C5BAA8',
+        },
+        // Beige Yellow Palette
+        beige: {
+          DEFAULT: '#E5BA73',
+          hover: '#D4A253',
+          dark: '#B88530',
+          light: '#F7EEDB',
+          lighter: '#FDF8EE',
+          muted: '#D8CEBC',
+          accent: '#F3CA68',
+        },
+        // Deep Navy Blue Palette
+        navy: {
+          950: '#060B1B',
+          900: '#0A1128', // Deep background navy
+          850: '#0D1633',
+          800: '#0F1A36', // Surface / container navy
+          750: '#122043',
+          700: '#142247', // Card navy
+          600: '#1A2C5B', // Elevated / interactive hover
+          500: '#253D7A',
+          400: '#395AA5',
+          border: '#1E3466',
+          borderLight: '#2C488F',
         },
         accent: {
-          DEFAULT: '#34D399',
-          hover: '#10B981',
-        },
-        portal: {
-          bg: '#0B1120',
-          surface: '#0F172A',
-          card: '#1E293B',
-          cardHover: '#243248',
-          border: '#334155',
-          borderSubtle: '#1E293B',
-          text: '#F8FAFC',
-          textSecondary: '#CBD5E1',
-          muted: '#94A3B8',
-          success: '#34D399',
-          warning: '#FBBF24',
-          danger: '#F87171',
+          DEFAULT: '#F3CA68',
+          hover: '#E5BA73',
         },
       },
       fontFamily: {
@@ -43,8 +57,9 @@ const config: Config = {
       },
       boxShadow: {
         card: '0 1px 3px 0 rgba(0, 0, 0, 0.4), 0 1px 2px 0 rgba(0, 0, 0, 0.3)',
-        'card-hover': '0 4px 12px -2px rgba(0, 0, 0, 0.5), 0 2px 6px -1px rgba(0, 0, 0, 0.3)',
-        glow: '0 0 15px -3px rgba(56, 189, 248, 0.25)',
+        'card-hover': '0 4px 14px -2px rgba(0, 0, 0, 0.5), 0 2px 8px -1px rgba(0, 0, 0, 0.3)',
+        glow: '0 0 20px -3px rgba(229, 186, 115, 0.35)',
+        'glow-navy': '0 0 25px -3px rgba(10, 17, 40, 0.6)',
       },
     },
   },

@@ -77,74 +77,74 @@ function LoginFormContent() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col justify-center py-12 sm:px-6 lg:px-8 bg-[#0B1120] text-[#F8FAFC]">
+    <div className="min-h-screen flex flex-col justify-center py-12 sm:px-6 lg:px-8 bg-[#0A1128] text-[#FAF8F5]">
       <div className="sm:mx-auto sm:w-full sm:max-w-md text-center">
         <Link href="/" className="inline-flex items-center justify-center mb-3">
-          <div className="h-12 w-12 rounded-xl bg-[#0284C7] flex items-center justify-center text-white shadow-lg shadow-sky-950">
+          <div className="h-12 w-12 rounded-xl bg-gradient-to-tr from-[#D4A253] to-[#F3CA68] flex items-center justify-center text-[#0A1128] shadow-lg shadow-[#E5BA73]/20">
             <GraduationCap className="h-7 w-7" />
           </div>
         </Link>
-        <h2 className="text-2xl sm:text-3xl font-bold text-white tracking-tight">
-          SMARTINTERN
+        <h2 className="text-2xl sm:text-3xl font-bold text-[#FAF8F5] tracking-tight">
+          SMART<span className="text-[#E5BA73]">INTERN</span>
         </h2>
-        <p className="mt-1 text-xs sm:text-sm text-[#94A3B8]">
-          Smart Internship Allocation &amp; Placement System
+        <p className="mt-1 text-xs sm:text-sm text-[#D8CEBC]">
+          Smart Internship Allocation System
         </p>
       </div>
 
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md px-4 sm:px-0">
-        <div className="bg-[#1E293B] py-8 px-6 sm:px-10 rounded-xl border border-[#334155] shadow-xl">
+        <div className="bg-[#0F1A36] py-8 px-6 sm:px-10 rounded-2xl border border-[#1E3466] shadow-xl">
           {/* Quick-Fill Role Selector */}
-          <div className="mb-6 pb-5 border-b border-[#334155]">
+          <div className="mb-6 pb-5 border-b border-[#1E3466]">
             <div className="flex items-center justify-between mb-3">
-              <span className="text-xs font-semibold uppercase tracking-wider text-[#94A3B8] flex items-center gap-1.5">
-                <KeyRound className="h-3.5 w-3.5 text-[#38BDF8]" />
+              <span className="text-xs font-semibold uppercase tracking-wider text-[#D8CEBC] flex items-center gap-1.5">
+                <KeyRound className="h-3.5 w-3.5 text-[#E5BA73]" />
                 Select Account Role
               </span>
-              <span className="text-[11px] text-[#38BDF8] font-medium">1-Click Auto Fill</span>
+              <span className="text-[11px] text-[#E5BA73] font-semibold">1-Click Auto Fill</span>
             </div>
 
             <div className="grid grid-cols-3 gap-2">
               <button
                 type="button"
                 onClick={() => fillCredentials('admin@example.com', 'Admin@123')}
-                className={`flex flex-col items-center justify-center p-2.5 rounded-lg border text-xs transition-all ${
+                className={`flex flex-col items-center justify-center p-2.5 rounded-xl border text-xs transition-all ${
                   email === 'admin@example.com'
-                    ? 'border-[#38BDF8] bg-[#38BDF8]/10 text-[#38BDF8] font-semibold ring-1 ring-[#38BDF8]'
-                    : 'border-[#334155] hover:border-[#64748B] bg-[#0F172A] text-[#94A3B8]'
+                    ? 'border-[#E5BA73] bg-[#E5BA73]/15 text-[#F3CA68] font-semibold ring-1 ring-[#E5BA73]'
+                    : 'border-[#1E3466] hover:border-[#E5BA73]/50 bg-[#0A1128] text-[#D8CEBC]'
                 }`}
               >
-                <ShieldCheck className="h-4 w-4 mb-1 text-[#38BDF8]" />
-                <span className="text-[11px] text-white">Admin</span>
-                <span className="text-[9px] text-[#94A3B8]">Officer</span>
+                <ShieldCheck className="h-4 w-4 mb-1 text-[#E5BA73]" />
+                <span className="text-[11px] text-[#FAF8F5]">Admin</span>
+                <span className="text-[9px] text-[#D8CEBC]">Officer</span>
               </button>
 
               <button
                 type="button"
                 onClick={() => fillCredentials('student@example.com', 'Student@123')}
-                className={`flex flex-col items-center justify-center p-2.5 rounded-lg border text-xs transition-all ${
+                className={`flex flex-col items-center justify-center p-2.5 rounded-xl border text-xs transition-all ${
                   email === 'student@example.com'
-                    ? 'border-[#38BDF8] bg-[#38BDF8]/10 text-[#38BDF8] font-semibold ring-1 ring-[#38BDF8]'
-                    : 'border-[#334155] hover:border-[#64748B] bg-[#0F172A] text-[#94A3B8]'
+                    ? 'border-[#E5BA73] bg-[#E5BA73]/15 text-[#F3CA68] font-semibold ring-1 ring-[#E5BA73]'
+                    : 'border-[#1E3466] hover:border-[#E5BA73]/50 bg-[#0A1128] text-[#D8CEBC]'
                 }`}
               >
-                <UserCheck className="h-4 w-4 mb-1 text-[#38BDF8]" />
-                <span className="text-[11px] text-white">Student</span>
-                <span className="text-[9px] text-[#94A3B8]">Applicant</span>
+                <UserCheck className="h-4 w-4 mb-1 text-[#E5BA73]" />
+                <span className="text-[11px] text-[#FAF8F5]">Student</span>
+                <span className="text-[9px] text-[#D8CEBC]">Applicant</span>
               </button>
 
               <button
                 type="button"
                 onClick={() => fillCredentials('company@example.com', 'Company@123')}
-                className={`flex flex-col items-center justify-center p-2.5 rounded-lg border text-xs transition-all ${
+                className={`flex flex-col items-center justify-center p-2.5 rounded-xl border text-xs transition-all ${
                   email === 'company@example.com'
-                    ? 'border-[#38BDF8] bg-[#38BDF8]/10 text-[#38BDF8] font-semibold ring-1 ring-[#38BDF8]'
-                    : 'border-[#334155] hover:border-[#64748B] bg-[#0F172A] text-[#94A3B8]'
+                    ? 'border-[#E5BA73] bg-[#E5BA73]/15 text-[#F3CA68] font-semibold ring-1 ring-[#E5BA73]'
+                    : 'border-[#1E3466] hover:border-[#E5BA73]/50 bg-[#0A1128] text-[#D8CEBC]'
                 }`}
               >
-                <Building2 className="h-4 w-4 mb-1 text-[#34D399]" />
-                <span className="text-[11px] text-white">Company</span>
-                <span className="text-[9px] text-[#94A3B8]">Partner</span>
+                <Building2 className="h-4 w-4 mb-1 text-[#E5BA73]" />
+                <span className="text-[11px] text-[#FAF8F5]">Company</span>
+                <span className="text-[9px] text-[#D8CEBC]">Partner</span>
               </button>
             </div>
           </div>
@@ -159,7 +159,7 @@ function LoginFormContent() {
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
               <Input
-                label="College Email Address"
+                label="Email Address"
                 type="email"
                 required
                 value={email}
@@ -181,7 +181,7 @@ function LoginFormContent() {
 
             <Button
               type="submit"
-              className="w-full bg-[#0284C7] hover:bg-[#0369A1] text-white mt-2 font-medium shadow-md shadow-sky-950"
+              className="w-full bg-[#E5BA73] hover:bg-[#D4A253] text-[#0A1128] mt-2 font-bold shadow-md shadow-[#E5BA73]/20"
               isLoading={isLoading}
             >
               Sign In
@@ -190,25 +190,25 @@ function LoginFormContent() {
           </form>
 
           {/* Credentials Reference Box */}
-          <div className="mt-6 pt-4 border-t border-[#334155] text-[11px] text-[#94A3B8] space-y-1.5 bg-[#0F172A] p-3.5 rounded-lg border border-[#334155]">
-            <p className="font-semibold text-[#F8FAFC]">Pre-Configured Demo Credentials:</p>
+          <div className="mt-6 pt-4 border-t border-[#1E3466] text-[11px] text-[#D8CEBC] space-y-1.5 bg-[#0A1128] p-3.5 rounded-xl border border-[#1E3466]">
+            <p className="font-semibold text-[#FAF8F5]">Pre-Configured Demo Credentials:</p>
             <div className="flex justify-between">
               <span>Admin:</span>
-              <code className="font-mono text-[#38BDF8] font-semibold">admin@example.com / Admin@123</code>
+              <code className="font-mono text-[#E5BA73] font-semibold">admin@example.com / Admin@123</code>
             </div>
             <div className="flex justify-between">
               <span>Student:</span>
-              <code className="font-mono text-[#38BDF8] font-semibold">student@example.com / Student@123</code>
+              <code className="font-mono text-[#E5BA73] font-semibold">student@example.com / Student@123</code>
             </div>
             <div className="flex justify-between">
               <span>Company:</span>
-              <code className="font-mono text-[#38BDF8] font-semibold">company@example.com / Company@123</code>
+              <code className="font-mono text-[#E5BA73] font-semibold">company@example.com / Company@123</code>
             </div>
           </div>
         </div>
 
-        <div className="mt-6 text-center text-xs text-[#94A3B8]">
-          <Link href="/" className="hover:text-[#38BDF8] transition-colors">
+        <div className="mt-6 text-center text-xs text-[#D8CEBC]">
+          <Link href="/" className="hover:text-[#E5BA73] transition-colors">
             ← Return to Homepage
           </Link>
         </div>
@@ -219,7 +219,7 @@ function LoginFormContent() {
 
 export default function LoginPage() {
   return (
-    <Suspense fallback={<div className="min-h-screen flex items-center justify-center bg-[#0B1120] text-[#94A3B8]">Loading...</div>}>
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center bg-[#0A1128] text-[#D8CEBC]">Loading...</div>}>
       <LoginFormContent />
     </Suspense>
   );

@@ -15,7 +15,7 @@
     <artifactId>smartintern-allocation-system</artifactId>
     <version>1.0.0</version>
     <name>SMARTINTERN - Smart Internship Allocation &amp; Placement System</name>
-    <description>Analysis of Algorithms (AoA) Project - Many-to-One Gale-Shapley Stable Matching</description>
+    <description>Smart Internship Allocation System - Stable Matching Engine</description>
 
     <properties>
         <java.version>17</java.version>

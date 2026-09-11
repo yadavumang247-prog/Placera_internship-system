@@ -15,7 +15,7 @@ export default async function StudentLayout({
   }
 
   return (
-    <div className="min-h-screen bg-[#F8FAFC] text-[#0F172A] flex flex-col lg:flex-row">
+    <div className="min-h-screen bg-[#0A1128] text-[#FAF8F5] flex flex-col lg:flex-row">
       <Sidebar
         userRole="STUDENT"
         userName={session.name || 'Student Candidate'}

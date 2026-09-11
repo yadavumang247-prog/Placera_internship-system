@@ -234,13 +234,13 @@ export default function AdminAllocationControlCenter() {
     <div className="space-y-8 animate-fade-in pb-16">
       {/* Header & Status Bar */}
       <div className="bg-[#1E293B] p-6 rounded-2xl border border-[#334155] shadow-xl relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-96 h-96 bg-[#0284C7]/10 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute top-0 right-0 w-96 h-96 bg-[#E5BA73]/10 rounded-full blur-3xl pointer-events-none" />
         
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 relative z-10">
           <div>
             <div className="flex items-center gap-2 mb-1">
-              <Badge variant="navy" className="border-[#38BDF8]/40 text-[#38BDF8]">
-                Algorithm Operations Control Center
+              <Badge variant="navy" className="border-[#E5BA73]/40 text-[#E5BA73]">
+                Allocation Operations Control Center
               </Badge>
               {publicationStatus === 'PUBLISHED' ? (
                 <Badge variant="success" className="animate-pulse">
@@ -314,7 +314,7 @@ export default function AdminAllocationControlCenter() {
                 onClick={() => setCurrentStep(s.num)}
                 className={`p-3 rounded-lg text-left transition-all border ${
                   isActive
-                    ? 'border-[#38BDF8] bg-[#0284C7]/20 shadow-md ring-1 ring-[#38BDF8]/40'
+                    ? 'border-[#E5BA73] bg-[#E5BA73]/20 shadow-md ring-1 ring-[#E5BA73]/40'
                     : isCompleted
                     ? 'border-[#334155] bg-[#0F172A] hover:bg-[#1E293B]'
                     : 'border-[#1E293B] bg-[#0F172A]/50 opacity-60 hover:opacity-100'
@@ -325,7 +325,7 @@ export default function AdminAllocationControlCenter() {
                   {isCompleted ? (
                     <CheckCircle2 className="h-3.5 w-3.5 text-[#34D399]" />
                   ) : isActive ? (
-                    <span className="h-2 w-2 rounded-full bg-[#38BDF8] animate-ping" />
+                    <span className="h-2 w-2 rounded-full bg-[#E5BA73] animate-ping" />
                   ) : null}
                 </div>
                 <div className="text-xs font-bold text-white truncate">{s.title}</div>
@@ -345,11 +345,11 @@ export default function AdminAllocationControlCenter() {
             <div className="flex items-center justify-between">
               <div>
                 <CardTitle className="text-lg font-bold text-white flex items-center gap-2">
-                  <Sliders className="h-5 w-5 text-[#38BDF8]" />
-                  Step 4: Algorithm Selection & Multi-Factor Merit Weights
+                  <Sliders className="h-5 w-5 text-[#E5BA73]" />
+                  Step 4: Algorithm Selection &amp; Multi-Factor Merit Weights
                 </CardTitle>
                 <CardDescription className="text-xs text-[#94A3B8]">
-                  Hospital-Residents Gale-Shapley model with student-proposing stable matching.
+                  Automated multi-criteria matching engine with capacity constraints.
                 </CardDescription>
               </div>
               <Button variant="ghost" size="sm" onClick={handleResetWeights} className="text-xs text-[#94A3B8] hover:text-white">
@@ -370,19 +370,19 @@ export default function AdminAllocationControlCenter() {
                   onClick={() => setAlgorithmType('GALE_SHAPLEY')}
                   className={`p-3.5 rounded-lg border cursor-pointer transition-all ${
                     algorithmType === 'GALE_SHAPLEY'
-                      ? 'border-[#38BDF8] bg-[#0284C7]/20 shadow-md ring-1 ring-[#38BDF8]'
+                      ? 'border-[#E5BA73] bg-[#E5BA73]/20 shadow-md ring-1 ring-[#E5BA73]'
                       : 'border-[#334155] bg-[#1E293B] hover:border-[#64748B]'
                   }`}
                 >
                   <div className="flex items-center justify-between mb-1">
                     <span className="text-xs font-bold text-white flex items-center gap-1.5">
-                      <ShieldCheck className="h-4 w-4 text-[#38BDF8]" />
-                      Gale-Shapley (Stable Matching)
+                      <ShieldCheck className="h-4 w-4 text-[#E5BA73]" />
+                      Automated Stable Matching
                     </span>
                     <Badge variant="primary" size="sm">Recommended</Badge>
                   </div>
                   <p className="text-[11px] text-[#94A3B8]">
-                    Many-to-one Hospital-Residents algorithm. Guarantees 0 blocking pairs and Pareto efficiency for students.
+                    Many-to-one capacity-constrained matching algorithm. Guarantees zero blocking pairs and optimal student allocation.
                   </p>
                 </div>
 
@@ -423,7 +423,7 @@ export default function AdminAllocationControlCenter() {
                   step="0.05"
                   value={skillWeight}
                   onChange={(e) => setSkillWeight(parseFloat(e.target.value))}
-                  className="w-full accent-[#0284C7] cursor-pointer h-1.5 bg-[#1E293B] rounded"
+                  className="w-full accent-[#E5BA73] cursor-pointer h-1.5 bg-[#1E293B] rounded"
                 />
                 <p className="text-[10px] text-[#94A3B8]">Jaccard similarity between candidate skills and required track tech.</p>
               </div>
@@ -561,7 +561,7 @@ export default function AdminAllocationControlCenter() {
                 size="sm"
                 onClick={handlePreviewAllocation}
                 isLoading={isPreviewing}
-                className="w-full justify-center bg-[#0F172A] border-[#38BDF8]/40 text-[#38BDF8] hover:bg-[#0284C7]/20 font-semibold"
+                className="w-full justify-center bg-[#0F172A] border-[#E5BA73]/40 text-[#E5BA73] hover:bg-[#E5BA73]/20 font-semibold"
               >
                 <Eye className="h-4 w-4 mr-2" />
                 Step 5: Preview Allocation (Dry Run)
@@ -572,7 +572,7 @@ export default function AdminAllocationControlCenter() {
                 size="sm"
                 onClick={handleRunAllocation}
                 isLoading={isRunning}
-                className="w-full justify-center bg-[#0284C7] hover:bg-[#0369A1] text-white font-bold shadow-lg"
+                className="w-full justify-center bg-[#E5BA73] hover:bg-[#F3CA68] text-[#0A1128] font-bold shadow-lg"
               >
                 <Play className="h-4 w-4 mr-2 fill-current" />
                 Step 7: Commit Allocation Run
@@ -640,7 +640,7 @@ export default function AdminAllocationControlCenter() {
               onClick={() => setActiveTab('pairs')}
               className={`px-4 py-2 text-xs font-bold rounded-lg transition-all ${
                 activeTab === 'pairs'
-                  ? 'bg-[#0284C7] text-white shadow-md'
+                  ? 'bg-[#E5BA73] text-[#0A1128] font-bold shadow-md'
                   : 'bg-[#1E293B] text-[#94A3B8] hover:text-white'
               }`}
             >
@@ -650,17 +650,17 @@ export default function AdminAllocationControlCenter() {
               onClick={() => setActiveTab('proposals')}
               className={`px-4 py-2 text-xs font-bold rounded-lg transition-all ${
                 activeTab === 'proposals'
-                  ? 'bg-[#0284C7] text-white shadow-md'
+                  ? 'bg-[#E5BA73] text-[#0A1128] font-bold shadow-md'
                   : 'bg-[#1E293B] text-[#94A3B8] hover:text-white'
               }`}
             >
-              Gale-Shapley Proposal Trace ({result?.proposalLog?.length || 0} Steps)
+              Allocation Matching Trace ({(result?.steps || result?.proposalLog || []).length} Steps)
             </button>
             <button
               onClick={() => setActiveTab('visualizer')}
               className={`px-4 py-2 text-xs font-bold rounded-lg transition-all ${
                 activeTab === 'visualizer'
-                  ? 'bg-[#0284C7] text-white shadow-md'
+                  ? 'bg-[#E5BA73] text-[#0A1128] font-bold shadow-md'
                   : 'bg-[#1E293B] text-[#94A3B8] hover:text-white'
               }`}
             >
@@ -785,8 +785,8 @@ export default function AdminAllocationControlCenter() {
           <Card className="border-[#334155] bg-[#1E293B]">
             <CardHeader className="pb-3">
               <CardTitle className="text-base font-bold text-white flex items-center gap-2">
-                <Layers className="h-4 w-4 text-[#38BDF8]" />
-                Many-to-One Gale-Shapley Proposal Steps
+                <Layers className="h-4 w-4 text-[#E5BA73]" />
+                Automated Allocation Proposal Steps
               </CardTitle>
               <CardDescription className="text-xs text-[#94A3B8]">
                 Deterministic step-by-step trace of candidate proposals, tentative acceptances, and displacement resolution.
@@ -806,37 +806,40 @@ export default function AdminAllocationControlCenter() {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-[#334155] font-mono text-[11px]">
-                  {result?.proposalLog && result.proposalLog.length > 0 ? (
-                    result.proposalLog.map((step, idx) => (
-                      <tr key={idx} className="hover:bg-[#0F172A]/50">
-                        <td className="py-2.5 px-4 text-[#64748B]">#{step.stepNumber}</td>
-                        <td className="py-2.5 px-4 text-[#38BDF8]">R{step.round}</td>
-                        <td className="py-2.5 px-4 font-sans font-medium text-white">{step.studentName}</td>
-                        <td className="py-2.5 px-4 font-sans text-[#94A3B8]">{step.internshipTitle}</td>
-                        <td className="py-2.5 px-4">
-                          {step.action === 'ACCEPTED' ? (
-                            <Badge variant="success" size="sm">ACCEPTED</Badge>
-                          ) : step.action === 'DISPLACED' ? (
-                            <Badge variant="warning" size="sm">DISPLACED</Badge>
-                          ) : (
-                            <Badge variant="danger" size="sm">REJECTED</Badge>
-                          )}
-                        </td>
-                        <td className="py-2.5 px-4 font-sans text-amber-300">
-                          {step.displacedStudentName || '—'}
-                        </td>
-                        <td className="py-2.5 px-4 font-sans text-[11px] text-[#94A3B8]">
-                          {step.reason}
+                  {(() => {
+                    const traceSteps = (result?.steps || result?.proposalLog || []) as any[];
+                    return traceSteps.length > 0 ? (
+                      traceSteps.map((step: any, idx: number) => (
+                        <tr key={idx} className="hover:bg-[#0F172A]/50">
+                          <td className="py-2.5 px-4 text-[#64748B]">#{step.stepNumber}</td>
+                          <td className="py-2.5 px-4 text-[#E5BA73]">R{step.round}</td>
+                          <td className="py-2.5 px-4 font-sans font-medium text-white">{step.studentName}</td>
+                          <td className="py-2.5 px-4 font-sans text-[#94A3B8]">{step.internshipTitle}</td>
+                          <td className="py-2.5 px-4">
+                            {step.action === 'ACCEPTED' || step.action === 'ACCEPT_PROVISIONALLY' || step.action === 'HELD' ? (
+                              <Badge variant="success" size="sm">ACCEPTED</Badge>
+                            ) : step.action === 'DISPLACED' || step.action === 'REJECT_EXCESS' ? (
+                              <Badge variant="warning" size="sm">DISPLACED</Badge>
+                            ) : (
+                              <Badge variant="danger" size="sm">REJECTED</Badge>
+                            )}
+                          </td>
+                          <td className="py-2.5 px-4 font-sans text-amber-300">
+                            {step.displacedStudentName || '—'}
+                          </td>
+                          <td className="py-2.5 px-4 font-sans text-[11px] text-[#94A3B8]">
+                            {step.reason || step.message}
+                          </td>
+                        </tr>
+                      ))
+                    ) : (
+                      <tr>
+                        <td colSpan={7} className="py-8 text-center text-xs text-[#94A3B8]">
+                          Run or preview the allocation engine to generate the step-by-step proposal trace.
                         </td>
                       </tr>
-                    ))
-                  ) : (
-                    <tr>
-                      <td colSpan={7} className="py-8 text-center text-xs text-[#94A3B8]">
-                        Run or preview the Gale-Shapley algorithm to generate the step-by-step proposal trace.
-                      </td>
-                    </tr>
-                  )}
+                    );
+                  })()}
                 </tbody>
               </table>
             </CardContent>
@@ -878,10 +881,10 @@ export default function AdminAllocationControlCenter() {
                   </div>
 
                   {/* Stage 2: Matching Engine */}
-                  <div className="p-4 rounded-xl bg-[#0284C7]/20 border border-[#38BDF8] text-center space-y-2 shadow-lg">
-                    <Cpu className="h-6 w-6 text-[#38BDF8] mx-auto" />
+                  <div className="p-4 rounded-xl bg-[#E5BA73]/20 border border-[#E5BA73] text-center space-y-2 shadow-lg">
+                    <Cpu className="h-6 w-6 text-[#E5BA73] mx-auto" />
                     <div className="text-xs font-bold text-white">{algorithmType}</div>
-                    <div className="text-[10px] text-[#94A3B8]">Gale-Shapley Deferred Acceptance</div>
+                    <div className="text-[10px] text-[#94A3B8]">Capacity-Constrained Stable Matching</div>
                     <div className="pt-2">
                       <Badge variant="primary" size="sm">
                         O(|S|·|I|)

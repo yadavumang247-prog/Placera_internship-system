@@ -139,14 +139,14 @@ export default function AdminCompaniesPage() {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-[#1E293B] p-6 rounded-xl border border-[#334155] shadow-lg">
         <div>
           <h1 className="text-2xl font-bold text-white tracking-tight flex items-center gap-2">
-            <Building2 className="h-6 w-6 text-[#38BDF8]" />
+            <Building2 className="h-6 w-6 text-[#E5BA73]" />
             Recruiter &amp; Company Directory
           </h1>
           <p className="text-xs sm:text-sm text-[#94A3B8] mt-1">
             Manage industry partners, active position quotas, and corporate recruitment credentials.
           </p>
         </div>
-        <Button onClick={() => setIsAddModalOpen(true)} className="bg-[#0284C7] hover:bg-[#0369A1] text-white shadow-md shadow-sky-950">
+        <Button onClick={() => setIsAddModalOpen(true)} className="bg-[#E5BA73] hover:bg-[#F3CA68] text-[#0A1128] font-bold shadow-md">
           <Plus className="h-4 w-4 mr-1.5" />
           Add Company
         </Button>
@@ -291,7 +291,7 @@ export default function AdminCompaniesPage() {
             <Button type="button" variant="outline" className="border-[#334155] text-[#94A3B8]" onClick={() => setIsAddModalOpen(false)}>
               Cancel
             </Button>
-            <Button type="submit" className="bg-[#0284C7] hover:bg-[#0369A1] text-white">Save Company</Button>
+            <Button type="submit" className="bg-[#E5BA73] hover:bg-[#F3CA68] text-[#0A1128] font-bold">Save Company</Button>
           </div>
         </form>
       </Modal>
@@ -314,7 +314,7 @@ export default function AdminCompaniesPage() {
               required
               value={formData.description}
               onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-              className="w-full px-3 py-2 text-sm bg-[#0F172A] border border-[#334155] rounded-lg text-white placeholder-[#64748B] focus:outline-none focus:border-[#38BDF8]"
+              className="w-full px-3 py-2 text-sm bg-[#0F172A] border border-[#334155] rounded-lg text-white placeholder-[#64748B] focus:outline-none focus:border-[#E5BA73]"
             />
           </div>
           <Input
@@ -331,7 +331,7 @@ export default function AdminCompaniesPage() {
             <Button type="button" variant="outline" className="border-[#334155] text-[#94A3B8]" onClick={() => setIsEditModalOpen(false)}>
               Cancel
             </Button>
-            <Button type="submit" className="bg-[#0284C7] hover:bg-[#0369A1] text-white">Update Company</Button>
+            <Button type="submit" className="bg-[#E5BA73] hover:bg-[#F3CA68] text-[#0A1128] font-bold">Update Company</Button>
           </div>
         </form>
       </Modal>
@@ -358,7 +358,7 @@ export default function AdminCompaniesPage() {
                 selectedCompany.internships.map((intern) => (
                   <div
                     key={intern.id}
-                    className="p-4 rounded-xl border border-[#334155] bg-[#0F172A] hover:border-[#38BDF8] transition-colors space-y-2"
+                    className="p-4 rounded-xl border border-[#334155] bg-[#0F172A] hover:border-[#E5BA73] transition-colors space-y-2"
                   >
                     <div className="flex items-start justify-between gap-2">
                       <div>
@@ -374,7 +374,7 @@ export default function AdminCompaniesPage() {
                     <p className="text-xs text-[#94A3B8] line-clamp-2">{intern.description}</p>
                     <div className="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-[#334155] text-xs">
                       <span className="font-semibold text-white">Min CGPA: {intern.minimumCGPA}</span>
-                      <span className="font-semibold text-[#38BDF8]">Total Seats: {intern.totalSeats}</span>
+                      <span className="font-semibold text-[#E5BA73]">Total Seats: {intern.totalSeats}</span>
                     </div>
                   </div>
                 ))
@@ -384,7 +384,7 @@ export default function AdminCompaniesPage() {
             </div>
 
             <div className="flex justify-end pt-3 border-t border-[#334155]">
-              <Button onClick={() => setIsViewModalOpen(false)} className="bg-[#0284C7] text-white">Close</Button>
+              <Button onClick={() => setIsViewModalOpen(false)} className="bg-[#E5BA73] hover:bg-[#F3CA68] text-[#0A1128] font-bold">Close</Button>
             </div>
           </div>
         )}

@@ -58,7 +58,9 @@ export async function POST(request: Request) {
       duration: duration || '3 Months',
       minimumCGPA: parseFloat(minimumCGPA) || 6.0,
       requiredSkills: skillsArray,
+      allowedBranches: body.allowedBranches || ['Computer Science', 'Information Technology', 'Artificial Intelligence & Data Science'],
       totalSeats: Number(totalSeats) || 1,
+      availableSeats: Number(totalSeats) || 1,
       applicationDeadline: applicationDeadline || '2026-12-31',
     });
 

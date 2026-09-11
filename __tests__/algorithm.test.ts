@@ -9,7 +9,7 @@ import {
 } from '../lib/algorithm/internshipAllocation';
 import { StudentData, InternshipData, PreferenceData } from '../lib/types';
 
-describe('Smart Internship Allocation Algorithm (AOA)', () => {
+describe('Smart Internship Allocation Algorithm', () => {
   // Mock Data Fixtures
   const mockInternships: InternshipData[] = [
     {
@@ -23,6 +23,7 @@ describe('Smart Internship Allocation Algorithm (AOA)', () => {
       stipend: 75000,
       duration: '6 Months',
       minimumCGPA: 8.0,
+      allowedBranches: ['Computer Science', 'Information Technology', 'CS', 'IT'],
       requiredSkills: ['Go', 'Kubernetes', 'Docker', 'Python'],
       totalSeats: 2,
       availableSeats: 2,
@@ -39,6 +40,7 @@ describe('Smart Internship Allocation Algorithm (AOA)', () => {
       stipend: 65000,
       duration: '3 Months',
       minimumCGPA: 7.0,
+      allowedBranches: ['Computer Science', 'Information Technology', 'CS', 'IT'],
       requiredSkills: ['TypeScript', 'React', 'Node.js', 'SQL'],
       totalSeats: 1, // Notice: only 1 seat
       availableSeats: 1,
@@ -55,6 +57,7 @@ describe('Smart Internship Allocation Algorithm (AOA)', () => {
       stipend: 35000,
       duration: '3 Months',
       minimumCGPA: 6.0,
+      allowedBranches: ['Computer Science', 'Information Technology', 'CS', 'IT'],
       requiredSkills: ['React', 'CSS', 'JavaScript'],
       totalSeats: 5,
       availableSeats: 5,

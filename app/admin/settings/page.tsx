@@ -37,7 +37,7 @@ export default function AdminSettingsPage() {
 
   const handleSave = (e: React.FormEvent) => {
     e.preventDefault();
-    success('Portal settings and algorithm parameters updated successfully.');
+    success('System settings and allocation parameters updated successfully.');
   };
 
   const totalWeight = cgpaWeight + skillWeight + prefWeight + branchWeight;
@@ -45,16 +45,16 @@ export default function AdminSettingsPage() {
   return (
     <div className="space-y-8 max-w-5xl">
       {/* Header */}
-      <div className="bg-[#1E293B] p-6 rounded-xl border border-[#334155] shadow-lg">
+      <div className="bg-[#0F1A36] p-6 rounded-2xl border border-[#1E3466] shadow-lg">
         <div className="flex items-center gap-2 mb-1">
-          <span className="text-xs font-semibold uppercase tracking-wider text-[#94A3B8]">
+          <span className="text-xs font-semibold uppercase tracking-wider text-[#E5BA73]">
             System Administration
           </span>
-          <span className="text-[#64748B]">•</span>
+          <span className="text-[#1E3466]">•</span>
           <span className="text-xs text-[#34D399] font-medium">Placement Drive Controls</span>
         </div>
-        <h1 className="text-2xl sm:text-3xl font-bold text-white tracking-tight">
-          Portal Settings &amp; Parameters
+        <h1 className="text-2xl sm:text-3xl font-bold text-[#FAF8F5] tracking-tight">
+          System Settings &amp; Parameters
         </h1>
         <p className="text-sm text-[#94A3B8] mt-1">
           Configure academic cycle parameters, algorithm scoring weights, preference constraints, and placement office details.
@@ -134,8 +134,8 @@ export default function AdminSettingsPage() {
             <div className="flex items-center justify-between">
               <div>
                 <CardTitle className="text-base font-bold text-white flex items-center gap-2">
-                  <Sliders className="h-4 w-4 text-[#38BDF8]" />
-                  AOA Allocation Algorithm Weights
+                  <Sliders className="h-4 w-4 text-[#E5BA73]" />
+                  Allocation Merit Weights
                 </CardTitle>
                 <CardDescription className="text-xs text-[#94A3B8]">
                   Mathematical scoring coefficients summing to 100%
@@ -269,7 +269,7 @@ export default function AdminSettingsPage() {
         <div className="flex justify-end gap-3 pt-2">
           <Button
             type="submit"
-            className="bg-[#0284C7] hover:bg-[#0369A1] text-white px-6 font-medium shadow-md shadow-sky-950"
+            className="bg-[#E5BA73] hover:bg-[#D4A253] text-[#0A1128] px-6 font-bold shadow-md shadow-[#E5BA73]/20"
           >
             <Save className="h-4 w-4 mr-2" />
             Save Configuration

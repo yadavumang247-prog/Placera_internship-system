@@ -3,7 +3,7 @@ import { clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
 export interface BadgeProps extends React.HTMLAttributes<HTMLSpanElement> {
-  variant?: 'default' | 'primary' | 'secondary' | 'success' | 'warning' | 'danger' | 'outline' | 'purple';
+  variant?: 'default' | 'primary' | 'secondary' | 'success' | 'warning' | 'danger' | 'outline' | 'beige' | 'navy';
   size?: 'sm' | 'md';
 }
 
@@ -14,17 +14,18 @@ export function Badge({
   children,
   ...props
 }: BadgeProps) {
-  const baseStyles = 'inline-flex items-center font-medium rounded';
+  const baseStyles = 'inline-flex items-center font-semibold rounded-md';
 
   const variants = {
-    default: 'bg-[#0F172A] text-[#94A3B8] border border-[#334155]',
-    primary: 'bg-[#0369A1]/25 text-[#38BDF8] border border-[#0284C7]/50',
-    secondary: 'bg-[#4F46E5]/25 text-[#818CF8] border border-[#6366F1]/50',
-    purple: 'bg-[#581C87]/25 text-[#C084FC] border border-[#9333EA]/50',
+    default: 'bg-[#0F1A36] text-[#D8CEBC] border border-[#1E3466]',
+    primary: 'bg-[#E5BA73]/15 text-[#F3CA68] border border-[#E5BA73]/40',
+    beige: 'bg-[#E5BA73]/20 text-[#F3CA68] border border-[#E5BA73]/50',
+    navy: 'bg-[#0A1128] text-[#E5BA73] border border-[#1E3466]',
+    secondary: 'bg-[#142247] text-[#CAD7EE] border border-[#1E3466]',
     success: 'bg-[#065F46]/25 text-[#34D399] border border-[#059669]/50',
-    warning: 'bg-[#78350F]/25 text-[#FBBF24] border border-[#D97706]/50',
+    warning: 'bg-[#E5BA73]/20 text-[#F3CA68] border border-[#D4A253]/50',
     danger: 'bg-[#7F1D1D]/25 text-[#F87171] border border-[#DC2626]/50',
-    outline: 'border border-[#334155] text-[#CBD5E1] bg-[#0F172A]/50',
+    outline: 'border border-[#1E3466] text-[#D8CEBC] bg-[#0A1128]/60',
   };
 
   const sizes = {

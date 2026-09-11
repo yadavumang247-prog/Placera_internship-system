@@ -187,15 +187,15 @@ export default function CompanyDashboardPage() {
               </h1>
               <Badge variant="success">Verified Recruiter</Badge>
             </div>
-            <p className="text-xs text-[#94A3B8] mt-0.5">
-              College Placement &amp; Corporate Internship Management Portal
+            <p className="text-xs text-[#D8CEBC] mt-0.5">
+              Campus Placement &amp; Corporate Internship Management
             </p>
           </div>
         </div>
 
         <Button
           onClick={() => setIsAddModalOpen(true)}
-          className="bg-[#0284C7] hover:bg-[#0369A1] text-white shadow-md shadow-sky-950"
+          className="bg-[#E5BA73] hover:bg-[#D4A253] text-[#0A1128] font-bold shadow-md shadow-[#E5BA73]/20"
         >
           <Plus className="h-4 w-4 mr-1.5" />
           Post Internship Opening
@@ -439,7 +439,7 @@ export default function CompanyDashboardPage() {
             <Button type="button" variant="outline" className="border-[#334155] text-[#94A3B8]" onClick={() => setIsAddModalOpen(false)}>
               Cancel
             </Button>
-            <Button type="submit" className="bg-[#0284C7] hover:bg-[#0369A1] text-white">
+            <Button type="submit" className="bg-[#E5BA73] hover:bg-[#F3CA68] text-[#0A1128] font-bold">
               Publish Opening
             </Button>
           </div>
@@ -464,7 +464,7 @@ export default function CompanyDashboardPage() {
               required
               value={formData.description}
               onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-              className="w-full px-3 py-2 text-sm bg-[#0F172A] border border-[#334155] rounded-lg text-white focus:outline-none focus:border-[#38BDF8]"
+              className="w-full px-3 py-2 text-sm bg-[#142247] border border-[#1E3466] rounded-lg text-white focus:outline-none focus:border-[#E5BA73]"
             />
           </div>
           <div className="grid grid-cols-2 gap-3">
@@ -491,7 +491,7 @@ export default function CompanyDashboardPage() {
             <Button type="button" variant="outline" className="border-[#334155] text-[#94A3B8]" onClick={() => setIsEditModalOpen(false)}>
               Cancel
             </Button>
-            <Button type="submit" className="bg-[#0284C7] hover:bg-[#0369A1] text-white">
+            <Button type="submit" className="bg-[#E5BA73] hover:bg-[#F3CA68] text-[#0A1128] font-bold">
               Update Position
             </Button>
           </div>
@@ -525,7 +525,7 @@ export default function CompanyDashboardPage() {
                     </span>
                   </div>
                   <div className="text-right">
-                    <span className="font-mono font-bold text-[#38BDF8] block">{(stud.cgpa || 0).toFixed(2)} CGPA</span>
+                    <span className="font-mono font-bold text-[#E5BA73] block">{(stud.cgpa || 0).toFixed(2)} CGPA</span>
                     <span className="text-[10px] text-[#94A3B8]">{(stud.skills || []).slice(0, 3).join(', ')}</span>
                   </div>
                 </div>
