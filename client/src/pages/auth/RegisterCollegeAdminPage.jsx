@@ -20,7 +20,7 @@ export const RegisterCollegeAdminPage = () => {
   });
 
   const [submitting, setSubmitting] = useState(false);
-  const { setAuthUser } = useAuth();
+  const { registerCollegeAdmin } = useAuth();
   const { showSuccess, showError } = useToast();
   const navigate = useNavigate();
 
@@ -42,17 +42,7 @@ export const RegisterCollegeAdminPage = () => {
 
     try {
       setSubmitting(true);
-      const res = await apiRequest('/auth/register/college-admin', {
-        method: 'POST',
-        body: JSON.stringify(formData),
-      });
-
-      if (res.token && res.user) {
-        localStorage.setItem('smart_place_token', res.token);
-        localStorage.setItem('smart_place_user', JSON.stringify(res.user));
-        if (setAuthUser) setAuthUser(res.user);
-      }
-
+      await registerCollegeAdmin(formData);
       showSuccess('College Placement Cell registered successfully! Accessing portal...');
       navigate('/admin/dashboard');
     } catch (err) {
