@@ -1,7 +1,11 @@
 import mongoose from 'mongoose';
 import { config } from './env.js';
 
+mongoose.set('bufferCommands', false);
+
 let mongoMemoryServer = null;
+
+export const isDatabaseReady = () => mongoose.connection.readyState === 1;
 
 export const connectDB = async () => {
   if (mongoose.connection.readyState === 1) {

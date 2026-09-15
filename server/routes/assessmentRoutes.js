@@ -14,9 +14,9 @@ const router = express.Router();
 router.use(authenticate);
 
 router.get('/', getStudentAssessments);
-router.get('/:id', getAssessmentById);
-router.post('/:id/submit', authorizeRoles('STUDENT'), submitMcqAssessment);
 router.post('/coding/run', runCodingCode);
 router.post('/coding/submit', authorizeRoles('STUDENT'), submitCodingCode);
+router.get('/:id', getAssessmentById);
+router.post('/:id/submit', authorizeRoles('STUDENT'), submitMcqAssessment);
 
 export default router;

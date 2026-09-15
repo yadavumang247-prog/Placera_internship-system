@@ -5,6 +5,17 @@ import { User } from './models/User.js';
 import { runSeed } from './utils/seed.js';
 
 const startServer = async () => {
+  const PORT = config.port;
+
+  // Start HTTP listener immediately so Vite proxy never gets ECONNREFUSED
+  app.listen(PORT, '0.0.0.0', () => {
+    console.log(`========================================================`);
+    console.log(`🚀 Placera — Smart Internship & Placement Allocation Platform API`);
+    console.log(`🌐 Server running on http://127.0.0.1:${PORT}`);
+    console.log(`⚙️  Environment: ${config.nodeEnv}`);
+    console.log(`========================================================`);
+  });
+
   try {
     await connectDB();
 
@@ -14,18 +25,10 @@ const startServer = async () => {
       console.log('⚡ Empty database detected. Auto-seeding full campus demo dataset...');
       await runSeed();
     }
-
-    const PORT = config.port;
-    app.listen(PORT, () => {
-      console.log(`========================================================`);
-      console.log(`🚀 Placera — Smart Internship & Placement Allocation Platform API`);
-      console.log(`🌐 Server running on http://localhost:${PORT}`);
-      console.log(`⚙️  Environment: ${config.nodeEnv}`);
-      console.log(`========================================================`);
-    });
+    console.log('✨ System initialized and ready for requests.');
   } catch (err) {
-    console.error('Failed to start server:', err);
-    process.exit(1);
+    console.error('⚠️ Database initialization error:', err.message);
+    console.warn('💡 Tip: If using local MongoDB, ensure it is running on port 27017, or set MONGO_URI in .env to a MongoDB Atlas cluster URI.');
   }
 };
 

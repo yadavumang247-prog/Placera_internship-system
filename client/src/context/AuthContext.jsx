@@ -72,6 +72,22 @@ export const AuthProvider = ({ children }) => {
     throw new Error(res.message || 'Recruiter registration failed');
   };
 
+  const registerCollegeAdmin = async (collegeData) => {
+    const res = await api.post('/auth/register/college-admin', collegeData);
+    if (res.success) {
+      localStorage.setItem('smart_place_token', res.token);
+      setToken(res.token);
+      setUser(res.user);
+      setProfile(res.profile);
+      return res;
+    }
+    throw new Error(res.message || 'College Placement Cell registration failed');
+  };
+
+  const setAuthUser = (userData) => {
+    setUser(userData);
+  };
+
   const logout = () => {
     localStorage.removeItem('smart_place_token');
     setToken(null);
@@ -95,12 +111,16 @@ export const AuthProvider = ({ children }) => {
         login,
         registerStudent,
         registerRecruiter,
+        registerCollegeAdmin,
+        setAuthUser,
         logout,
         refreshUser,
         isAuthenticated: !!user,
         isStudent: user?.role === 'STUDENT',
         isRecruiter: user?.role === 'RECRUITER',
-        isAdmin: user?.role === 'ADMIN',
+        isAdmin: user?.role === 'ADMIN' || user?.role === 'COLLEGE_ADMIN',
+        isCollegeAdmin: user?.role === 'COLLEGE_ADMIN',
+        isPlatformAdmin: user?.role === 'ADMIN',
       }}
     >
       {children}

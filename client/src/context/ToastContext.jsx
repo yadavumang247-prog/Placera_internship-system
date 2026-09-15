@@ -19,13 +19,19 @@ export const ToastProvider = ({ children }) => {
     setToasts((prev) => prev.filter((t) => t.id !== id));
   }, []);
 
-  const showSuccess = (msg) => addToast(msg, 'success');
-  const showError = (msg) => addToast(msg, 'error');
-  const showWarning = (msg) => addToast(msg, 'warning');
-  const showInfo = (msg) => addToast(msg, 'info');
+  const showSuccess = useCallback((msg) => addToast(msg, 'success'), [addToast]);
+  const showError = useCallback((msg) => addToast(msg, 'error'), [addToast]);
+  const showWarning = useCallback((msg) => addToast(msg, 'warning'), [addToast]);
+  const showInfo = useCallback((msg) => addToast(msg, 'info'), [addToast]);
+
+  const toast = useCallback((msg, type = 'info') => addToast(msg, type), [addToast]);
+  toast.success = showSuccess;
+  toast.error = showError;
+  toast.warning = showWarning;
+  toast.info = showInfo;
 
   return (
-    <ToastContext.Provider value={{ addToast, showSuccess, showError, showWarning, showInfo }}>
+    <ToastContext.Provider value={{ toast, addToast, showSuccess, showError, showWarning, showInfo }}>
       {children}
       <div style={styles.toastContainer}>
         {toasts.map((toast) => (

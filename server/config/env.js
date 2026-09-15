@@ -2,10 +2,21 @@ import dotenv from 'dotenv';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
+import fs from 'fs';
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-dotenv.config({ path: path.resolve(__dirname, '../../.env') });
+const rootEnv = path.resolve(__dirname, '../../.env');
+const serverEnv = path.resolve(__dirname, '../.env');
+
+if (fs.existsSync(rootEnv)) {
+  dotenv.config({ path: rootEnv });
+}
+if (fs.existsSync(serverEnv)) {
+  dotenv.config({ path: serverEnv });
+}
+dotenv.config();
 
 export const config = {
   port: process.env.PORT || 5000,
