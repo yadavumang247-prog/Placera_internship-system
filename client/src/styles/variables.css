@@ -1,0 +1,107 @@
+:root {
+  /* ==========================================================================
+     PRIMARY BRAND PALETTE
+     ========================================================================== */
+  --color-bg: #EBF4DD;             /* Light Sage / Background */
+  --color-bg-light: #F6FAEE;       /* Softer Sage tint */
+  --color-surface: #FFFFFF;        /* Pure White card background */
+  --color-surface-hover: #F8FAF3;
+  --color-border: #D6E4C6;         /* Subtle Sage Border */
+  --color-border-subtle: #E2ECD5;
+
+  --color-muted-sage: #90AB8B;     /* Muted Sage / Secondary UI */
+  --color-muted-sage-light: #E4ECE2;
+  --color-deep-sage: #5A7863;      /* Deep Sage / Primary Action & Highlights */
+  --color-deep-sage-hover: #47614F;
+  --color-deep-sage-light: #EFF5F0;
+
+  --color-dark-slate: #3B4953;     /* Dark Blue-Gray / Text & Sidebar */
+  --color-dark-slate-hover: #2E3A42;
+  --color-dark-slate-light: #52636F;
+
+  /* Typography Colors */
+  --color-text-main: #26333D;
+  --color-text-secondary: #4A5B67;
+  --color-text-muted: #718290;
+  --color-text-inverse: #FFFFFF;
+
+  /* Status Colors */
+  --color-success: #2E7D32;
+  --color-success-bg: #E8F5E9;
+  --color-success-border: #A5D6A7;
+
+  --color-warning: #D97706;
+  --color-warning-bg: #FEF3C7;
+  --color-warning-border: #FDE68A;
+
+  --color-danger: #DC2626;
+  --color-danger-bg: #FEE2E2;
+  --color-danger-border: #FCA5A5;
+
+  --color-info: #0284C7;
+  --color-info-bg: #E0F2FE;
+  --color-info-border: #BAE6FD;
+
+  /* Brand Aliases */
+  --color-primary: #5A7863;
+  --color-primary-hover: #47614F;
+  --color-primary-light: #EFF5F0;
+  --color-primary-dark: #3E5445;
+  --color-secondary: #90AB8B;
+  --color-secondary-light: #E4ECE2;
+  --color-text: #26333D;
+  --color-surface-subtle: #F6FAEE;
+  --color-border-light: #E2ECD5;
+
+  /* Typography Scale */
+  --font-display: 'Bebas Neue', 'Century Gothic', sans-serif;
+  --font-editorial: 'Lora', 'Libre Baskerville', serif;
+  --font-body: 'Inclusive Sans', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.25rem;
+  --text-2xl: 1.5rem;
+  --text-3xl: 1.875rem;
+  --text-4xl: 2.25rem;
+
+  /* Spacing */
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 32px;
+  --space-2xl: 48px;
+  --space-3xl: 64px;
+
+  /* Numeric Spacing Scale */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
+
+  /* Borders & Radius */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-xl: 20px;
+  --radius-full: 9999px;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 3px rgba(59, 73, 83, 0.06), 0 1px 2px rgba(59, 73, 83, 0.04);
+  --shadow-md: 0 4px 12px rgba(59, 73, 83, 0.08), 0 2px 4px rgba(59, 73, 83, 0.04);
+  --shadow-lg: 0 10px 25px rgba(59, 73, 83, 0.10), 0 4px 8px rgba(59, 73, 83, 0.05);
+
+  /* Transitions */
+  --transition-fast: 0.15s ease;
+  --transition-normal: 0.25s ease;
+}
